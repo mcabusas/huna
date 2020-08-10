@@ -1,0 +1,135 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.huna"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="16"
+9        android:targetSdkVersion="28" />
+10    <!--
+11         Flutter needs it to communicate with the running application
+12         to allow setting breakpoints, to provide hot reload, etc.
+13    -->
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:5-66
+14-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:22-64
+15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+15-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:5:5-78
+15-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:5:22-76
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+16-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+17-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+18    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Include required permissions for Google Maps API to run. -->
+18-->[:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+18-->[:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
+19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
+19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:23:22-76
+20
+21    <uses-feature
+21-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:26:5-28:35
+22        android:glEsVersion="0x00020000"
+22-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:27:9-41
+23        android:required="true" />
+23-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:28:9-32
+24
+25    <application
+25-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:7:5-32:19
+26        android:name="io.flutter.app.FlutterApplication"
+26-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:8:9-57
+27        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+27-->[androidx.core:core:1.2.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\b6252bb7f30c7dceb20e97dfa6dfae00\core-1.2.0\AndroidManifest.xml:24:18-86
+28        android:debuggable="true"
+29        android:icon="@mipmap/ic_launcher"
+29-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:10:9-43
+30        android:label="huna" >
+30-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:9:9-29
+31        <meta-data
+31-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:12:9-13:73
+32            android:name="com.google.android.geo.API_KEY"
+32-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:12:20-65
+33            android:value="AIzaSyB4yxfQGRr5QKk0Ob_yTbv8ZfX_Ag26I5c" />
+33-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:13:16-71
+34
+35        <activity
+35-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:15:9-26:20
+36            android:name="com.example.huna.MainActivity"
+36-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:16:13-41
+37            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+37-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:19:13-163
+38            android:hardwareAccelerated="true"
+38-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:20:13-47
+39            android:launchMode="singleTop"
+39-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:17:13-43
+40            android:theme="@style/LaunchTheme"
+40-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:18:13-47
+41            android:windowSoftInputMode="adjustResize" >
+41-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:21:13-55
+42            <intent-filter>
+42-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:22:13-25:29
+43                <action android:name="android.intent.action.MAIN" />
+43-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:23:17-68
+43-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:23:25-66
+44
+45                <category android:name="android.intent.category.LAUNCHER" />
+45-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:24:17-76
+45-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:24:27-74
+46            </intent-filter>
+47        </activity>
+48        <!--
+49             Don't delete the meta-data below.
+50             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+51        -->
+52        <meta-data
+52-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:29:9-31:33
+53            android:name="flutterEmbedding"
+53-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:30:13-44
+54            android:value="2" />
+54-->C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:31:13-30
+55
+56        <provider
+56-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+57            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+57-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+58            android:authorities="com.example.huna.flutter.image_provider"
+58-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+59            android:exported="false"
+59-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+60            android:grantUriPermissions="true" >
+60-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+61            <meta-data
+61-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+62                android:name="android.support.FILE_PROVIDER_PATHS"
+62-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+63                android:resource="@xml/flutter_image_picker_file_paths" />
+63-->[:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+64        </provider> <!-- Needs to be explicitly declared on P+ -->
+65        <uses-library
+65-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:33:9-35:40
+66            android:name="org.apache.http.legacy"
+66-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:34:13-50
+67            android:required="false" />
+67-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:35:13-37
+68
+69        <activity
+69-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\f81e9fffe318fdc5660099e12e35729e\play-services-base-17.2.1\AndroidManifest.xml:23:9-26:75
+70            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+70-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\f81e9fffe318fdc5660099e12e35729e\play-services-base-17.2.1\AndroidManifest.xml:24:13-79
+71            android:exported="false"
+71-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\f81e9fffe318fdc5660099e12e35729e\play-services-base-17.2.1\AndroidManifest.xml:25:13-37
+72            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+72-->[com.google.android.gms:play-services-base:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\f81e9fffe318fdc5660099e12e35729e\play-services-base-17.2.1\AndroidManifest.xml:26:13-72
+73
+74        <meta-data
+74-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\d0b32ecbd169d7ef15dedc8c14c68059\jetified-play-services-basement-17.2.1\AndroidManifest.xml:23:9-25:69
+75            android:name="com.google.android.gms.version"
+75-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\d0b32ecbd169d7ef15dedc8c14c68059\jetified-play-services-basement-17.2.1\AndroidManifest.xml:24:13-58
+76            android:value="@integer/google_play_services_version" />
+76-->[com.google.android.gms:play-services-basement:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\d0b32ecbd169d7ef15dedc8c14c68059\jetified-play-services-basement-17.2.1\AndroidManifest.xml:25:13-66
+77    </application>
+78
+79</manifest>

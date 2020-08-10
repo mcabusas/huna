@@ -1,0 +1,4 @@
+#Mon Aug 10 20:57:57 SGT 2020
+base.0=C\:\\Users\\micha\\AndroidStudioProjects\\huna\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\out\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
