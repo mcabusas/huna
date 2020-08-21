@@ -68,6 +68,8 @@ class _FavoritesState extends State<FavoritesPage> {
               FlatButton(
                 onPressed: () {
                   deleteFavorite(tid);
+                  
+                  getFavorites();
                 },
                 child: Text("Yes", style: TextStyle(color: Colors.deepPurple)),
               ),
@@ -95,7 +97,7 @@ class _FavoritesState extends State<FavoritesPage> {
             padding: EdgeInsets.all(15),
             itemCount: json == null ? 0 : json.length,
             itemBuilder: (BuildContext context, int index) {
-              if(json == null){
+              if(json == 'false'){
                 return new Container();
               }else{
                 return new Card(

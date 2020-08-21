@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings.dart';
-import 'package:huna/main.dart';
-import 'package:huna/payment.dart';
 
-void main() => runApp(BookingHistory());
-
-class BookingHistory extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HUNA',
-      theme: ThemeData(
-        primaryColor: Colors.grey.shade900,
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: BookingHistoryPage(),
-    );
-  }
-}
 
 class BookingHistoryPage extends StatefulWidget {
+
+  final tutorID;
+
+  const BookingHistoryPage({this.tutorID});
+
   @override
   _BookingHistoryState createState() => _BookingHistoryState();
 }
@@ -39,73 +26,6 @@ class _BookingHistoryState extends State<BookingHistoryPage> {
               );
             }),
         title: Text('Booking History'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('John Smith'),
-              accountEmail: Text('@hunabetatester'), //Use Username Instead
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/images/profile.jpg'),
-              ),
-            ),
-            ListTile(
-                leading: Icon(Icons.home),
-                title: Text('Dashboard'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MyApp()),
-                  );
-                }),
-            ListTile(
-                leading: Icon(Icons.date_range),
-                title: Text('Bookings'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Bookings()),
-                  );
-                }),
-            ListTile(
-                leading: Icon(Icons.question_answer),
-                title: Text('Messages'),
-                onTap: () {}),
-            ListTile(
-                leading: Icon(Icons.favorite),
-                title: Text('Favorites'),
-                onTap: () {}),
-            ListTile(
-                leading: Icon(Icons.calendar_today),
-                title: Text('Booking History'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BookingHistory()),
-                  );
-                }),
-            ListTile(
-                leading: Icon(Icons.credit_card),
-                title: Text('Payment'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Payment()),
-                  );
-                }),
-            Divider(),
-            ListTile(
-                leading: Icon(Icons.info),
-                title: Text('About Us'),
-                onTap: () {}),
-            ListTile(
-                leading: Icon(Icons.exit_to_app),
-                title: Text('Logout'),
-                onTap: () {}),
-          ],
-        ),
       ),
       body: SingleChildScrollView(
         child: Column(

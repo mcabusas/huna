@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:huna/modalPages/messages_chat.dart';
 import 'package:huna/login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 var data, majors, languages, topics; 
 
@@ -33,6 +35,14 @@ class _TutorProfileState extends State<TutorProfilePage> {
          jsonData = jsonDecode(response.body);
       });
       print(jsonData);
+      Fluttertoast.showToast(
+        msg: "Tutor was inserted into your favorites.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+      );
     }
   }
   

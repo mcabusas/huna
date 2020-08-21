@@ -88,7 +88,7 @@ class _BookingsState extends State<Bookings> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => BookingHistory()),
+                MaterialPageRoute(builder: (context) => BookingHistoryPage(tutorID: u.tutorID)),
               );
             },
           ),
