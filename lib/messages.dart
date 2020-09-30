@@ -120,15 +120,19 @@ class _TutorMessagesState extends State<TutorMessages> {
   @override
   Widget build(BuildContext context) {
     if(isLoading == true) {
-      return ListView.builder(
+      if(jsonData == null){
+        return new Container(
+          child: Center(
+            child: Text('you no new messages! _tutorMode')
+          )
+        );
+      }else if(jsonData != null && jsonData.length > 0){
+        return ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(15),
         itemCount: jsonData == null ? 0 : jsonData.length,
         itemBuilder: (BuildContext context, int index) {
-          if(jsonData == null){
-            return new Container();
-          }else{
-            return new Card(
+          return new Card(
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundImage: AssetImage('assets/images/tutor2.jpg'),
@@ -146,14 +150,12 @@ class _TutorMessagesState extends State<TutorMessages> {
                 },
               ),
             );
-            }
-          },
-        );
+        },
+      );
+      }
     }else{
       return Center(child:CircularProgressIndicator());
     }
-    
-    
   }
 }
 
@@ -192,36 +194,44 @@ class _StudentMessagesState extends State<StudentMessages> {
   @override
   Widget build(BuildContext context) {
     if(isLoading == true) {
-      return ListView.builder(
-        shrinkWrap: true,
-        padding: EdgeInsets.all(15),
-        itemCount: jsonData == null ? 0 : jsonData.length,
-        itemBuilder: (BuildContext context, int index) {
-          if(jsonData == null){
-            return new Container();
-          }else{
-            return new Card(
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+      if(jsonData == null){
+        return new Container(
+          child: Center(
+            child: Text('You have no new messages!')
+          )
+        );
+      }else if(jsonData != null && jsonData.length > 0){
+        return ListView.builder(
+          shrinkWrap: true,
+          padding: EdgeInsets.all(15),
+          itemCount: jsonData == null ? 0 : jsonData.length,
+          itemBuilder: (BuildContext context, int index) {
+            if(jsonData == null){
+              return new Container();
+            }else{
+              return new Card(
+                child: ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                  ),
+                  title: Text('${jsonData[index]['user_firstName']} ${jsonData[index]['user_lastName']}'),
+                  subtitle: Text(
+                    '${jsonData[index]['username']}',
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onTap: () {
+                    print(jsonData[index]);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ChatPage(tutorData: jsonData[index],  page: page)),
+                    );
+                  },
                 ),
-                title: Text('${jsonData[index]['user_firstName']} ${jsonData[index]['user_lastName']}'),
-                subtitle: Text(
-                  '${jsonData[index]['username']}',
-                  overflow: TextOverflow.ellipsis,
-                ),
-                onTap: () {
-                  print(jsonData[index]);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChatPage(tutorData: jsonData[index],  page: page)),
-                  );
-                },
-              ),
-            );
-          }
-        },
-      );
+              );
+            }
+          },
+        );
+      }
     }else{
       return Center(child:CircularProgressIndicator());
     }
