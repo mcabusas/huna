@@ -40,6 +40,7 @@ class Bookings extends StatefulWidget {
 }
 
 class _BookingsState extends State<Bookings> {
+
   Widget bottomNavBar(){
     if(u.tutorID == null){
       return null;
@@ -69,8 +70,6 @@ class _BookingsState extends State<Bookings> {
                 page = 1;
               }
             });
-            print(_selectedIndex);
-            print(page);
           },
         ),
       );
@@ -102,11 +101,14 @@ class _BookingsState extends State<Bookings> {
 }
 
 class StudentModeWidget extends StatefulWidget {
+
   @override
   _StudentModeWidgetState createState() => _StudentModeWidgetState();
 }
 
 class _StudentModeWidgetState extends State<StudentModeWidget> {
+
+  
 
   Future getBooking() async{
      final response = await http.get(
@@ -120,9 +122,10 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
         jsonData = jsonDecode(response.body);
         isLoading = true;
       });
-      print(jsonData);
     }
+    print(jsonData);
   }
+
 
   void initState(){
     super.initState();
@@ -131,176 +134,100 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
   @override
   Widget build(BuildContext context) {
     if(isLoading == true) {
+      if(jsonData == null){
+        return new Container(
+          child: Center(
+            child: Text('You have no new bookings!')
+          )
+        );
+      }
       return ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(15),
         itemCount: jsonData == null ? 0 : jsonData.length,
+        // ignore: missing_return
         itemBuilder: (BuildContext context, int index) {
-          if(jsonData == null){
-            return new Container();
-          }else if(/*jsonData[index]['booking_status'].toString() == 'Accepted' &&*/ jsonData != null){
-            var parsedDate = DateTime.parse(jsonData[index]['xmlData']['date']);
-            return new Card(
-              child: ListView(
-                shrinkWrap: true,
-                padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                children: <Widget>[
-                  // Per Booking, PRETEST
-                  ExpansionTile(
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/opentutorials.jpg'),
-                    ),
-                    title: Text('${jsonData[index]['user_firstName']} ${jsonData[index]['user_lastName']}'),
-                    subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
-                    trailing: RaisedButton.icon(
-                      onPressed: () {
-                        // Proceeds to Pretest Directly. Made by Tutor
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => AnswerPretest()),
-                        );
-                      },
-                      icon: Icon(Icons.assignment_late),
-                      label: Text('Pretest'),
-                      color: Colors.purple,
-                      textColor: Colors.white,
-                    ),
-                    children: <Widget>[
-                      // Expanded Contents
-                      ListTile(
-                        leading: Icon(Icons.import_contacts),
-                        title: Text('${jsonData[index]['xmlData']['topic']}'),
-                        dense: true,
+          if(/*jsonData[index]['booking_status'].toString() == 'Accepted' &&*/ jsonData != null){
+            print('not empty');
+            //var parsedDate = DateTime.parse(jsonData[index]['date']);
+              /*return new Card(
+                child: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                  children: <Widget>[
+                    // Per Booking, PRETEST
+                    ExpansionTile(
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            AssetImage('assets/images/opentutorials.jpg'),
                       ),
-                      ListTile(
-                        leading: Icon(Icons.place),
-                        title: Text('${jsonData[index]['xmlData']['location']}'),
-                        dense: true,
+                      title: Text('${jsonData[index]['user_firstName']} ${jsonData[index]['user_lastName']}'),
+                      subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
+                      trailing: RaisedButton.icon(
+                        onPressed: () {
+                          // Proceeds to Pretest Directly. Made by Tutor
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AnswerPretest()),
+                          );
+                        },
+                        icon: Icon(Icons.assignment_late),
+                        label: Text('Pretest'),
+                        color: Colors.purple,
+                        textColor: Colors.white,
                       ),
-                      ListTile(
-                        leading: Icon(Icons.event),
-                        title: Text(DateFormat.yMMMEd().format(parsedDate)),
-                        dense: true,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.access_time),
-                        title: Text('${jsonData[index]['xmlData']['timestart']} - ${jsonData[index]['xmlData']['timeend']}'),
-                        dense: true,
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.attach_money),
-                        title: Text('P ${jsonData[index]['rate']}.00'),
-                        dense: true,
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: RaisedButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.cancel),
-                            label: Text('Cancel Booking'),
-                            color: Colors.red.shade800,
-                            textColor: Colors.white,
+                      children: <Widget>[
+                        // Expanded Contents
+                        ListTile(
+                          leading: Icon(Icons.import_contacts),
+                          title: Text('${jsonData[index]['xmlData']['topic']}'),
+                          dense: true,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.place),
+                          title: Text('${jsonData[index]['xmlData']['location']}'),
+                          dense: true,
+                        ),
+                        /*ListTile(
+                          leading: Icon(Icons.event),
+                          title: Text(DateFormat.yMMMEd().format(parsedDate)),
+                          dense: true,
+                        ),*/
+                        ListTile(
+                          leading: Icon(Icons.access_time),
+                          title: Text('${jsonData[index]['xmlData']['timestate']} - ${jsonData[index]['xmlData']['timeend']}'),
+                          dense: true,
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.attach_money),
+                          title: Text('P ${jsonData[index]['rate']}.00'),
+                          dense: true,
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            child: RaisedButton.icon(
+                              onPressed: () {},
+                              icon: Icon(Icons.cancel),
+                              label: Text('Cancel Booking'),
+                              color: Colors.red.shade800,
+                              textColor: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
+                      ],
+                    ),
+                  ],
+                ),
+              );*/
             }
           },
         );
     }else{
       return Center(child:CircularProgressIndicator());
     }
-        // FOR STUDENT MODE
-      /*Center(
-      child: ListView(
-        children: <Widget>[
-          // PER BOOKING
-          
-          Divider(),
-
-          // PER BOOKING
-          /*Container(
-            child: ListView(
-              shrinkWrap: true,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              children: <Widget>[
-                // Per Booking, PRETEST
-                ExpansionTile(
-                  leading: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/tutor.jpg'),
-                  ),
-                  title: Text('Jane Doe'),
-                  subtitle: Text('@betatutor', overflow: TextOverflow.ellipsis),
-                  trailing: RaisedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OnTheDay()),
-                      );
-                    },
-                    icon: Icon(Icons.assignment_turned_in),
-                    label: Text('Answered'),
-                    color: Colors.grey,
-                    textColor: Colors.white,
-                  ),
-                  children: <Widget>[
-                    // Expanded Contents
-                    ListTile(
-                      leading: Icon(Icons.import_contacts),
-                      title: Text('Mobile Development'),
-                      dense: true,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.place),
-                      title: Text('Talamban Campus, USC'),
-                      dense: true,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.event),
-                      title: Text('February 18, 2020'),
-                      dense: true,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.access_time),
-                      title: Text('10:30 AM - 12:00 PM'),
-                      dense: true,
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.attach_money),
-                      title: Text('P 500.00'),
-                      dense: true,
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: RaisedButton.icon(
-                          onPressed: () {},
-                          icon: Icon(Icons.cancel),
-                          label: Text('Cancel Booking'),
-                          color: Colors.red.shade800,
-                          textColor: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),*/
-          Divider(),
-        ],
-      ),
-    );*/
   }
 }
 
@@ -323,7 +250,6 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
         jsonData = jsonDecode(response.body);
         isLoading = true;
       });
-      print(jsonData);
     }
   }
 
@@ -335,15 +261,20 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
   Widget build(BuildContext context) {
 
     if(isLoading == true) {
+      if(jsonData == null){
+        return new Container(
+          child: Center(
+            child: Text('You have no new bookings! Tutor mode')
+          )
+        );
+      }
       return ListView.builder(
         shrinkWrap: true,
         padding: EdgeInsets.all(15),
         itemCount: jsonData == null ? 0 : jsonData.length,
         // ignore: missing_return
         itemBuilder: (BuildContext context, int index) {
-          if(jsonData == null){
-            return new Container();
-          }else if(/*jsonData[index]['booking_status'].toString() == 'Accepted' &&*/ jsonData != null){
+           if(/*jsonData[index]['booking_status'].toString() == 'Accepted' &&*/ jsonData != null){
             var parsedDate = DateTime.parse(jsonData[index]['xmlData']['date']);
             return new Card(
               child: ListView(
