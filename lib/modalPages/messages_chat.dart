@@ -31,7 +31,7 @@ class _ChatState extends State<ChatPage> {
   insertMessage() async{
     data = {
       'id_from': u.id,
-      'userid_to': widget.tutorData[0]['user_id'],
+      'userid_to': widget.tutorData['user_id'],
       'message': messageController.text,
       //'time': DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()).toString(),
     };
@@ -46,7 +46,7 @@ class _ChatState extends State<ChatPage> {
 
   void initState(){
     super.initState();
-    print(widget.tutorData);
+    print(widget.tutorData['user_id']);
     if(widget.page == 0){
       buttonRet = IconButton(
               icon: Icon(Icons.date_range, color: Colors.cyan),
@@ -81,6 +81,7 @@ class _ChatState extends State<ChatPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            //Container(width: 0, height: 0),
             ChatMessagesWidget(userID :widget.tutorData['user_id'], page: widget.page),
             Container(
               color: Colors.white,
@@ -149,10 +150,13 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
         data = jsonDecode(response.body);
       });
       
+      print(isLoading);
+      print(data['message'][0]);
+      print(data['message'][1]);
     }
   }
 
-  Widget ret;
+  Widget bubble, retWidget;
   
 
   void initState(){
@@ -164,26 +168,33 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
 
   Widget build(BuildContext context) {
     if(isLoading == true){
-      return Expanded(
-        child: ListView.builder(
-          itemCount: data['message'] == null? 0: data['message'].length,
-          padding: EdgeInsets.all(15),
-          itemBuilder: (BuildContext context, int index){
-          if(data == null){
-            ret =  Container();
-          }else{
+      if(data == null){
+        retWidget = Container(
+          child: Center(
+            child: Text(
+              'No Messages.'
+            )
+          )
+        );
+      }else if(data != null){
+        print("yes");
+        retWidget =  new Container(
+          child: Expanded(
+            child: ListView.builder(
+              itemCount: data['message'] == null ? 0 : data['message'].length,
+              padding: EdgeInsets.all(15),
+              itemBuilder: (BuildContext context, int index){
                 if(data['message'][index]['from'] == u.id){
-                ret = ChatBubble(
-                  message: data['message'][index]['content'], 
-                  messageSide: Alignment.centerRight,
-                  textSide: TextAlign.end, 
-                  bubbleColor: Colors.deepPurple,
-                  textColor: Colors.white,
-                // time: data[index]['chat_dateTime'],
+                  bubble = ChatBubble(
+                    message: data['message'][index]['content'], 
+                    messageSide: Alignment.centerRight,
+                    textSide: TextAlign.end, 
+                    bubbleColor: Colors.deepPurple,
+                    textColor: Colors.white,
+              //  time: data[index]['chat_dateTime'],
                 );
-
               }else if(data['message'][index]['to'] == widget.userID || data['message'][index]['from'] == widget.userID){
-                ret =  ChatBubble(
+                bubble =  ChatBubble(
                   message: data['message'][index]['content'], 
                   messageSide: Alignment.centerLeft, 
                   textSide: TextAlign.start, 
@@ -191,16 +202,18 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
                   textColor: Colors.black,
                   //time: data[index]['chat_dateTime'],
                 );
-
               }
-          }
-            return ret;
-          },
-        ),
-      );
+                return bubble;
+              },
+            ),
+          ),
+        );
+      }
     }else{
-      return Center(child:CircularProgressIndicator());
+      //retWidget =  Container(width: 0, height: 0);
+      retWidget =  new Center(child:CircularProgressIndicator());
     }
+    return  retWidget;
   }
 }
 
