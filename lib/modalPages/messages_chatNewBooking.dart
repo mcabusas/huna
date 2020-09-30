@@ -114,11 +114,11 @@ class _NewBookingState extends State<NewBooking> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        '${widget.tutorInfo[0]['user_firstName']} ${widget.tutorInfo[0]['user_lastName']}',
+                        '${widget.tutorInfo['user_firstName']} ${widget.tutorInfo['user_lastName']}',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text('${widget.tutorInfo[0]['username']}'),
+                      Text('${widget.tutorInfo['username']}'),
                     ],
                   ),
                 ],
@@ -310,7 +310,7 @@ class _NewBookingState extends State<NewBooking> {
                       "Total: ",
                       style: TextStyle(fontSize: 15),
                     ),
-                    Text("P ${widget.tutorInfo[0]['rate']}.00", style: TextStyle(fontSize: 30)),
+                    Text("P ${widget.tutorInfo['rate']}.00", style: TextStyle(fontSize: 30)),
                   ],
                 ),
               ),
