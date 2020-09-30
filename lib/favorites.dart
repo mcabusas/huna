@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:huna/modalPages/drawer.dart';
 import 'package:http/http.dart' as http;
 import 'login.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -14,8 +14,8 @@ class FavoritesPage extends StatefulWidget {
 
 class _FavoritesState extends State<FavoritesPage> {
 
+  var json, jsonDelete;
   bool isLoading = false;
-  var json;
 
   Future getFavorites() async{
     final response = await http.get(
@@ -30,9 +30,6 @@ class _FavoritesState extends State<FavoritesPage> {
         isLoading = true;
       });
     }
-
-    print(json);
-    print(isLoading.toString());
   }
 
   Future deleteFavorite(var tid) async{
@@ -44,9 +41,16 @@ class _FavoritesState extends State<FavoritesPage> {
     if(response.statusCode == 200){
       if(!mounted) return;
       setState(() {
-         json = jsonDecode(response.body);
+         jsonDelete = jsonDecode(response.body);
       });
-      print(json);
+      Fluttertoast.showToast(
+        msg: "Tutor was removed from your favorites.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+      );
     }
   }
 
@@ -68,8 +72,11 @@ class _FavoritesState extends State<FavoritesPage> {
               FlatButton(
                 onPressed: () {
                   deleteFavorite(tid);
-                  
-                  getFavorites();
+                  Navigator.pop(context);
+                  setState(() {
+                    isLoading = false;
+                    getFavorites();
+                  });
                 },
                 child: Text("Yes", style: TextStyle(color: Colors.deepPurple)),
               ),
@@ -95,10 +102,14 @@ class _FavoritesState extends State<FavoritesPage> {
            ListView.builder(
             shrinkWrap: true,
             padding: EdgeInsets.all(15),
-            itemCount: json == null ? 0 : json.length,
+            itemCount: json == 'false' ? 0 : json.length,
             itemBuilder: (BuildContext context, int index) {
               if(json == 'false'){
-                return new Container();
+                return new Container(
+                  child: Center(
+                    child: Text("You have no favorite tutors added yet.")
+                  ),
+                );
               }else{
                 return new Card(
                   child: ListTile(
