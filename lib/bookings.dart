@@ -1,19 +1,20 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:huna/login.dart';
-import 'package:huna/modalPages/bookings_answerPretest.dart';
 import 'package:huna/modalPages/bookings_viewTutorial.dart';
 import 'package:huna/historyPages/bookingHistory.dart';
 import 'package:http/http.dart' as http;
 import 'package:huna/modalPages/drawer.dart';
 import 'package:intl/intl.dart';
-
+import 'package:huna/components/buttons.dart' as component;
 
 var page;
 var jsonData;
 int _selectedIndex = 0;
 final tabs = [StudentModeWidget(), TutorModeWidget()];
 bool isLoading = false;
+
+
 
 
 
@@ -231,12 +232,17 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
   }
 }
 
+
+
 class TutorModeWidget extends StatefulWidget {
   @override
   _TutorModeWidgetState createState() => _TutorModeWidgetState();
 }
 
 class _TutorModeWidgetState extends State<TutorModeWidget> {
+  
+  bool check = false;
+
 
   Future getBooking() async{
      final response = await http.get(
@@ -259,7 +265,6 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
   }
   @override
   Widget build(BuildContext context) {
-
     if(isLoading == true) {
       if(jsonData == null){
         return new Container(
@@ -276,6 +281,19 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
         itemBuilder: (BuildContext context, int index) {
            if(/*jsonData[index]['booking_status'].toString() == 'Accepted' &&*/ jsonData != null){
             var parsedDate = DateTime.parse(jsonData[index]['xmlData']['date']);
+             component.pretestBtn = new component.TrailingButton(
+              buttonColor: Colors.blue.shade800, 
+              buttonTitle: 'Pretest', 
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
+              icon: Icon(Icons.assignment), 
+              visible: check, 
+              onPressed: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: jsonData[index])),
+                );
+              }
+            );
             return new Card(
               child: ListView(
                 shrinkWrap: true,
@@ -283,25 +301,14 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                 children: <Widget>[
                   // Per Booking, PRETEST
                   ExpansionTile(
+                    initiallyExpanded: true,
                     leading: CircleAvatar(
                       backgroundImage:
                           AssetImage('assets/images/opentutorials.jpg'),
                     ),
                     title: Text('${jsonData[index]['user_firstName']} ${jsonData[index]['user_lastName']}'),
                     subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
-                    trailing: RaisedButton.icon(
-                    onPressed: () {
-                      // TO PRETEST DETAILS
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: jsonData[index])),
-                      );
-                    },
-                    icon: Icon(Icons.assignment),
-                    label: Text('Pretest'),
-                    color: Colors.cyan,
-                    textColor: Colors.white,
-                  ),
+                    trailing: component.pretestBtn,
                     children: <Widget>[
                       // Expanded Contents
                       ListTile(
@@ -329,18 +336,33 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                         title: Text('P ${jsonData[index]['rate']}.00'),
                         dense: true,
                       ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: RaisedButton.icon(
-                            onPressed: () {},
-                            icon: Icon(Icons.cancel),
-                            label: Text('Cancel Booking'),
-                            color: Colors.red.shade800,
-                            textColor: Colors.white,
+                      Row(
+                        children: <Widget>[
+                          component.acceptBtn = new component.TrailingButton(
+                            buttonColor: Colors.green,
+                            buttonTitle: 'Accept Booking', 
+                            icon: Icon(Icons.assignment), 
+                            onPressed: (){
+                              setState(() {
+                                check = !check;
+                                print(component.pretestBtn.visible.toString());
+                                component.pretestBtn.visible = check;
+                                print(component.pretestBtn.visible.toString());
+                                component.acceptBtn.visible = !check;
+                              });
+                            }, 
+                            padding: EdgeInsets.fromLTRB(0, 0, 0, 10), 
+                            visible: !check,
                           ),
-                        ),
+                          component.cancelBtn = new component.TrailingButton(
+                            onPressed: (){}, 
+                            buttonColor: Colors.red.shade800, 
+                            buttonTitle: 'Cancel Booking', 
+                            padding: const EdgeInsets.fromLTRB(25, 0, 0, 10), 
+                            icon: Icon(Icons.cancel), 
+                            visible: true,
+                          )
+                        ],
                       ),
                     ],
                   ),
