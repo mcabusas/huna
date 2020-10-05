@@ -22,7 +22,7 @@ class _PretestState extends State<PretestPage> {
   TextEditingController secondChoice = new TextEditingController();
 
 
-  var questions = new List<Map<String,String>>();
+  var questions;
 
   @override
   void initState() {
@@ -30,6 +30,7 @@ class _PretestState extends State<PretestPage> {
     selectedRadio = 0;
     currentQuestion = 1;
     correctRadio = 0;
+    questions = new List<Map<String,String>>(int.parse(widget.totalQuestions));
   }
 
   setSelectedRadio(int value) {
@@ -51,10 +52,7 @@ class _PretestState extends State<PretestPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ViewTutorialPage()),
-              );
+              Navigator.pop(context);
             }),
         title: Text('Pretest'),
       ),
@@ -68,7 +66,7 @@ class _PretestState extends State<PretestPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  '1',
+                  currentQuestion.toString(),
                   style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 // ONLY APPEARS IF ON THE LAST PAGE.
@@ -201,18 +199,18 @@ class _PretestState extends State<PretestPage> {
                     RawMaterialButton(
                       onPressed: () {
                         setState(() {
-                          if(currentQuestion <= int.parse(widget.totalQuestions)){
+                          if(currentQuestion != questions.length){
                             questionObject = {
                               'question ' + currentQuestion.toString(): questionContent.text,
                               'option1': firstChoice.text,
                               'option2': secondChoice.text,
                             };
-                            questions.add(questionObject);
+                            questions[currentQuestion-1] = questionObject;
                             questionObject = {};
-                            if(currentQuestion != int.parse(widget.totalQuestions)){
-                              currentQuestion++;
+                            currentQuestion++;
+                            if(currentQuestion == questions.length){
+                              return;
                             }
-                            
                           }
                         });
                         print(questions);
