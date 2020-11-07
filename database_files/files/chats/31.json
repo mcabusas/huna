@@ -1,0 +1,27 @@
+[
+    {
+        "user_from": "6",
+        "user_to": "4",
+        "message": "1"
+    },
+    {
+        "user_from": "6",
+        "user_to": "4",
+        "message": "2"
+    },
+    {
+        "user_from": "6",
+        "user_to": "4",
+        "message": "3"
+    },
+    {
+        "user_from": "6",
+        "user_to": "4",
+        "message": "4"
+    },
+    {
+        "user_from": "4",
+        "user_to": "6",
+        "message": "joe rogan sent this shit"
+    }
+]

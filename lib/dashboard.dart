@@ -33,22 +33,18 @@ class _DashboardPageState extends State<DashboardPage> {
   Future getTutors() async{
 
     final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/dashboard.php"),
-      headers: {
-        "Accept": 'application/json',
-      }
-    );
+      Uri.encodeFull("http://192.168.1.7/huna/database_files/classes/controllers/dashboardcontroller.class.php"));
     if(response.statusCode == 200){
       setState(() {
-        data = jsonDecode(response.body);
-
-        tutorInfo = data;
-        for(int i = 0; i < data.length; i++){
-          tutorInfo[i] = data[i];
-        }
-        print(tutorInfo);
         isLoading = true;
+        data = jsonDecode(response.body);
       });
+    }else{
+      print(response.statusCode);
+    }
+
+    for(int i = 0; i < data.length; i++){
+      print(data[i].toString());
     }
 
   }
@@ -140,7 +136,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             print(data[index]['user_id']);
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => TutorProfilePage(tutorInfo: tutorInfo[index])),
+                              MaterialPageRoute(builder: (context) => TutorProfilePage(tutorInfo: data[index])),
                             );
                           },
                             child: Container(

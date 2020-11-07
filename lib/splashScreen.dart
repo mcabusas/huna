@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
   onDoneLoading(String id) async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => id != null? LoginPage(): DashboardPage()
+        builder: (context) => id == null? LoginPage(): DashboardPage()
       )
     );
   }

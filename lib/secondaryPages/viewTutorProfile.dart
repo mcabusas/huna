@@ -22,32 +22,33 @@ class _TutorProfileState extends State<TutorProfilePage> {
   int _value = 1;
 
 
-  Future insertFavorite() async{
-    var body = {
-      'id': u.id,
-      'tid':  widget.tutorInfo['tutor_id']
-    };
+  // Future insertFavorite() async{
+  //   var body = {
+  //     'id': u.id,
+  //     'tid':  widget.tutorInfo['tutor_id']
+  //   };
 
-    final response = await http.post('https://hunacapstone.com/database_files/insertFavorite.php', body: body);
+  //   final response = await http.post('https://hunacapstone.com/database_files/insertFavorite.php', body: body);
     
-    if(response.statusCode == 200){
-      setState(() {
-         jsonData = jsonDecode(response.body);
-      });
-      print(jsonData);
-      Fluttertoast.showToast(
-        msg: "Tutor was inserted into your favorites.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.blue,
-        textColor: Colors.white,
-      );
-    }
-  }
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //        jsonData = jsonDecode(response.body);
+  //     });
+  //     print(jsonData);
+  //     Fluttertoast.showToast(
+  //       msg: "Tutor was inserted into your favorites.",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIos: 1,
+  //       backgroundColor: Colors.blue,
+  //       textColor: Colors.white,
+  //     );
+  //   }
+  // }
   
   void initState(){
     super.initState();
+    print(widget.tutorInfo.toString());
   }
 
   @override
@@ -64,13 +65,12 @@ class _TutorProfileState extends State<TutorProfilePage> {
               color: Colors.red.shade800,
             ),
             onPressed: () {
-              insertFavorite();
+              //insertFavorite();
             },
           ),
           IconButton(
             icon: Icon(Icons.forum),
             onPressed: () {
-              print(widget.tutorInfo);
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ChatPage(tutorData: widget.tutorInfo)),
@@ -190,7 +190,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
 
   void initState(){
     super.initState();
-
+    print(widget.tutorInformation);
     majors = widget.tutorInformation['majors'].split(",");
     languages = widget.tutorInformation['languages'].split(",");
     topics = widget.tutorInformation['topics'].split(",");

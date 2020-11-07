@@ -36,7 +36,7 @@ class _ChatState extends State<ChatPage> {
       //'time': DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()).toString(),
     };
 
-   final response =  await http.post("https://hunacapstone.com/database_files/chat.php", body: data);
+   final response =  await http.post("http://192.168.1.7/huna/database_files/classes/controllers/insertMessageController.class.php", body: data);
 
     if(response.statusCode == 200){
 
@@ -45,20 +45,20 @@ class _ChatState extends State<ChatPage> {
   }
 
   void initState(){
+
     super.initState();
-    print(widget.tutorData['user_id']);
-    if(widget.page == 0){
-      buttonRet = IconButton(
-              icon: Icon(Icons.date_range, color: Colors.cyan),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData)),
-                );
-              });
-    }else{
-      buttonRet = Container();
-    }
+    //if(widget.page == 0){
+      // buttonRet = IconButton(
+      //         icon: Icon(Icons.date_range, color: Colors.cyan),
+      //         onPressed: () {
+      //           Navigator.push(
+      //             context,
+      //             MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData)),
+      //           );
+      //         });
+    //}else{
+      //buttonRet = Container();
+    //}
   }
 
 
@@ -73,7 +73,14 @@ class _ChatState extends State<ChatPage> {
               Navigator.pop(context);
             }),
         actions: <Widget>[
-            buttonRet,
+            IconButton(
+              icon: Icon(Icons.date_range, color: Colors.cyan),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData)),
+                );
+              }),
         ],
       ),
       body: SafeArea(
@@ -151,8 +158,6 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
       });
       
       print(isLoading);
-      print(data['message'][0]);
-      print(data['message'][1]);
     }
   }
 
@@ -184,25 +189,25 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
               itemCount: data['message'] == null ? 0 : data['message'].length,
               padding: EdgeInsets.all(15),
               itemBuilder: (BuildContext context, int index){
-                if(data['message'][index]['from'] == u.id){
-                  bubble = ChatBubble(
-                    message: data['message'][index]['content'], 
-                    messageSide: Alignment.centerRight,
-                    textSide: TextAlign.end, 
-                    bubbleColor: Colors.deepPurple,
-                    textColor: Colors.white,
-              //  time: data[index]['chat_dateTime'],
-                );
-              }else if(data['message'][index]['to'] == widget.userID || data['message'][index]['from'] == widget.userID){
-                bubble =  ChatBubble(
-                  message: data['message'][index]['content'], 
-                  messageSide: Alignment.centerLeft, 
-                  textSide: TextAlign.start, 
-                  bubbleColor: Colors.white,
-                  textColor: Colors.black,
-                  //time: data[index]['chat_dateTime'],
-                );
-              }
+              //   if(data['message'][index]['from'] == u.id){
+              //     bubble = ChatBubble(
+              //       message: data['message'][index]['content'], 
+              //       messageSide: Alignment.centerRight,
+              //       textSide: TextAlign.end, 
+              //       bubbleColor: Colors.deepPurple,
+              //       textColor: Colors.white,
+              // //  time: data[index]['chat_dateTime'],
+              //   );
+              // }else if(data['message'][index]['to'] == widget.userID || data['message'][index]['from'] == widget.userID){
+              //   bubble =  ChatBubble(
+              //     message: data['message'][index]['content'], 
+              //     messageSide: Alignment.centerLeft, 
+              //     textSide: TextAlign.start, 
+              //     bubbleColor: Colors.white,
+              //     textColor: Colors.black,
+              //     //time: data[index]['chat_dateTime'],
+              //   );
+              // }
                 return bubble;
               },
             ),

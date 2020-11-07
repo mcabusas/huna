@@ -1,0 +1,24 @@
+[
+    {
+        "user_id": "4",
+        "username": "joerogan",
+        "user_firstName": "Joe",
+        "user_lastName": "Rogan",
+        "tutor_id": "10",
+        "rate": "250",
+        "majors": "[Health and Sciences & Medicine, Engineerings, Arts, Business and Economics, Computer Science, History, Humanities, Languages, Literature, Mathematics, Music, Philosophy, Political Science, Religion, Science, Sports]",
+        "topics": "",
+        "languages": ""
+    },
+    {
+        "user_id": "6",
+        "username": "sebasgoz",
+        "user_firstName": "Michael",
+        "user_lastName": "Cabusas",
+        "tutor_id": "12",
+        "rate": "250",
+        "majors": "[Business and Economics, Computer Science, Engineerings]",
+        "topics": "[information tecch]",
+        "languages": "[english]"
+    }
+]

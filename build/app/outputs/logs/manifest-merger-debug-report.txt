@@ -1,21 +1,21 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-MERGED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-MERGED from [:fluttertoast] C:\Users\micha\AndroidStudioProjects\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:geolocator] C:\Users\micha\AndroidStudioProjects\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
-MERGED from [:google_api_availability] C:\Users\micha\AndroidStudioProjects\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:google_maps_flutter] C:\Users\micha\AndroidStudioProjects\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-22:12
-MERGED from [:flutter_plugin_android_lifecycle] C:\Users\micha\AndroidStudioProjects\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:geocoder] C:\Users\micha\AndroidStudioProjects\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-10:12
-MERGED from [:location_web] C:\Users\micha\AndroidStudioProjects\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:location_permissions] C:\Users\micha\AndroidStudioProjects\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
-MERGED from [:shared_preferences] C:\Users\micha\AndroidStudioProjects\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+MERGED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+MERGED from [:fluttertoast] C:\xampp\htdocs\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:geolocator] C:\xampp\htdocs\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:google_api_availability] C:\xampp\htdocs\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:google_maps_flutter] C:\xampp\htdocs\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-22:12
+MERGED from [:flutter_plugin_android_lifecycle] C:\xampp\htdocs\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:geocoder] C:\xampp\htdocs\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-10:12
+MERGED from [:location_web] C:\xampp\htdocs\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:location_permissions] C:\xampp\htdocs\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
+MERGED from [:shared_preferences] C:\xampp\htdocs\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-location:16.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\249990a5f27f650f83faed932912ce25\jetified-play-services-location-16.0.0\AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:17:1-38:12
 MERGED from [com.google.android.gms:play-services-base:17.2.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\f81e9fffe318fdc5660099e12e35729e\play-services-base-17.2.1\AndroidManifest.xml:17:1-29:12
@@ -36,43 +36,43 @@ MERGED from [androidx.arch.core:core-runtime:2.0.0] C:\Users\micha\.gradle\cache
 MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\3a7eb299570065a3866b140e1a95969b\versionedparcelable-1.1.0\AndroidManifest.xml:17:1-27:12
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\b80fad55c42c418cc210e235056767fb\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\2b16ac6c4193835014f293427ee35afa\multidex-2.0.0\AndroidManifest.xml:17:1-22:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
+INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml:1:1-7:12
 	package
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:2:5-31
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:2:5-31
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 	android:versionCode
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:1-33:12
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 	xmlns:android
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:1:11-69
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:1:11-69
 uses-permission#android.permission.INTERNET
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:5-66
-MERGED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:5-66
-MERGED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:5-66
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:4:5-67
+MERGED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:4:5-67
+MERGED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:4:5-67
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:24:5-67
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:24:5-67
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:4:22-64
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:4:22-64
 uses-permission#android.permission.ACCESS_FINE_LOCATION
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:5:5-78
-MERGED from [:geolocator] C:\Users\micha\AndroidStudioProjects\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-79
-MERGED from [:geolocator] C:\Users\micha\AndroidStudioProjects\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-79
-MERGED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-79
-MERGED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-79
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:5:5-78
+MERGED from [:geolocator] C:\xampp\htdocs\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-79
+MERGED from [:geolocator] C:\xampp\htdocs\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-79
+MERGED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-79
+MERGED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-79
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:5:22-76
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:5:22-76
 application
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:7:5-32:19
-MERGED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
-MERGED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:7:5-32:19
+MERGED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
+MERGED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:10:5-20:19
 MERGED from [com.google.android.gms:play-services-location:16.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\249990a5f27f650f83faed932912ce25\jetified-play-services-location-16.0.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-location:16.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\249990a5f27f650f83faed932912ce25\jetified-play-services-location-16.0.0\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:30:5-36:19
@@ -92,73 +92,73 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.0] C:\Users\mi
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.2.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\b6252bb7f30c7dceb20e97dfa6dfae00\core-1.2.0\AndroidManifest.xml:24:18-86
 	android:label
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:9:9-29
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:9:9-29
 	android:icon
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:10:9-43
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:10:9-43
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:8:9-57
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:8:9-57
 meta-data#com.google.android.geo.API_KEY
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:12:9-13:73
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:12:9-13:73
 	android:value
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:13:16-71
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:13:16-71
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:12:20-65
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:12:20-65
 activity#com.example.huna.MainActivity
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:15:9-26:20
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:15:9-26:20
 	android:launchMode
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:17:13-43
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:17:13-43
 	android:hardwareAccelerated
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:20:13-47
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:20:13-47
 	android:windowSoftInputMode
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:21:13-55
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:13-55
 	android:configChanges
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:19:13-163
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:19:13-163
 	android:theme
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:18:13-47
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:18:13-47
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:16:13-41
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:16:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:22:13-25:29
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:13-25:29
 action#android.intent.action.MAIN
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:23:17-68
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:17-68
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:23:25-66
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:25-66
 category#android.intent.category.LAUNCHER
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:24:17-76
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:24:17-76
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:24:27-74
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:24:27-74
 meta-data#flutterEmbedding
-ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:29:9-31:33
+ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:29:9-31:33
 	android:value
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:31:13-30
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:31:13-30
 	android:name
-		ADDED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml:30:13-44
+		ADDED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:30:13-44
 uses-sdk
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-MERGED from [:fluttertoast] C:\Users\micha\AndroidStudioProjects\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:fluttertoast] C:\Users\micha\AndroidStudioProjects\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:geolocator] C:\Users\micha\AndroidStudioProjects\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:geolocator] C:\Users\micha\AndroidStudioProjects\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:google_api_availability] C:\Users\micha\AndroidStudioProjects\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:google_api_availability] C:\Users\micha\AndroidStudioProjects\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:google_maps_flutter] C:\Users\micha\AndroidStudioProjects\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:google_maps_flutter] C:\Users\micha\AndroidStudioProjects\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:flutter_plugin_android_lifecycle] C:\Users\micha\AndroidStudioProjects\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:flutter_plugin_android_lifecycle] C:\Users\micha\AndroidStudioProjects\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:geocoder] C:\Users\micha\AndroidStudioProjects\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:geocoder] C:\Users\micha\AndroidStudioProjects\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location_web] C:\Users\micha\AndroidStudioProjects\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location_web] C:\Users\micha\AndroidStudioProjects\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location_permissions] C:\Users\micha\AndroidStudioProjects\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:location_permissions] C:\Users\micha\AndroidStudioProjects\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:shared_preferences] C:\Users\micha\AndroidStudioProjects\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
-MERGED from [:shared_preferences] C:\Users\micha\AndroidStudioProjects\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+MERGED from [:fluttertoast] C:\xampp\htdocs\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:fluttertoast] C:\xampp\htdocs\huna\build\fluttertoast\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geolocator] C:\xampp\htdocs\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geolocator] C:\xampp\htdocs\huna\build\geolocator\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_api_availability] C:\xampp\htdocs\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_api_availability] C:\xampp\htdocs\huna\build\google_api_availability\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_maps_flutter] C:\xampp\htdocs\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:google_maps_flutter] C:\xampp\htdocs\huna\build\google_maps_flutter\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] C:\xampp\htdocs\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:flutter_plugin_android_lifecycle] C:\xampp\htdocs\huna\build\flutter_plugin_android_lifecycle\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoder] C:\xampp\htdocs\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:geocoder] C:\xampp\htdocs\huna\build\geocoder\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location_web] C:\xampp\htdocs\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location_web] C:\xampp\htdocs\huna\build\location_web\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location_permissions] C:\xampp\htdocs\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:location_permissions] C:\xampp\htdocs\huna\build\location_permissions\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] C:\xampp\htdocs\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] C:\xampp\htdocs\huna\build\shared_preferences\intermediates\library_manifest\debug\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-location:16.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\249990a5f27f650f83faed932912ce25\jetified-play-services-location-16.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-location:16.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\249990a5f27f650f83faed932912ce25\jetified-play-services-location-16.0.0\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:20:5-44
@@ -199,42 +199,42 @@ MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\micha\.gradl
 MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.1.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\b80fad55c42c418cc210e235056767fb\lifecycle-viewmodel-2.1.0\AndroidManifest.xml:20:5-44
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\2b16ac6c4193835014f293427ee35afa\multidex-2.0.0\AndroidManifest.xml:20:5-43
 MERGED from [androidx.multidex:multidex:2.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\2b16ac6c4193835014f293427ee35afa\multidex-2.0.0\AndroidManifest.xml:20:5-43
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
-INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
+INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\micha\AndroidStudioProjects\huna\android\app\src\debug\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\xampp\htdocs\huna\android\app\src\debug\AndroidManifest.xml
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
 	android:name
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
 	android:name
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
 provider#io.flutter.plugins.imagepicker.ImagePickerFileProvider
-ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
 	android:grantUriPermissions
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
 	android:authorities
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
 	android:exported
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
 	android:name
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
 meta-data#android.support.FILE_PROVIDER_PATHS
-ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
 	android:resource
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
 	android:name
-		ADDED from [:image_picker] C:\Users\micha\AndroidStudioProjects\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+		ADDED from [:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
 uses-permission#android.permission.ACCESS_COARSE_LOCATION
-ADDED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+ADDED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
 	android:name
-		ADDED from [:location] C:\Users\micha\AndroidStudioProjects\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
+		ADDED from [:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
 uses-permission#android.permission.ACCESS_NETWORK_STATE
 ADDED from [com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6b9b7fc1ad481537ed0a66d62976ec46\play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
 	android:name

@@ -9,10 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class User{
-  int value;
   String username, id, tutorID, fName, lName, rate;
 
-  User({this.value, this.fName, this.id, this.lName, this.username, this.tutorID, this.rate});
+  User({this.fName, this.id, this.lName, this.username, this.tutorID, this.rate});
 }
 
 User u = new User();
@@ -70,47 +69,44 @@ class LoginPageState extends State<LoginPage>
     }
 
    login(User u) async {
-     final response = await http.post("https://hunacapstone.com//database_files/login.php", body: {
-        "username": user.text,
-        "password": password.text,
+     final response = await http.post("http://192.168.1.7/huna/database_files/classes/controllers/logincontroller.class.php", body: {
+        "username": 'joerogan',
+        "password": '1244',
       });
 
       
       final data = jsonDecode(response.body);
       print(data.toString());
 
-      u.value = data['value'];
-      String msg = data['message'];
+      // u.value = data['value'];
+      // String msg = data['message'];
 
       
 
-      if(u.value == 1){
+      if(data != "ERROR"){
         
-        u.username = data['0']['username'];
-        u.id = data['0']['user_id'];
-        u.fName = data['0']['user_firstName'];
-        u.lName = data['0']['user_lastName'];
-        u.tutorID = data['0']['tutor_id'];
-        u.rate = data['0']['rate'];
+        u.username = data['username'];
+        u.id = data['user_id'];
+        u.fName = data['user_firstName'];
+        u.lName = data['user_lastName'];
+        u.tutorID = data['tutor_id'];
+        u.rate = data['rate'];
         print("This is your tutorID ${u.tutorID}");
         setState(() {
-          savePref(u.value, u.username, u.id, u.fName, u.lName, u.tutorID).then((bool committed){
+          savePref(u.username, u.id, u.fName, u.lName, u.tutorID).then((bool committed){
             Navigator.of(context).pushAndRemoveUntil(
             PageTransition(
                 type: PageTransitionType.rightToLeftWithFade,
                 child: DashboardPage(u: u)),
             (Route<dynamic> route) => false);
           });
-
-         
-          
         });
-        print(msg);
-        loginToast(msg);
-      }else if(u.value == 0){
+        loginToast('Login Successful');
+
+
+      }else if(data == 'ERROR'){
         print("fail");
-        print(msg);
-        loginToast(msg);
+        loginToast('Username or password is incorrect.');
       }else if(response.statusCode != 200){
         String msg = 'We are currently facing server problems, please try again later.';
         print(msg);
@@ -120,10 +116,9 @@ class LoginPageState extends State<LoginPage>
      
       
     }
-    Future<bool> savePref(int value, String username, String id, String fName, String lName, String tutorID) async {
+    Future<bool> savePref(String username, String id, String fName, String lName, String tutorID) async {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       setState(() {
-        preferences.setInt("value", value);
         preferences.setString("username", username);
         preferences.setString("id", id);
         preferences.setString("firstName", fName);
@@ -192,7 +187,7 @@ class LoginPageState extends State<LoginPage>
               ),
               Container(
                 child: new Text(
-                  "Encouraging independant learning.",
+                  "Encouraging independent learning.",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15.0,
@@ -279,7 +274,7 @@ class LoginPageState extends State<LoginPage>
                                 style: TextStyle(fontSize: 15.0),
                               ),
                               onPressed: ()  {
-                                check();
+                                login(u);
                               },
                             ),
                             new SizedBox(

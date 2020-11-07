@@ -55,7 +55,7 @@ class _NewBookingState extends State<NewBooking> {
       'numberOfStudents': numberOfStudents.text,
       'locationID': retVal['placeId'],
     };
-    final response = await http.post('https://hunacapstone.com/database_files/insertBooking.php', body: body);
+    final response = await http.post('http://192.168.1.7/huna/database_files/classes/controllers/insertBookingsController.class.php', body: body);
     if(response.statusCode == 200){
       if(!mounted) return;
       setState(() {
@@ -310,7 +310,7 @@ class _NewBookingState extends State<NewBooking> {
                       "Total: ",
                       style: TextStyle(fontSize: 15),
                     ),
-                    Text("P ${widget.tutorInfo['rate']}.00", style: TextStyle(fontSize: 30)),
+                    Text("P ${widget.tutorInfo    ['rate']}.00", style: TextStyle(fontSize: 30)),
                   ],
                 ),
               ),

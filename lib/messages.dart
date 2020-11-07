@@ -66,8 +66,6 @@ class _MessagesState extends State<Messages> {
                 page = 1;
               }
             });
-            print(_selectedIndex);
-            print(page);
           },
         ),
       );
@@ -97,7 +95,7 @@ class _TutorMessagesState extends State<TutorMessages> {
 
   getChats() async{
      final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/getChat.php?id=${u.id}&page=$page"),
+      Uri.encodeFull("http://192.168.1.7/huna/database_files/classes/controllers/getChatsController.class.php?id=${u.id}&flag=1"),
       headers: {
         "Accept": 'application/json',
       }
@@ -107,7 +105,7 @@ class _TutorMessagesState extends State<TutorMessages> {
         jsonData = jsonDecode(response.body);
         isLoading = true;
       });
-      print(jsonData);
+       print("flutter flag: " + jsonData.toString());
     }
 
   }
@@ -171,7 +169,7 @@ class _StudentMessagesState extends State<StudentMessages> {
 
   getChats() async{
      final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/getChat.php?id=${u.id}&page=$page"),
+      Uri.encodeFull("http://192.168.1.20/huna/database_files/classes/controllers/getChatsController.class.php?id=${u.id}&flag=0"),
       headers: {
         "Accept": 'application/json',
       }
@@ -181,7 +179,7 @@ class _StudentMessagesState extends State<StudentMessages> {
         jsonData = jsonDecode(response.body);
         isLoading = true;
       });
-      print(jsonData);
+      print("flutter flag: " + jsonData.toString());
     }
 
   }

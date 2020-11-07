@@ -113,7 +113,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
 
   Future getBooking() async{
      final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/getBooking.php?id=${u.id}&page=$page"),
+      Uri.encodeFull("http://192.168.1.7/huna/database_files/classes/controllers/getBookingsController.class.php?id=${u.id}&flag=1"),
       headers: {
         "Accept": 'application/json',
       }
@@ -256,12 +256,21 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
         jsonData = jsonDecode(response.body);
         isLoading = true;
       });
+
+      print(jsonData);
     }
   }
+
+  /*Future acceptBooing() async{
+    final reponse = await http.post(
+      Uri.encodeFull("")
+    )
+  }*/
 
   void initState(){
     super.initState();
     getBooking();
+    print(u.tutorID);
   }
   @override
   Widget build(BuildContext context) {
