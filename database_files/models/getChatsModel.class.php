@@ -8,7 +8,7 @@
 
 			if($flag == 0){
 
-	            $selectQuery = "SELECT u.user_id, u.username, u.user_firstName, u.user_lastName, t.tutor_id, t.rate
+	            $selectQuery = "SELECT c.chat_id, u.user_id, u.username, u.user_firstName, u.user_lastName, t.tutor_id, t.rate
 	            FROM chat AS c
 	            INNER JOIN user as u
 	            on c.user2 = u.user_id
@@ -19,7 +19,7 @@
 	            
 			}else if($flag == 1){
 
-				$selectQuery = "SELECT u.user_id, u.username, u.user_firstName, u.user_lastName, t.tutor_id, t.rate 
+				$selectQuery = "SELECT c.chat_id, u.user_id, u.username, u.user_firstName, u.user_lastName, t.tutor_id, t.rate 
 	            FROM chat as c 
 	            INNER JOIN user as u 
 	            ON c.user1 = u.user_id 

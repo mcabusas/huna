@@ -3,13 +3,11 @@
 
     class Chatmodel extends Dbh{
 
-        public function setMessage($user1, $user2, $message){
+        public function setMessage($user1, $user2, $messageContent){
 
-            $jsonArray = Array(
-                    'user_from'=> $user1,
-                    'user_to'=> $user2,
-                    'message'=> $message
-                );
+            $xml = new DOMDocument("1.0");
+            $xml->preserveWhiteSpace = false;
+            $xml->formatOutput = true;
 
             $file = null;
 
@@ -28,6 +26,7 @@
             $rowCount = $retSelect->fetch();
 
             if(!$rowCount){
+
                 $insertQuery = "INSERT INTO chat(user1, user2) VALUES(?, ?)";
 
                 $stm = $dbConn->prepare($insertQuery);
@@ -36,18 +35,51 @@
                 $stm->bindParam(2, $user2);
                 $stm->execute();
                 $file = $dbConn->lastInsertId();
-                $jsonObj = json_encode($jsonArray, JSON_PRETTY_PRINT);
-                file_put_contents('../../files/chats/' . $file . '.json', $jsonObj);
+
+
+                $messages = $xml->createElement('messages');
+
+                $message = $xml->createElement('message');
+                $messages->appendChild($message);
+
+
+                $userFromXML = $xml->createElement('userFrom', $user1);
+                $message->appendChild($userFromXML);
+
+                $userToXML = $xml->createElement('userTo', $user2);
+                $message->appendChild($userToXML);
+
+                $contentXML = $xml->createElement('content', $messageContent);
+                $message->appendChild($contentXML);
+
+
+                $xml->appendChild($messages);
                 
             }else if($rowCount){
-                
-                $existingFile = file_get_contents('../../files/chats/' . $rowCount['chat_id'] . '.json');
-                $tempContent = json_decode($existingFile);
-                array_push($tempContent, $jsonArray);
-                $jsonObj = json_encode($tempContent, JSON_PRETTY_PRINT);
-                file_put_contents('../../files/chats/' . $rowCount['chat_id'] . '.json', $jsonObj);
 
+                $file = $rowCount['chat_id'];
+                $xml->load('../../files/chats/' . $file . '.xml');
+
+                $root = $xml->getElementsByTagName('messages')->item(0);
+
+                $message = $xml->createElement('message');
+
+
+                $root->appendChild($message);
+
+                $userFromXML = $xml->createElement('userFrom', $user1);
+                $message->appendChild($userFromXML);
+
+                $userToXML = $xml->createElement('userTo', $user2);
+                $message->appendChild($userToXML);
+
+                $content = $xml->createElement('content', $messageContent);
+                $message->appendChild($content);
+
+                $root->appendChild($message);
             }
+
+            $xml->save('../../files/chats/' . $file . '.xml') or die('error');
 
             $dbConn = null;
 

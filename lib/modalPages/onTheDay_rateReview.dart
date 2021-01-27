@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
-import 'package:huna/dashboard.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/modalPages/onTheDay_answerPostTest.dart';
 
 void main() => runApp(RateReview());

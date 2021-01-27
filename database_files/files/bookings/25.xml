@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<bookings>
+  <tutorID>10</tutorID>
+  <studentID>4</studentID>
+  <location>University of San Carlos, Gov. M. Cuenco Avenue, Cebu City, Cebu, Philippines</location>
+  <date>2020-11-17 00:00:00.000</date>
+  <timeStart>12:00 PM</timeStart>
+  <timeEnd>1:00 PM</timeEnd>
+  <numberOfStudents>2</numberOfStudents>
+</bookings>

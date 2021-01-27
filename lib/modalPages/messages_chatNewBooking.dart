@@ -1,11 +1,12 @@
 import 'dart:convert';
-import 'package:huna/dashboard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'map.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:huna/login.dart';
+import 'package:huna/login/login.dart';
 import 'package:intl/intl.dart';
-import 'package:huna/bookings.dart';
+import 'package:huna/bookings/bookings_view.dart';
 
 
 
@@ -43,27 +44,32 @@ class _NewBookingState extends State<NewBooking> {
     );
   }
 
-  Future insertBooking() async{
-    var body = {
-      'id': u.id,
-      'tid': widget.tutorInfo['tutor_id'],
-      'date': _dateTime.toString(),
-      'timeStart': formattedTimeOfStart,
-      'timeEnd': formattedTimeOfEnd,
-      'topic': topic.text,
-      'location': retVal['description'],
-      'numberOfStudents': numberOfStudents.text,
-      'locationID': retVal['placeId'],
-    };
-    final response = await http.post('http://192.168.1.7/huna/database_files/classes/controllers/insertBookingsController.class.php', body: body);
-    if(response.statusCode == 200){
-      if(!mounted) return;
-      setState(() {
-         jsonData = jsonDecode(response.body);
-      });
-      print(jsonData);
-    }
-  }
+  // Future insertBooking() async{
+  //   Map<String, dynamic> body = {
+  //     'sid': u.id,
+  //     'tid': widget.tutorInfo['tutor_id'],
+  //     'date': _dateTime.toString(),
+  //     'timeStart': formattedTimeOfStart,
+  //     'timeEnd': formattedTimeOfEnd,
+  //     'topic': topic.text,
+  //     'location': retVal['description'],
+  //     'numberOfStudents': numberOfStudents.text,
+  //     'locationID': retVal['placeId'],
+  //     'booking_status': 'Pending',
+  //   };
+
+  //   CollectionReference collectionReference = FirebaseFirestore.instance.collection('bookings');
+  //   collectionReference.add(body);
+    
+  //   // final response = await http.post('http://www.hunacapstone.com/api/classes/controllers/insertBookingsController.class.php', body: body);
+  //   // if(response.statusCode == 200){
+  //   //   //if(!mounted) return;
+  //   //   setState(() {
+  //   //      jsonData = jsonDecode(response.body);
+  //   //   });
+  //   //   print(jsonData);
+  //   // }
+  // }
   @override
   void initState(){
     super.initState();
@@ -94,11 +100,11 @@ class _NewBookingState extends State<NewBooking> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        '${u.fName} ${u.lName}',
+                        'test',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
-                      Text('@${u.username}'),
+                      Text('@'),
                     ],
                   ),
                   // You
@@ -310,7 +316,7 @@ class _NewBookingState extends State<NewBooking> {
                       "Total: ",
                       style: TextStyle(fontSize: 15),
                     ),
-                    Text("P ${widget.tutorInfo    ['rate']}.00", style: TextStyle(fontSize: 30)),
+                    Text("P ${widget.tutorInfo['rate']}.00", style: TextStyle(fontSize: 30)),
                   ],
                 ),
               ),
@@ -322,7 +328,7 @@ class _NewBookingState extends State<NewBooking> {
                 width: MediaQuery.of(context).size.width,
                 child: RaisedButton.icon(
                   onPressed: () {
-                    insertBooking();
+                    //insertBooking();
                     /*Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => Bookings()),

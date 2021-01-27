@@ -4,24 +4,7 @@
             "outputFile": "C:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-km\\values-km.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\d0b32ecbd169d7ef15dedc8c14c68059\\jetified-play-services-basement-17.2.1\\res\\values-km\\values.xml",
-                    "from": {
-                        "startLines": "4",
-                        "startColumns": "0",
-                        "startOffsets": "247",
-                        "endColumns": "207",
-                        "endOffsets": "454"
-                    },
-                    "to": {
-                        "startLines": "10",
-                        "startColumns": "4",
-                        "startOffsets": "1262",
-                        "endColumns": "207",
-                        "endOffsets": "1465"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\b6252bb7f30c7dceb20e97dfa6dfae00\\core-1.2.0\\res\\values-km\\values-km.xml",
+                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\51d1d935949ee00722ec77da84be2a70\\core-1.2.0\\res\\values-km\\values-km.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -38,7 +21,24 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\f81e9fffe318fdc5660099e12e35729e\\play-services-base-17.2.1\\res\\values-km\\values.xml",
+                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\3638973b9f12109f0917afc3464dcb72\\jetified-play-services-basement-17.2.1\\res\\values-km\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "247",
+                        "endColumns": "207",
+                        "endOffsets": "454"
+                    },
+                    "to": {
+                        "startLines": "10",
+                        "startColumns": "4",
+                        "startOffsets": "1262",
+                        "endColumns": "207",
+                        "endOffsets": "1465"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\8579fc6adf0794193ceab2327387e370\\play-services-base-17.2.1\\res\\values-km\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",

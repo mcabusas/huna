@@ -515,7 +515,14 @@ public final class R {
     public static final int common_open_on_phone=0x7f09000f;
     public static final int common_signin_button_text=0x7f090010;
     public static final int common_signin_button_text_long=0x7f090011;
-    public static final int status_bar_notification_info_overflow=0x7f090012;
+    public static final int default_web_client_id=0x7f090012;
+    public static final int gcm_defaultSenderId=0x7f090013;
+    public static final int google_api_key=0x7f090014;
+    public static final int google_app_id=0x7f090015;
+    public static final int google_crash_reporting_api_key=0x7f090016;
+    public static final int google_storage_bucket=0x7f090017;
+    public static final int project_id=0x7f090018;
+    public static final int status_bar_notification_info_overflow=0x7f090019;
   }
   public static final class style {
     public static final int LaunchTheme=0x7f0a0000;
@@ -537,7 +544,7 @@ public final class R {
      * <tr><th>Attribute</th><th>Description</th></tr>
      * <tr><td><code>{@link #ColorStateListItem_android_color android:color}</code></td><td></td></tr>
      * <tr><td><code>{@link #ColorStateListItem_android_alpha android:alpha}</code></td><td></td></tr>
-     * <tr><td><code>{@link #ColorStateListItem_alpha com.example.huna:alpha}</code></td><td>Alpha multiplier applied to the base color.</td></tr>
+     * <tr><td><code>{@link #ColorStateListItem_alpha com.exmaple.huna:alpha}</code></td><td>Alpha multiplier applied to the base color.</td></tr>
      * </table>
      * @see #ColorStateListItem_android_color
      * @see #ColorStateListItem_android_alpha
@@ -574,7 +581,7 @@ public final class R {
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:alpha
+     * @attr name com.exmaple.huna:alpha
      */
     public static final int ColorStateListItem_alpha=2;
     /**
@@ -584,12 +591,12 @@ public final class R {
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderAuthority com.example.huna:fontProviderAuthority}</code></td><td>The authority of the Font Provider to be used for the request.</td></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderCerts com.example.huna:fontProviderCerts}</code></td><td>The sets of hashes for the certificates the provider should be signed with.</td></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderFetchStrategy com.example.huna:fontProviderFetchStrategy}</code></td><td>The strategy to be used when fetching font data from a font provider in XML layouts.</td></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderFetchTimeout com.example.huna:fontProviderFetchTimeout}</code></td><td>The length of the timeout during fetching.</td></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderPackage com.example.huna:fontProviderPackage}</code></td><td>The package for the Font Provider to be used for the request.</td></tr>
-     * <tr><td><code>{@link #FontFamily_fontProviderQuery com.example.huna:fontProviderQuery}</code></td><td>The query to be sent over to the provider.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderAuthority com.exmaple.huna:fontProviderAuthority}</code></td><td>The authority of the Font Provider to be used for the request.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderCerts com.exmaple.huna:fontProviderCerts}</code></td><td>The sets of hashes for the certificates the provider should be signed with.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderFetchStrategy com.exmaple.huna:fontProviderFetchStrategy}</code></td><td>The strategy to be used when fetching font data from a font provider in XML layouts.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderFetchTimeout com.exmaple.huna:fontProviderFetchTimeout}</code></td><td>The length of the timeout during fetching.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderPackage com.exmaple.huna:fontProviderPackage}</code></td><td>The package for the Font Provider to be used for the request.</td></tr>
+     * <tr><td><code>{@link #FontFamily_fontProviderQuery com.exmaple.huna:fontProviderQuery}</code></td><td>The query to be sent over to the provider.</td></tr>
      * </table>
      * @see #FontFamily_fontProviderAuthority
      * @see #FontFamily_fontProviderCerts
@@ -610,7 +617,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      *
-     * @attr name com.example.huna:fontProviderAuthority
+     * @attr name com.exmaple.huna:fontProviderAuthority
      */
     public static final int FontFamily_fontProviderAuthority=0;
     /**
@@ -627,7 +634,7 @@ public final class R {
      * attribute in the form
      * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
      *
-     * @attr name com.example.huna:fontProviderCerts
+     * @attr name com.exmaple.huna:fontProviderCerts
      */
     public static final int FontFamily_fontProviderCerts=1;
     /**
@@ -659,7 +666,7 @@ public final class R {
      * default typeface will be used instead.</td></tr>
      * </table>
      *
-     * @attr name com.example.huna:fontProviderFetchStrategy
+     * @attr name com.exmaple.huna:fontProviderFetchStrategy
      */
     public static final int FontFamily_fontProviderFetchStrategy=2;
     /**
@@ -678,7 +685,7 @@ public final class R {
      * timeout and wait until a reply is received from the font provider.</td></tr>
      * </table>
      *
-     * @attr name com.example.huna:fontProviderFetchTimeout
+     * @attr name com.exmaple.huna:fontProviderFetchTimeout
      */
     public static final int FontFamily_fontProviderFetchTimeout=3;
     /**
@@ -690,7 +697,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      *
-     * @attr name com.example.huna:fontProviderPackage
+     * @attr name com.exmaple.huna:fontProviderPackage
      */
     public static final int FontFamily_fontProviderPackage=4;
     /**
@@ -702,7 +709,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      *
-     * @attr name com.example.huna:fontProviderQuery
+     * @attr name com.exmaple.huna:fontProviderQuery
      */
     public static final int FontFamily_fontProviderQuery=5;
     /**
@@ -717,11 +724,11 @@ public final class R {
      * <tr><td><code>{@link #FontFamilyFont_android_fontStyle android:fontStyle}</code></td><td></td></tr>
      * <tr><td><code>{@link #FontFamilyFont_android_ttcIndex android:ttcIndex}</code></td><td></td></tr>
      * <tr><td><code>{@link #FontFamilyFont_android_fontVariationSettings android:fontVariationSettings}</code></td><td></td></tr>
-     * <tr><td><code>{@link #FontFamilyFont_font com.example.huna:font}</code></td><td>The reference to the font file to be used.</td></tr>
-     * <tr><td><code>{@link #FontFamilyFont_fontStyle com.example.huna:fontStyle}</code></td><td>The style of the given font file.</td></tr>
-     * <tr><td><code>{@link #FontFamilyFont_fontVariationSettings com.example.huna:fontVariationSettings}</code></td><td>The variation settings to be applied to the font.</td></tr>
-     * <tr><td><code>{@link #FontFamilyFont_fontWeight com.example.huna:fontWeight}</code></td><td>The weight of the given font file.</td></tr>
-     * <tr><td><code>{@link #FontFamilyFont_ttcIndex com.example.huna:ttcIndex}</code></td><td>The index of the font in the tcc font file.</td></tr>
+     * <tr><td><code>{@link #FontFamilyFont_font com.exmaple.huna:font}</code></td><td>The reference to the font file to be used.</td></tr>
+     * <tr><td><code>{@link #FontFamilyFont_fontStyle com.exmaple.huna:fontStyle}</code></td><td>The style of the given font file.</td></tr>
+     * <tr><td><code>{@link #FontFamilyFont_fontVariationSettings com.exmaple.huna:fontVariationSettings}</code></td><td>The variation settings to be applied to the font.</td></tr>
+     * <tr><td><code>{@link #FontFamilyFont_fontWeight com.exmaple.huna:fontWeight}</code></td><td>The weight of the given font file.</td></tr>
+     * <tr><td><code>{@link #FontFamilyFont_ttcIndex com.exmaple.huna:ttcIndex}</code></td><td>The index of the font in the tcc font file.</td></tr>
      * </table>
      * @see #FontFamilyFont_android_font
      * @see #FontFamilyFont_android_fontWeight
@@ -808,7 +815,7 @@ public final class R {
      * attribute in the form
      * "<code>?[<i>package</i>:]<i>type</i>/<i>name</i></code>".
      *
-     * @attr name com.example.huna:font
+     * @attr name com.exmaple.huna:font
      */
     public static final int FontFamilyFont_font=5;
     /**
@@ -828,7 +835,7 @@ public final class R {
      * <tr><td>normal</td><td>0</td><td></td></tr>
      * </table>
      *
-     * @attr name com.example.huna:fontStyle
+     * @attr name com.exmaple.huna:fontStyle
      */
     public static final int FontFamilyFont_fontStyle=6;
     /**
@@ -842,7 +849,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      *
-     * @attr name com.example.huna:fontVariationSettings
+     * @attr name com.exmaple.huna:fontVariationSettings
      */
     public static final int FontFamilyFont_fontVariationSettings=7;
     /**
@@ -856,7 +863,7 @@ public final class R {
      *
      * <p>May be an integer value, such as "<code>100</code>".
      *
-     * @attr name com.example.huna:fontWeight
+     * @attr name com.exmaple.huna:fontWeight
      */
     public static final int FontFamilyFont_fontWeight=8;
     /**
@@ -867,7 +874,7 @@ public final class R {
      *
      * <p>May be an integer value, such as "<code>100</code>".
      *
-     * @attr name com.example.huna:ttcIndex
+     * @attr name com.exmaple.huna:ttcIndex
      */
     public static final int FontFamilyFont_ttcIndex=9;
     /**
@@ -1120,9 +1127,9 @@ public final class R {
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #LoadingImageView_circleCrop com.example.huna:circleCrop}</code></td><td></td></tr>
-     * <tr><td><code>{@link #LoadingImageView_imageAspectRatio com.example.huna:imageAspectRatio}</code></td><td></td></tr>
-     * <tr><td><code>{@link #LoadingImageView_imageAspectRatioAdjust com.example.huna:imageAspectRatioAdjust}</code></td><td></td></tr>
+     * <tr><td><code>{@link #LoadingImageView_circleCrop com.exmaple.huna:circleCrop}</code></td><td></td></tr>
+     * <tr><td><code>{@link #LoadingImageView_imageAspectRatio com.exmaple.huna:imageAspectRatio}</code></td><td></td></tr>
+     * <tr><td><code>{@link #LoadingImageView_imageAspectRatioAdjust com.exmaple.huna:imageAspectRatioAdjust}</code></td><td></td></tr>
      * </table>
      * @see #LoadingImageView_circleCrop
      * @see #LoadingImageView_imageAspectRatio
@@ -1132,26 +1139,26 @@ public final class R {
       0x7f01000a, 0x7f010016, 0x7f010017
     };
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#circleCrop}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#circleCrop}
      * attribute's value can be found in the {@link #LoadingImageView} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:circleCrop
+     * @attr name com.exmaple.huna:circleCrop
      */
     public static final int LoadingImageView_circleCrop=0;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#imageAspectRatio}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#imageAspectRatio}
      * attribute's value can be found in the {@link #LoadingImageView} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:imageAspectRatio
+     * @attr name com.exmaple.huna:imageAspectRatio
      */
     public static final int LoadingImageView_imageAspectRatio=1;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#imageAspectRatioAdjust}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#imageAspectRatioAdjust}
      * attribute's value can be found in the {@link #LoadingImageView} array.
      *
      * <p>Must be one of the following constant values.</p>
@@ -1165,7 +1172,7 @@ public final class R {
      * <tr><td>none</td><td>0</td><td></td></tr>
      * </table>
      *
-     * @attr name com.example.huna:imageAspectRatioAdjust
+     * @attr name com.exmaple.huna:imageAspectRatioAdjust
      */
     public static final int LoadingImageView_imageAspectRatioAdjust=2;
     /**
@@ -1175,30 +1182,30 @@ public final class R {
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #MapAttrs_ambientEnabled com.example.huna:ambientEnabled}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraBearing com.example.huna:cameraBearing}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraMaxZoomPreference com.example.huna:cameraMaxZoomPreference}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraMinZoomPreference com.example.huna:cameraMinZoomPreference}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraTargetLat com.example.huna:cameraTargetLat}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraTargetLng com.example.huna:cameraTargetLng}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraTilt com.example.huna:cameraTilt}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_cameraZoom com.example.huna:cameraZoom}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_latLngBoundsNorthEastLatitude com.example.huna:latLngBoundsNorthEastLatitude}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_latLngBoundsNorthEastLongitude com.example.huna:latLngBoundsNorthEastLongitude}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_latLngBoundsSouthWestLatitude com.example.huna:latLngBoundsSouthWestLatitude}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_latLngBoundsSouthWestLongitude com.example.huna:latLngBoundsSouthWestLongitude}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_liteMode com.example.huna:liteMode}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_mapType com.example.huna:mapType}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiCompass com.example.huna:uiCompass}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiMapToolbar com.example.huna:uiMapToolbar}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiRotateGestures com.example.huna:uiRotateGestures}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiScrollGestures com.example.huna:uiScrollGestures}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiScrollGesturesDuringRotateOrZoom com.example.huna:uiScrollGesturesDuringRotateOrZoom}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiTiltGestures com.example.huna:uiTiltGestures}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiZoomControls com.example.huna:uiZoomControls}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_uiZoomGestures com.example.huna:uiZoomGestures}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_useViewLifecycle com.example.huna:useViewLifecycle}</code></td><td></td></tr>
-     * <tr><td><code>{@link #MapAttrs_zOrderOnTop com.example.huna:zOrderOnTop}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_ambientEnabled com.exmaple.huna:ambientEnabled}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraBearing com.exmaple.huna:cameraBearing}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraMaxZoomPreference com.exmaple.huna:cameraMaxZoomPreference}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraMinZoomPreference com.exmaple.huna:cameraMinZoomPreference}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraTargetLat com.exmaple.huna:cameraTargetLat}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraTargetLng com.exmaple.huna:cameraTargetLng}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraTilt com.exmaple.huna:cameraTilt}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_cameraZoom com.exmaple.huna:cameraZoom}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_latLngBoundsNorthEastLatitude com.exmaple.huna:latLngBoundsNorthEastLatitude}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_latLngBoundsNorthEastLongitude com.exmaple.huna:latLngBoundsNorthEastLongitude}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_latLngBoundsSouthWestLatitude com.exmaple.huna:latLngBoundsSouthWestLatitude}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_latLngBoundsSouthWestLongitude com.exmaple.huna:latLngBoundsSouthWestLongitude}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_liteMode com.exmaple.huna:liteMode}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_mapType com.exmaple.huna:mapType}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiCompass com.exmaple.huna:uiCompass}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiMapToolbar com.exmaple.huna:uiMapToolbar}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiRotateGestures com.exmaple.huna:uiRotateGestures}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiScrollGestures com.exmaple.huna:uiScrollGestures}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiScrollGesturesDuringRotateOrZoom com.exmaple.huna:uiScrollGesturesDuringRotateOrZoom}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiTiltGestures com.exmaple.huna:uiTiltGestures}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiZoomControls com.exmaple.huna:uiZoomControls}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_uiZoomGestures com.exmaple.huna:uiZoomGestures}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_useViewLifecycle com.exmaple.huna:useViewLifecycle}</code></td><td></td></tr>
+     * <tr><td><code>{@link #MapAttrs_zOrderOnTop com.exmaple.huna:zOrderOnTop}</code></td><td></td></tr>
      * </table>
      * @see #MapAttrs_ambientEnabled
      * @see #MapAttrs_cameraBearing
@@ -1234,126 +1241,126 @@ public final class R {
       0x7f010026, 0x7f010027, 0x7f010028, 0x7f010029
     };
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#ambientEnabled}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#ambientEnabled}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:ambientEnabled
+     * @attr name com.exmaple.huna:ambientEnabled
      */
     public static final int MapAttrs_ambientEnabled=0;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraBearing}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraBearing}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraBearing
+     * @attr name com.exmaple.huna:cameraBearing
      */
     public static final int MapAttrs_cameraBearing=1;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraMaxZoomPreference}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraMaxZoomPreference}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraMaxZoomPreference
+     * @attr name com.exmaple.huna:cameraMaxZoomPreference
      */
     public static final int MapAttrs_cameraMaxZoomPreference=2;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraMinZoomPreference}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraMinZoomPreference}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraMinZoomPreference
+     * @attr name com.exmaple.huna:cameraMinZoomPreference
      */
     public static final int MapAttrs_cameraMinZoomPreference=3;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraTargetLat}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraTargetLat}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraTargetLat
+     * @attr name com.exmaple.huna:cameraTargetLat
      */
     public static final int MapAttrs_cameraTargetLat=4;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraTargetLng}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraTargetLng}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraTargetLng
+     * @attr name com.exmaple.huna:cameraTargetLng
      */
     public static final int MapAttrs_cameraTargetLng=5;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraTilt}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraTilt}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraTilt
+     * @attr name com.exmaple.huna:cameraTilt
      */
     public static final int MapAttrs_cameraTilt=6;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#cameraZoom}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#cameraZoom}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:cameraZoom
+     * @attr name com.exmaple.huna:cameraZoom
      */
     public static final int MapAttrs_cameraZoom=7;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#latLngBoundsNorthEastLatitude}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#latLngBoundsNorthEastLatitude}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:latLngBoundsNorthEastLatitude
+     * @attr name com.exmaple.huna:latLngBoundsNorthEastLatitude
      */
     public static final int MapAttrs_latLngBoundsNorthEastLatitude=8;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#latLngBoundsNorthEastLongitude}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#latLngBoundsNorthEastLongitude}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:latLngBoundsNorthEastLongitude
+     * @attr name com.exmaple.huna:latLngBoundsNorthEastLongitude
      */
     public static final int MapAttrs_latLngBoundsNorthEastLongitude=9;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#latLngBoundsSouthWestLatitude}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#latLngBoundsSouthWestLatitude}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:latLngBoundsSouthWestLatitude
+     * @attr name com.exmaple.huna:latLngBoundsSouthWestLatitude
      */
     public static final int MapAttrs_latLngBoundsSouthWestLatitude=10;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#latLngBoundsSouthWestLongitude}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#latLngBoundsSouthWestLongitude}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a floating point value, such as "<code>1.2</code>".
      *
-     * @attr name com.example.huna:latLngBoundsSouthWestLongitude
+     * @attr name com.exmaple.huna:latLngBoundsSouthWestLongitude
      */
     public static final int MapAttrs_latLngBoundsSouthWestLongitude=11;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#liteMode}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#liteMode}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:liteMode
+     * @attr name com.exmaple.huna:liteMode
      */
     public static final int MapAttrs_liteMode=12;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#mapType}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#mapType}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>Must be one of the following constant values.</p>
@@ -1369,107 +1376,107 @@ public final class R {
      * <tr><td>terrain</td><td>3</td><td></td></tr>
      * </table>
      *
-     * @attr name com.example.huna:mapType
+     * @attr name com.exmaple.huna:mapType
      */
     public static final int MapAttrs_mapType=13;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiCompass}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiCompass}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiCompass
+     * @attr name com.exmaple.huna:uiCompass
      */
     public static final int MapAttrs_uiCompass=14;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiMapToolbar}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiMapToolbar}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiMapToolbar
+     * @attr name com.exmaple.huna:uiMapToolbar
      */
     public static final int MapAttrs_uiMapToolbar=15;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiRotateGestures}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiRotateGestures}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiRotateGestures
+     * @attr name com.exmaple.huna:uiRotateGestures
      */
     public static final int MapAttrs_uiRotateGestures=16;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiScrollGestures}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiScrollGestures}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiScrollGestures
+     * @attr name com.exmaple.huna:uiScrollGestures
      */
     public static final int MapAttrs_uiScrollGestures=17;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiScrollGesturesDuringRotateOrZoom}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiScrollGesturesDuringRotateOrZoom}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiScrollGesturesDuringRotateOrZoom
+     * @attr name com.exmaple.huna:uiScrollGesturesDuringRotateOrZoom
      */
     public static final int MapAttrs_uiScrollGesturesDuringRotateOrZoom=18;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiTiltGestures}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiTiltGestures}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiTiltGestures
+     * @attr name com.exmaple.huna:uiTiltGestures
      */
     public static final int MapAttrs_uiTiltGestures=19;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiZoomControls}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiZoomControls}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiZoomControls
+     * @attr name com.exmaple.huna:uiZoomControls
      */
     public static final int MapAttrs_uiZoomControls=20;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#uiZoomGestures}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#uiZoomGestures}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:uiZoomGestures
+     * @attr name com.exmaple.huna:uiZoomGestures
      */
     public static final int MapAttrs_uiZoomGestures=21;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#useViewLifecycle}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#useViewLifecycle}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:useViewLifecycle
+     * @attr name com.exmaple.huna:useViewLifecycle
      */
     public static final int MapAttrs_useViewLifecycle=22;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#zOrderOnTop}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#zOrderOnTop}
      * attribute's value can be found in the {@link #MapAttrs} array.
      *
      * <p>May be a boolean value, such as "<code>true</code>" or
      * "<code>false</code>".
      *
-     * @attr name com.example.huna:zOrderOnTop
+     * @attr name com.exmaple.huna:zOrderOnTop
      */
     public static final int MapAttrs_zOrderOnTop=23;
     /**
@@ -1479,9 +1486,9 @@ public final class R {
      * <colgroup align="left" />
      * <colgroup align="left" />
      * <tr><th>Attribute</th><th>Description</th></tr>
-     * <tr><td><code>{@link #SignInButton_buttonSize com.example.huna:buttonSize}</code></td><td></td></tr>
-     * <tr><td><code>{@link #SignInButton_colorScheme com.example.huna:colorScheme}</code></td><td></td></tr>
-     * <tr><td><code>{@link #SignInButton_scopeUris com.example.huna:scopeUris}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SignInButton_buttonSize com.exmaple.huna:buttonSize}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SignInButton_colorScheme com.exmaple.huna:colorScheme}</code></td><td></td></tr>
+     * <tr><td><code>{@link #SignInButton_scopeUris com.exmaple.huna:scopeUris}</code></td><td></td></tr>
      * </table>
      * @see #SignInButton_buttonSize
      * @see #SignInButton_colorScheme
@@ -1491,7 +1498,7 @@ public final class R {
       0x7f010002, 0x7f01000b, 0x7f01001e
     };
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#buttonSize}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#buttonSize}
      * attribute's value can be found in the {@link #SignInButton} array.
      *
      * <p>May be a reference to another resource, in the form
@@ -1509,11 +1516,11 @@ public final class R {
      * <tr><td>wide</td><td>1</td><td></td></tr>
      * </table>
      *
-     * @attr name com.example.huna:buttonSize
+     * @attr name com.exmaple.huna:buttonSize
      */
     public static final int SignInButton_buttonSize=0;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#colorScheme}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#colorScheme}
      * attribute's value can be found in the {@link #SignInButton} array.
      *
      * <p>May be a reference to another resource, in the form
@@ -1531,11 +1538,11 @@ public final class R {
      * <tr><td>light</td><td>1</td><td></td></tr>
      * </table>
      *
-     * @attr name com.example.huna:colorScheme
+     * @attr name com.exmaple.huna:colorScheme
      */
     public static final int SignInButton_colorScheme=1;
     /**
-     * <p>This symbol is the offset where the {@link com.example.huna.R.attr#scopeUris}
+     * <p>This symbol is the offset where the {@link com.exmaple.huna.R.attr#scopeUris}
      * attribute's value can be found in the {@link #SignInButton} array.
      *
      * <p>May be a reference to another resource, in the form
@@ -1545,7 +1552,7 @@ public final class R {
      * <p>May be a string value, using '\\;' to escape characters such as
      * '\\n' or '\\uxxxx' for a unicode character;
      *
-     * @attr name com.example.huna:scopeUris
+     * @attr name com.exmaple.huna:scopeUris
      */
     public static final int SignInButton_scopeUris=2;
   }

@@ -2,14 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:huna/modalPages/messages_chatNewBooking.dart';
-import 'package:intl/intl.dart';
 import 'package:bubble/bubble.dart';
 import 'package:http/http.dart' as http;
-import 'package:huna/login.dart';
-
-
-var data;
-var jsonData;
 Widget buttonRet;
 
 class ChatPage extends StatefulWidget {
@@ -27,22 +21,6 @@ class _ChatState extends State<ChatPage> {
   bool isLoading = false;
 
   TextEditingController messageController = new TextEditingController();
-
-  insertMessage() async{
-    data = {
-      'id_from': u.id,
-      'userid_to': widget.tutorData['user_id'],
-      'message': messageController.text,
-      //'time': DateFormat('yyyy-MM-dd – kk:mm').format(DateTime.now()).toString(),
-    };
-
-   final response =  await http.post("http://192.168.1.7/huna/database_files/classes/controllers/insertMessageController.class.php", body: data);
-
-    if(response.statusCode == 200){
-
-      print(jsonDecode(response.body));
-    } 
-  }
 
   void initState(){
 
@@ -66,7 +44,7 @@ class _ChatState extends State<ChatPage> {
     return Scaffold(
       resizeToAvoidBottomPadding: true,
       appBar: AppBar(
-        title: Text('${widget.tutorData['user_firstName']} ${widget.tutorData['user_lastName']}'),
+        title: Text('fdasfsdf'),
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -89,7 +67,7 @@ class _ChatState extends State<ChatPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             //Container(width: 0, height: 0),
-            ChatMessagesWidget(userID :widget.tutorData['user_id'], page: widget.page),
+            ChatMessagesWidget(),
             Container(
               color: Colors.white,
               child: Padding(
@@ -111,7 +89,7 @@ class _ChatState extends State<ChatPage> {
                         ),
                         onPressed: (){
                           if(messageController.text != ""){
-                            insertMessage();
+                            //insertMessage();
                             messageController.clear();
 
                           }
@@ -131,9 +109,9 @@ class _ChatState extends State<ChatPage> {
 
 class ChatMessagesWidget extends StatefulWidget {
 
-  final userID, page;
+  final userID, page, chatRoom;
 
-  ChatMessagesWidget({Key key, this.userID, this.page});
+  ChatMessagesWidget({Key key, this.userID, this.page, this.chatRoom});
   @override
   _ChatMessagesWidgetState createState() => _ChatMessagesWidgetState();
 }
@@ -145,7 +123,7 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
 
  Future getMessages() async {
     final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/getMessages.php?id=${u.id}&toId=${widget.userID}"),
+      Uri.encodeFull("http://www.hunacapstone.com/api/classes/controllers/readMessagesController.class.php?chatRoom=${widget.chatRoom}"),
       headers: {
         "Accept": 'application/json',
       }
@@ -156,8 +134,7 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
         isLoading = true;
         data = jsonDecode(response.body);
       });
-      
-      print(isLoading);
+      print('this is flutter: ' + data['message'].length.toString());
     }
   }
 
@@ -167,7 +144,7 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
   void initState(){
     super.initState();
     //Timer.periodic(new Duration(seconds: 3), (timer) {
-      getMessages();
+      //getMessages();
     //});
   }
 
@@ -176,6 +153,7 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
       if(data == null){
         retWidget = Container(
           child: Center(
+            
             child: Text(
               'No Messages.'
             )
@@ -186,10 +164,10 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
         retWidget =  new Container(
           child: Expanded(
             child: ListView.builder(
-              itemCount: data['message'] == null ? 0 : data['message'].length,
+              itemCount: 0,
               padding: EdgeInsets.all(15),
               itemBuilder: (BuildContext context, int index){
-              //   if(data['message'][index]['from'] == u.id){
+              //   if(data['message'][index]['userFrom'] == 1){
               //     bubble = ChatBubble(
               //       message: data['message'][index]['content'], 
               //       messageSide: Alignment.centerRight,
@@ -198,7 +176,7 @@ class _ChatMessagesWidgetState extends State<ChatMessagesWidget> {
               //       textColor: Colors.white,
               // //  time: data[index]['chat_dateTime'],
               //   );
-              // }else if(data['message'][index]['to'] == widget.userID || data['message'][index]['from'] == widget.userID){
+              // }else if(data['message'][index]['userTo'] == widget.userID || data['message'][index]['userFrom'] == widget.userID){
               //   bubble =  ChatBubble(
               //     message: data['message'][index]['content'], 
               //     messageSide: Alignment.centerLeft, 

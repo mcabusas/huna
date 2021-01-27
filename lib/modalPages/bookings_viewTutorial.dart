@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huna/bookings.dart';
+import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/modalPages/bookings_pretest.dart';
 import 'package:huna/secondaryPages/viewStudentProfile.dart';
 import 'package:intl/intl.dart';
@@ -79,7 +79,7 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
               SizedBox(height: 20),
               ListTile(
                 leading: Icon(Icons.import_contacts),
-                title: Text(widget.studentData['xmlData']['topic']),
+                title: Text('topic goes here'),
                 dense: true,
               ),
               ListTile(
@@ -94,7 +94,7 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
               ),
               ListTile(
                 leading: Icon(Icons.access_time),
-                title: Text('${widget.studentData['xmlData']['timestart']} - ${widget.studentData['xmlData']['timeend']}'),
+                title: Text('${widget.studentData['xmlData']['timeStart']} - ${widget.studentData['xmlData']['timeEnd']}'),
                 dense: true,
               ),
               ListTile(

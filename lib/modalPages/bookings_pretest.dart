@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:huna/bookings.dart';
+import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/modalPages/bookings_viewTutorial.dart';
+import 'package:http/http.dart' as http;
 
 
 // ignore: must_be_immutable
@@ -16,13 +19,32 @@ class _PretestState extends State<PretestPage> {
   int selectedRadio;
   int correctRadio;
   int currentQuestion;
-  var questionObject = new Map<String,String>();
+  int index;
+  var questionObject;
   TextEditingController questionContent = new TextEditingController();
   TextEditingController firstChoice = new TextEditingController();
   TextEditingController secondChoice = new TextEditingController();
+  //var questions =  [{'question1': 1, 'option1': 1, 'option2': 1, 'correctRadio': 2}, {'question2':2, 'option1': 2, 'option2': 12, 'correctRadio': 3}];
 
 
-  var questions;
+  Future insertPretest() async {
+    final response = await http.get(
+      Uri.encodeFull("http://www.hunacapstone.com/api/models/addQuestions.php?questions=$questionContent"),
+      headers: {
+        "Accept": 'application/json',
+      }
+    );
+    if(response.statusCode == 200){
+      setState(() {
+        jsonData = jsonDecode(response.body);
+        isLoading = true;
+      });
+    }
+    print(jsonData);
+
+  }
+
+  
 
   @override
   void initState() {
@@ -30,7 +52,8 @@ class _PretestState extends State<PretestPage> {
     selectedRadio = 0;
     currentQuestion = 1;
     correctRadio = 0;
-    questions = new List<Map<String,String>>(int.parse(widget.totalQuestions));
+    index=0;
+    //questions = new List(int.parse(widget.totalQuestions));
   }
 
   setSelectedRadio(int value) {
@@ -72,10 +95,11 @@ class _PretestState extends State<PretestPage> {
                 // ONLY APPEARS IF ON THE LAST PAGE.
                 RaisedButton.icon(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Bookings()),
-                    );
+                    insertPretest();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => Bookings()),
+                    // );
                   },
                   icon: Icon(Icons.check),
                   label: Text('Finish'),
@@ -199,21 +223,22 @@ class _PretestState extends State<PretestPage> {
                     RawMaterialButton(
                       onPressed: () {
                         setState(() {
-                          if(currentQuestion != questions.length){
-                            questionObject = {
-                              'question ' + currentQuestion.toString(): questionContent.text,
-                              'option1': firstChoice.text,
-                              'option2': secondChoice.text,
-                            };
-                            questions[currentQuestion-1] = questionObject;
-                            questionObject = {};
-                            currentQuestion++;
-                            if(currentQuestion == questions.length){
-                              return;
-                            }
-                          }
+                          // if(currentQuestion != questions.length){
+                          //   questionObject = {
+                          //     'question ' + currentQuestion.toString(): questionContent.text,
+                          //     'option1': firstChoice.text,
+                          //     'option2': secondChoice.text,
+                          //     'correctRadio':  correctRadio.toString(),
+                          //   };
+                          //   questions[currentQuestion-1] = questionObject;
+                          //   questionObject = {};
+                          //   questionContent.clear();
+                          //   firstChoice.clear();
+                          //   secondChoice.clear();
+                          //   correctRadio = 0;
+                          //   currentQuestion++;
+                          // }
                         });
-                        print(questions);
                       },
                       child: Icon(
                         Icons.arrow_forward_ios,

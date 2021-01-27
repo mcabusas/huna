@@ -8,6 +8,7 @@ include('../../models/loginmodel.class.php');
 	class Logincontroller extends Loginmodel{
 
         private $username;
+
         private $password;
 
         public function __construct(){
@@ -18,17 +19,9 @@ include('../../models/loginmodel.class.php');
 
 		public function login(){
 
-            $userContent = $this->getUsers();
-            $assocContent = json_decode($userContent);
+            $userContent = $this->getUsers($this->username, md5($this->password));
 
-            foreach($assocContent as $user){
-                if($user->username == $this->username and $user->user_password == md5($this->password)){
-                    $viewData =  json_encode($user);
-                }else {
-                    $viewData = "ERROR";
-                }
-            }
-			echo $viewData;
+            echo $userContent;
 		}
     }
     

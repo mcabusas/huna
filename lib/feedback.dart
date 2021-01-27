@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:huna/bookings.dart';
-import 'package:huna/dashboard.dart';
+import 'package:huna/bookings/bookings_view.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/favorites.dart';
-import 'package:huna/login.dart';
+import 'package:huna/login/login.dart';
 import 'package:huna/payment.dart';
 import 'package:huna/messages.dart';
-import 'package:huna/secondaryPages/myProfile.dart';
+import 'package:huna/profile/myProfile.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -19,22 +19,22 @@ class _FeedbackState extends State<FeedbackPage> {
   var jsonData;
 
 
-  updateFeedback() async{
-    var data = {
-      'id': u.id,
-      'content': feedbackController.text,
-      'rating': rate.toString(),
-    };
+  // updateFeedback() async{
+  //   var data = {
+  //     'id': u.id,
+  //     'content': feedbackController.text,
+  //     'rating': rate.toString(),
+  //   };
 
-    final response = await http.post("http://capstonehuna-com.preview-domain.com/database_files/feedback.php", body: data);
+  //   final response = await http.post("http://capstonehuna-com.preview-domain.com/database_files/feedback.php", body: data);
 
-    if(response.statusCode == 200){
-      setState(() {
-        jsonData = response.body;
-      });
-      print(jsonData);
-    }
-  }
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       jsonData = response.body;
+  //     });
+  //     print(jsonData);
+  //   }
+  // }
 
   final TextEditingController feedbackController = new TextEditingController();
 
@@ -260,7 +260,7 @@ class _FeedbackState extends State<FeedbackPage> {
                     width: MediaQuery.of(context).size.width,
                     child: RaisedButton.icon(
                       onPressed: () {
-                        updateFeedback();
+                       // updateFeedback();
                       },
                       icon: Icon(Icons.send),
                       label: Text('Send'),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:huna/bookings.dart';
-import 'package:huna/dashboard.dart';
+import 'package:huna/bookings/bookings_view.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/historyPages/transactions.dart';
 import 'package:huna/favorites.dart';
 import 'package:huna/feedback.dart';
-import 'package:huna/login.dart';
+import 'package:huna/login/login.dart';
 import 'package:huna/messages.dart';
-import 'package:huna/secondaryPages/myProfile.dart';
+import 'package:huna/profile/myProfile.dart';
 
 void main() => runApp(Payment());
 

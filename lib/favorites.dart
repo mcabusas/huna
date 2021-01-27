@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:huna/modalPages/drawer.dart';
+import 'package:huna/drawer/drawer.dart';
 import 'package:http/http.dart' as http;
-import 'login.dart';
+import 'login/login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 
@@ -17,42 +17,42 @@ class _FavoritesState extends State<FavoritesPage> {
   var json, jsonDelete;
   bool isLoading = false;
 
-  Future getFavorites() async{
-    final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/favorite.php?id=${u.id}"),
-      headers: {
-        "Accept": 'application/json',
-      }
-    );
-    if(response.statusCode == 200){
-      setState(() {
-        json = jsonDecode(response.body);
-        isLoading = true;
-      });
-    }
-  }
+  // Future getFavorites() async{
+  //   final response = await http.get(
+  //     Uri.encodeFull("https://hunacapstone.com/database_files/favorite.php?id=${u.id}"),
+  //     headers: {
+  //       "Accept": 'application/json',
+  //     }
+  //   );
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       json = jsonDecode(response.body);
+  //       isLoading = true;
+  //     });
+  //   }
+  // }
 
-  Future deleteFavorite(var tid) async{
-    var body = {
-      'id': u.id,
-      'tid': tid
-    };
-    final response = await http.post('https://hunacapstone.com/database_files/deleteFavorite.php', body: body);
-    if(response.statusCode == 200){
-      if(!mounted) return;
-      setState(() {
-         jsonDelete = jsonDecode(response.body);
-      });
-      Fluttertoast.showToast(
-        msg: "Tutor was removed from your favorites.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        backgroundColor: Colors.blue,
-        textColor: Colors.white,
-      );
-    }
-  }
+  // Future deleteFavorite(var tid) async{
+  //   var body = {
+  //     'id': u.id,
+  //     'tid': tid
+  //   };
+  //   final response = await http.post('https://hunacapstone.com/database_files/deleteFavorite.php', body: body);
+  //   if(response.statusCode == 200){
+  //     if(!mounted) return;
+  //     setState(() {
+  //        jsonDelete = jsonDecode(response.body);
+  //     });
+  //     Fluttertoast.showToast(
+  //       msg: "Tutor was removed from your favorites.",
+  //       toastLength: Toast.LENGTH_SHORT,
+  //       gravity: ToastGravity.BOTTOM,
+  //       timeInSecForIos: 1,
+  //       backgroundColor: Colors.blue,
+  //       textColor: Colors.white,
+  //     );
+  //   }
+  // }
 
   // Alert Dialog: Remove Tutor from Favorites
   Future<void> removeTutor(String fName, String lName, var tid) async {
@@ -71,11 +71,11 @@ class _FavoritesState extends State<FavoritesPage> {
               ),
               FlatButton(
                 onPressed: () {
-                  deleteFavorite(tid);
+                  //deleteFavorite(tid);
                   Navigator.pop(context);
                   setState(() {
                     isLoading = false;
-                    getFavorites();
+                    //getFavorites();
                   });
                 },
                 child: Text("Yes", style: TextStyle(color: Colors.deepPurple)),
@@ -86,11 +86,11 @@ class _FavoritesState extends State<FavoritesPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    this.getFavorites();
+  // void initState() {
+  //   super.initState();
+  //   this.getFavorites();
     
-  }
+  // }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

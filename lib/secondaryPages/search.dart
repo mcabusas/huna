@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:huna/dashboard.dart';
-import 'package:huna/secondaryPages/viewTutorProfile.dart';
+import 'package:huna/dashboard/dashboard.dart';
+import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
 import 'package:http/http.dart' as http;
 
 

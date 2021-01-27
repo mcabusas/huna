@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:huna/login.dart';
+import 'package:huna/login/login.dart';
 import 'package:huna/modalPages/messages_chat.dart';
 import 'package:http/http.dart' as http;
-import 'package:huna/modalPages/drawer.dart';
+import 'package:huna/drawer/drawer.dart';
 
 var jsonData;
 
@@ -37,40 +37,40 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   
-  Widget bottomNavBar(){
-    if(u.tutorID == null){
-      return null;
-    }else{
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4,
-        clipBehavior: Clip.antiAlias,
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('Student'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_cafe),
-              title: Text('Tutor'),
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-              if(index == 0){
-                page = 0;
-              }else if(index == 1){
-                page = 1;
-              }
-            });
-          },
-        ),
-      );
-    }
-  }
+  // Widget bottomNavBar(){
+  //   if(u.tutorID == null){
+  //     return null;
+  //   }else{
+  //     return BottomAppBar(
+  //       shape: CircularNotchedRectangle(),
+  //       notchMargin: 4,
+  //       clipBehavior: Clip.antiAlias,
+  //       child: BottomNavigationBar(
+  //         currentIndex: _selectedIndex,
+  //         items: [
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.school),
+  //             title: Text('Student'),
+  //           ),
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.local_cafe),
+  //             title: Text('Tutor'),
+  //           ),
+  //         ],
+  //         onTap: (index) {
+  //           setState(() {
+  //             _selectedIndex = index;
+  //             if(index == 0){
+  //               page = 0;
+  //             }else if(index == 1){
+  //               page = 1;
+  //             }
+  //           });
+  //         },
+  //       ),
+  //     );
+  //   }
+  // }
 
  
   @override
@@ -81,7 +81,7 @@ class _MessagesState extends State<Messages> {
       ),
       drawer: SideDrawer(),
       body: MainWidget(),
-      bottomNavigationBar: bottomNavBar(),
+      //bottomNavigationBar: bottomNavBar(),
     );
   }
 }
@@ -93,27 +93,27 @@ class TutorMessages extends StatefulWidget {
 
 class _TutorMessagesState extends State<TutorMessages> {
 
-  getChats() async{
-     final response = await http.get(
-      Uri.encodeFull("http://192.168.1.7/huna/database_files/classes/controllers/getChatsController.class.php?id=${u.id}&flag=1"),
-      headers: {
-        "Accept": 'application/json',
-      }
-    );
-    if(response.statusCode == 200){
-      setState(() {
-        jsonData = jsonDecode(response.body);
-        isLoading = true;
-      });
-       print("flutter flag: " + jsonData.toString());
-    }
+  // getChats() async{
+  //    final response = await http.get(
+  //     Uri.encodeFull("http://www.hunacapstone.com/api/classes/controllers/getChatsController.class.php?id=${u.id}&flag=1"),
+  //     headers: {
+  //       "Accept": 'application/json',
+  //     }
+  //   );
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       jsonData = jsonDecode(response.body);
+  //       isLoading = true;
+  //     });
+  //      print("flutter flag: " + jsonData.toString());
+  //   }
 
-  }
+  // }
   
-  void initState(){
-    super.initState();
-    getChats();
-  }
+  // void initState(){
+  //   super.initState();
+  //   getChats();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -167,27 +167,27 @@ class StudentMessages extends StatefulWidget {
 class _StudentMessagesState extends State<StudentMessages> {
 
 
-  getChats() async{
-     final response = await http.get(
-      Uri.encodeFull("http://192.168.1.20/huna/database_files/classes/controllers/getChatsController.class.php?id=${u.id}&flag=0"),
-      headers: {
-        "Accept": 'application/json',
-      }
-    );
-    if(response.statusCode == 200){
-      setState(() {
-        jsonData = jsonDecode(response.body);
-        isLoading = true;
-      });
-      print("flutter flag: " + jsonData.toString());
-    }
+  // getChats() async{
+  //    final response = await http.get(
+  //     Uri.encodeFull("http://www.hunacapstone.com/api/classes/controllers/getChatsController.class.php?id=${u.id}&flag=0"),
+  //     headers: {
+  //       "Accept": 'application/json',
+  //     }
+  //   );
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       jsonData = jsonDecode(response.body);
+  //       isLoading = true;
+  //     });
+  //     print("flutter flag: " + jsonData.toString());
+  //   }
 
-  }
+  // }
   
-  void initState(){
-    super.initState();
-    getChats();
-  }
+  // void initState(){
+  //   super.initState();
+  //   getChats();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -218,7 +218,7 @@ class _StudentMessagesState extends State<StudentMessages> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   onTap: () {
-                    print(jsonData[index]);
+                    print(jsonData[index]['chat_id']);
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ChatPage(tutorData: jsonData[index],  page: page)),

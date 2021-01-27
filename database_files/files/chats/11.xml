@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<messages>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>this should be on the right side</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>wtf</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>yay this works</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>jayb </content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>hello</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>the maps aint working fam</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>the map is working</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>hi</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>hello</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>lief new message</content>
+  </message>
+  <message>
+    <userFrom>4</userFrom>
+    <userTo>6</userTo>
+    <content>hello</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>hey man, would u like to book a tutorial session?</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>hi</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>insert</content>
+  </message>
+  <message>
+    <userFrom>6</userFrom>
+    <userTo>4</userTo>
+    <content>gdg</content>
+  </message>
+</messages>

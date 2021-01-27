@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huna/dashboard.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/modalPages/bookings_onTheDay.dart';
 
 void main() => runApp(SOS());

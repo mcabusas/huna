@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "969755491889",
+    "project_id": "upheld-pursuit-274606",
+    "storage_bucket": "upheld-pursuit-274606.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:969755491889:android:d07ac766075479f0389f10",
+        "android_client_info": {
+          "package_name": "com.exmaple.huna"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "969755491889-idag6kj2ulp47kvfilh8r2vbsm308qs3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXic8oC0zo9E9V8w1U3qE30kOZLQKx7_c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "969755491889-idag6kj2ulp47kvfilh8r2vbsm308qs3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

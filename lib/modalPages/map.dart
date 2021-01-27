@@ -17,7 +17,7 @@ class MapSampleState extends State<MapSample> {
   Prediction p;
   GoogleMapController _mapController;
   String searchAddr = "Enter Address";
-  static const kGoogleApiKey_places = "AIzaSyBXyFKADylh8Og-d9pT0_xo3xlC1ru_S4o";
+  static const kGoogleApiKey_places = "AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM";
   GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey_places);
   Map locationData = new Map();
 
@@ -54,7 +54,7 @@ class MapSampleState extends State<MapSample> {
             onMapCreated: mapCreated,
             mapType: MapType.normal,
             initialCameraPosition: CameraPosition(
-              target: LatLng(40.688841, -74.044015),
+              target: LatLng(40.7128, -74.0060),
               zoom: 11,
             ),
             markers: Set.from(allMarkers),
@@ -71,7 +71,8 @@ class MapSampleState extends State<MapSample> {
                     apiKey: kGoogleApiKey_places,
                     mode: Mode.overlay,
                     language: "en",
-                    components: [Component(Component.country, "ph")] 
+                    components: [Component(Component.country, "ph")],
+                    radius: 100000000
                   );
                   displayPrediction(p);
                 },

@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:huna/dashboard.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/splashScreen.dart';
-import 'package:huna/secondaryPages/myProfile.dart';
-import 'login.dart';
-import 'package:huna/secondaryPages/myProfileSettings.dart';
+import 'package:huna/profile/myProfile.dart';
+import 'login/login.dart';
+import 'package:huna/profile/myProfileSettings.dart';
 
-void main() => runApp(MyApp());
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.

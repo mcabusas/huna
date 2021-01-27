@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:huna/dashboard.dart';
-import 'package:huna/modalPages/signup.dart';
+import 'package:huna/dashboard/dashboard.dart';
+// import 'package:huna/modalPages/signup/signup.dart';
 
 void main() => runApp(VerifyAccount());
 
@@ -33,10 +33,10 @@ class _VerifyAccountState extends State<VerifyAccountPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SignUp()),
-              );
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => SignUp()),
+              // );
             }),
         title: Text('Verify Account'),
       ),

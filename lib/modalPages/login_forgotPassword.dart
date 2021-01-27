@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:huna/login.dart';
-import 'package:huna/modalPages/signup.dart';
+import 'package:huna/login/login.dart';
+// import 'package:huna/modalPages/signup/signup.dart';
 
 void _showDialog(context) {
 

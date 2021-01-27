@@ -16,7 +16,7 @@
                 AND
                 p.pretest_status = '1'";
     }else if($page == 1){
-        $query = "SELECT b.booking_id, u.username, u.user_firstName, u.user_lastName, t.rate, b.booking_status from        booking AS b
+        $query = "SELECT b.booking_id, u.username, u.user_firstName, u.user_lastName, t.rate, b.booking_status from booking AS b
                 INNER JOIN user as u
                 on u.user_id = b.student_id
                 INNER JOIN tutor as t

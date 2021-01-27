@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<bookings>
+  <tutorID>12</tutorID>
+  <studentID>6</studentID>
+  <location>Cebu Doctors&#x2019; University Hospital, Osme&#xF1;a Boulevard, Cebu City, Cebu, Philippines</location>
+  <date>2020-11-16 00:00:00.000</date>
+  <timeStart>1:42 PM</timeStart>
+  <timeEnd>3:42 PM</timeEnd>
+  <numberOfStudents>1</numberOfStudents>
+</bookings>

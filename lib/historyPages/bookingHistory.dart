@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:huna/login.dart';
-import 'package:huna/bookings.dart';
+import 'package:huna/login/login.dart';
+import 'package:huna/bookings/bookings_view.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -41,42 +41,42 @@ class BookingHistoryPage extends StatefulWidget {
 class _BookingHistoryState extends State<BookingHistoryPage> {
 
 
-  Widget bottomNavBar(){
-    if(u.tutorID == null){
-      return null;
-    }else{
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4,
-        clipBehavior: Clip.antiAlias,
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('Student'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_cafe),
-              title: Text('Tutor'),
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-              if(index == 0){
-                page = 0;
-              }else if(index == 1){
-                page = 1;
-              }
-            });
-            //print(_selectedIndex);
-            print(page);
-          },
-        ),
-      );
-    }
-  } 
+  // Widget bottomNavBar(){
+  //   if(u.tutorID == null){
+  //     return null;
+  //   }else{
+  //     return BottomAppBar(
+  //       shape: CircularNotchedRectangle(),
+  //       notchMargin: 4,
+  //       clipBehavior: Clip.antiAlias,
+  //       child: BottomNavigationBar(
+  //         currentIndex: _selectedIndex,
+  //         items: [
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.school),
+  //             title: Text('Student'),
+  //           ),
+  //           BottomNavigationBarItem(
+  //             icon: Icon(Icons.local_cafe),
+  //             title: Text('Tutor'),
+  //           ),
+  //         ],
+  //         onTap: (index) {
+  //           setState(() {
+  //             _selectedIndex = index;
+  //             if(index == 0){
+  //               page = 0;
+  //             }else if(index == 1){
+  //               page = 1;
+  //             }
+  //           });
+  //           //print(_selectedIndex);
+  //           print(page);
+  //         },
+  //       ),
+  //     );
+  //   }
+  // } 
 
 
   @override
@@ -94,7 +94,7 @@ class _BookingHistoryState extends State<BookingHistoryPage> {
         title: Text('Booking History'),
       ),
       body: MainWidget(),
-      bottomNavigationBar: bottomNavBar(),
+      //bottomNavigationBar: bottomNavBar(),
     );
   }
 }
@@ -106,26 +106,26 @@ class StudentHistoryMode extends StatefulWidget {
 
 class _StudentHistoryModeState extends State<StudentHistoryMode> {
 
-   Future getBooking() async{
-     final response = await http.get(
-      Uri.encodeFull("https://hunacapstone.com/database_files/bookingHistory.php?id=${u.id}&page=$page"),
-      headers: {
-        "Accept": 'application/json',
-      }
-    );
-    if(response.statusCode == 200){
-      setState(() {
-        jsonData = jsonDecode(response.body);
-        isLoading = true;
-      });
-      print(jsonData);
-    }
-  }
+  //  Future getBooking() async{
+  //    final response = await http.get(
+  //     Uri.encodeFull("https://hunacapstone.com/database_files/bookingHistory.php?id=${u.id}&page=$page"),
+  //     headers: {
+  //       "Accept": 'application/json',
+  //     }
+  //   );
+  //   if(response.statusCode == 200){
+  //     setState(() {
+  //       jsonData = jsonDecode(response.body);
+  //       isLoading = true;
+  //     });
+  //     print(jsonData);
+  //   }
+  // }
 
-  void initState(){
-    super.initState();
-    getBooking();
-  }
+  // void initState(){
+  //   super.initState();
+  //   getBooking();
+  // }
 
   @override
   Widget build(BuildContext context) {

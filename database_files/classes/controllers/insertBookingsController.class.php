@@ -23,11 +23,11 @@
             $this->topic = isset($_POST['topic']) ? $_POST['topic'] : null;
             $this->numberOfStudents = isset($_POST['numberOfStudents']) ? $_POST['numberOfStudents'] : null;
             $this->location = isset($_POST['location']) ? $_POST['location'] : null;
-            $this->date = isset($_POST['locationID']) ? $_POST['locationID'] : null;
+            $this->locationID = isset($_POST['locationID']) ? $_POST['locationID'] : null;
         }
 
         public function insertBooking(){
-        	$this->setMessage($this->id, $this->tid, $this->date, $this->timeStart, $this->timeEnd, $this->topic, $this->location, $this->numberOfStudents, $this->locationID);
+        	$this->setBooking($this->id, $this->tid, $this->date, $this->timeStart, $this->timeEnd, $this->topic, $this->location, $this->numberOfStudents, $this->locationID);
         }
 
 
@@ -35,5 +35,8 @@
 
 	$ibc = new InsertBookingsController();
 	$ibc->insertBooking();
+
+
+	
 
 ?>

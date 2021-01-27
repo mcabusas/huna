@@ -4,7 +4,7 @@
             "outputFile": "C:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-pt\\values-pt.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\b6252bb7f30c7dceb20e97dfa6dfae00\\core-1.2.0\\res\\values-pt\\values-pt.xml",
+                    "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\51d1d935949ee00722ec77da84be2a70\\core-1.2.0\\res\\values-pt\\values-pt.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

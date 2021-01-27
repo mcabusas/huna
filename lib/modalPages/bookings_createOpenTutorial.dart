@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:huna/bookings.dart';
+import 'package:huna/bookings/bookings_view.dart';
 
 void main() => runApp(CreateOpenTutorial());
 
