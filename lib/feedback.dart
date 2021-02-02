@@ -4,7 +4,7 @@ import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/favorites.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/payment.dart';
-import 'package:huna/messages.dart';
+import 'package:huna/messages/messages.dart';
 import 'package:huna/profile/myProfile.dart';
 import 'package:http/http.dart' as http;
 

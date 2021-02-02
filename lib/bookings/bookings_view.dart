@@ -145,10 +145,20 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
   //   // }
   // }
 
+  BookingsModel bookingModel;
+  Stream retVal;
+
+  Stream getBookings() {
+    bookingModel = new BookingsModel();
+    Stream ret = bookingModel.fetchBookings();
+    return ret;
+  }
+
 
   void initState(){
     super.initState();
-    //getBooking();
+    retVal = getBookings();
+    print(retVal);
   }
   @override
   Widget build(BuildContext context) {
@@ -247,7 +257,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
           },
         );
     }else{
-      return Center(child:CircularProgressIndicator());
+      return Center(child:Container(height: 0, width: 0));
     }
   }
 }
@@ -274,7 +284,8 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
   initState() {
     super.initState();
     retVal = getBookings();
-    bookingModel = new BookingsModel();
+    print(retVal);
+   // bookingModel = new BookingsModel();
   }
 
   @override

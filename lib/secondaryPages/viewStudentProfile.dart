@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
-import 'package:huna/modalPages/messages_chat.dart';
+import 'package:huna/modalPages/chat/messages_chat.dart';
 
 
 

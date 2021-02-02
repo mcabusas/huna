@@ -6,7 +6,7 @@ class MyProfileModel {
   AuthServices _services = new AuthServices();
 
   Future<Map<String, dynamic>> myProfileData() async {
-    return _services.userProfile();
+    //return _services.userProfile();
   }
 
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/secondaryPages/search.dart';
+import 'package:huna/services/auth_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
@@ -25,22 +26,33 @@ class _DashboardPageState extends State<DashboardPage> {
 
   bool isLoading = false;
   DashboardModel dashboardModel = new DashboardModel();
+  AuthServices _s = new AuthServices();
   List<Map<String, dynamic>> retVal;
+  SharedPreferences sp;
 
   // Future List<Map<String, dynamic>>> initAwait() async {
   //   Future List<<Map<String, dynamic>>> retVal = dashboardModel.getTutors();
   //   return retVal;
   // }
 
-  Future<List<Map<String, dynamic>>> initAwait() async{
+  // Future<List<Map<String, dynamic>>> initAwait() async{
     
-    return await dashboardModel.getTutors();
-  }
+  //   return await dashboardModel.getTutors();
+  // }
+
+ Stream tutorsStream;
+
+ Future initAwait() async {
+   SharedPreferences sp = await SharedPreferences.getInstance();
+   print(sp.getString('tid'));
+ }
   
 
   @override
   void initState() {
     super.initState();
+    tutorsStream = dashboardModel.getTutors();
+    initAwait();
   }
 
   @override
@@ -115,24 +127,27 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   ),
                   // Featured Tutors List
-                  FutureBuilder(
-                    future: initAwait(),
-                    builder: (context, AsyncSnapshot snapshot){
-                      if(snapshot.connectionState == ConnectionState.done){
-                        return Container(
+                  StreamBuilder(
+                    stream: tutorsStream,
+                    builder: (context, snapshot){
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return new Container(width: 10, height: 10, color: Colors.red);
+                      }else if(snapshot.connectionState == ConnectionState.active){
+                        return new Container(
                           height: 225,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             padding: EdgeInsets.all(15),
-                            itemCount: snapshot == null ? 0 : snapshot.data.length,
+                            itemCount: snapshot == null ? 0 : snapshot.data.docs.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: (){
-                                  // print(snapshot.data[index]);
+                                   print(snapshot.data.docs[index]['tid']);
+                                   print(snapshot.data.docs[index]['uid']);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data[index])),
+                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data.docs[index])),
                                   );
                                 },
                                   child: Container(
@@ -143,8 +158,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                       children: <Widget>[
                                         Image.asset('assets/images/tutor.jpg'),
                                         ListTile(
-                                          title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
-                                          subtitle: Text(snapshot.data[index]['username']),
+                                          title: Text('${snapshot.data.docs[index]['firstName']} ${snapshot.data.docs[index]['lastName']}'),
+                                          //subtitle: Text(snapshot.data[index]['username']),
                                         ),
                                         // Visibility(
                                         //   child: Text(data[index]['tutor_id']),
@@ -158,12 +173,10 @@ class _DashboardPageState extends State<DashboardPage> {
                             },
                           )
                         );
-                      }else{
-                        return Container(
-                          child: Center(child: CircularProgressIndicator())
-                        );
                       }
                     }
+                      
+                    
                   )
                   
                 ],

@@ -18,16 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
     
   }
 
-  Future<Timer> loadData() async {
+  Future<void> loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    id = prefs.getString('id');
+    id = prefs.getString('uid');
+    print(id);
     return Timer(Duration(seconds: 5), onDoneLoading(id));
   }
 
   onDoneLoading(String id) async {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => id != null? LoginPage() : DashboardPage()
+        builder: (context) => id == null? LoginPage() : DashboardPage()
       )
     );
   }

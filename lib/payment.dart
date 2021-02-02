@@ -5,7 +5,7 @@ import 'package:huna/historyPages/transactions.dart';
 import 'package:huna/favorites.dart';
 import 'package:huna/feedback.dart';
 import 'package:huna/login/login.dart';
-import 'package:huna/messages.dart';
+import 'package:huna/messages/messages.dart';
 import 'package:huna/profile/myProfile.dart';
 
 void main() => runApp(Payment());

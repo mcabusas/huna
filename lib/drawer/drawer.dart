@@ -2,13 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/payment.dart';
+import 'package:huna/services/auth_services.dart';
 import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/favorites.dart';
 import 'package:huna/feedback.dart';
-import 'package:huna/messages.dart';
+import 'package:huna/messages/messages.dart';
 import 'package:huna/profile/myProfile.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import 'drawer_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -20,11 +22,13 @@ class SideDrawer extends StatefulWidget{
 
 class _SideDrawerState extends State<SideDrawer> {
   DrawerModel drawerModel = new DrawerModel();
+  SharedPreferences sp;
+  AuthServices _authServices = new AuthServices();
   
 
-  Future<Map<String, dynamic>> initAwait() async {
-    Future<Map<String,dynamic>> ret = drawerModel.userProfile();
-    return ret;
+  Future<void> initAwait() async {
+    sp = await SharedPreferences.getInstance();
+    print(sp.getString('uid'));
   }
 
   // initState() {
@@ -43,8 +47,8 @@ class _SideDrawerState extends State<SideDrawer> {
               padding: EdgeInsets.zero,
               children: <Widget>[
                 UserAccountsDrawerHeader(
-                accountName: Text('${snapshot.data['firstName']} ${snapshot.data['lastName']}'),
-                  accountEmail: Text(snapshot.data['username']), //Use Username Instead
+                accountName: Text('${sp.getString('firstName')} ${sp.getString('lastName')}'),
+                  //accountEmail: Text(snapshot.data['username']), //Use Username Instead
                   currentAccountPicture: CircleAvatar(
                     backgroundImage: AssetImage('assets/images/profile.jpg'),
                   ),
@@ -59,7 +63,6 @@ class _SideDrawerState extends State<SideDrawer> {
                     leading: Icon(Icons.home),
                     title: Text('Dashboard'),
                     onTap: () {
-                      //print(snapshot.data);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => DashboardPage()),
@@ -115,6 +118,7 @@ class _SideDrawerState extends State<SideDrawer> {
                     leading: Icon(Icons.exit_to_app),
                     title: Text('Logout'),
                     onTap: () {
+                      _authServices.signOut();
                       // signOut();
                       // Navigator.push(
                       //   context,

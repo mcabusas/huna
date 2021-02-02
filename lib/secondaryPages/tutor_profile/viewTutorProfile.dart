@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:huna/modalPages/messages_chat.dart';
+import 'package:huna/modalPages/chat/messages_chat.dart';
 import 'viewTutorProfile_model.dart';
 
 var data, majors, languages, topics; 
 
 
 class TutorProfilePage extends StatefulWidget {
-  final tutorData;
+  final dynamic tutorData;
 
   TutorProfilePage({Key key, this.tutorData});
   @override
@@ -17,10 +17,20 @@ class _TutorProfileState extends State<TutorProfilePage> {
   // Predefined List of Reasons for Reporting
   int _value = 1;
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
+  String chatRoomId;
+  Map<String,dynamic> tutorData;
   
   void initState(){
     super.initState();
-    print(widget.tutorData);
+    print(widget.tutorData['tid']);
+    tutorData = {
+      'firstName': widget.tutorData['firstName'],
+      'lastName' : widget.tutorData['lastName'],
+      'tid': widget.tutorData['tid'],
+      'uid': widget.tutorData['uid']
+
+
+    };
   }
 
   @override
@@ -42,10 +52,11 @@ class _TutorProfileState extends State<TutorProfilePage> {
           ),
           IconButton(
             icon: Icon(Icons.forum),
-            onPressed: () {
+            onPressed: () async {
+              chatRoomId =  await _model.createChatRoom(tutorData);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatPage()),
+                MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId)),
               );
             },
           ),
@@ -201,7 +212,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                 ),
                 Center(
                   child: Text(
-                    widget.tutorData['username'],
+                    'usename',
                     //'@${data[0]['username']}',
                     style: TextStyle(color: Colors.white70),
                   ),
