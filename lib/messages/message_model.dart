@@ -28,6 +28,9 @@ class MessagesModel {
           'firstName': snapshot.data()['users']['tutor_firstName'],
           'lastName': snapshot.data()['users']['tutor_lastName'],
           'chatRoomId': snapshot.data()['chatroomid'],
+          'rate': snapshot.data()['users']['tutor_rate'],
+          'tutor_id': snapshot.data()['users']['tutorid'],
+          'tutor_userid': snapshot.data()['users']['tutor_userid']
           
         });
 
@@ -65,6 +68,9 @@ class MessagesModel {
           'firstName': snapshot.data()['users']['student_firstName'],
           'lastName': snapshot.data()['users']['student_lastName'],
           'chatRoomId': snapshot.data()['chatroomid'],
+          'rate': snapshot.data()['users']['tutor_rate'],
+          'tutor_id': snapshot.data()['users']['tutorid'],
+          'tutor_userid': snapshot.data()['users']['tutor_userid']
           
         });
 

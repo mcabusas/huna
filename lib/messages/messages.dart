@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:huna/historyPages/bookingHistory.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/modalPages/chat/messages_chat.dart';
-import 'package:http/http.dart' as http;
 import 'package:huna/drawer/drawer.dart';
 import 'message_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,8 +12,6 @@ var jsonData;
 int _selectedIndex = 0;
 enum WidgetMaker { student, tutor }
 String prefId, tutorId;
-var page;
-bool isLoading = false;
 MessagesModel _model = new MessagesModel();
 SharedPreferences sp; 
 
@@ -54,6 +52,7 @@ class _MessagesState extends State<Messages> {
     initAwait();
     _selectedIndex = 0;
   }
+  
   Widget bottomNavBar(){
     if(tutorId == ''){
       return null;
@@ -168,7 +167,7 @@ class _TutorMessagesState extends State<TutorMessages> {
                         // print(jsonData[index]['chat_id']);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'],)),
+                          MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'], page: 1)),
                         );
                       },
                     ),
@@ -245,7 +244,7 @@ class _StudentMessagesState extends State<StudentMessages> {
                         // print(jsonData[index]['chat_id']);
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'],)),
+                          MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'], page: 0)),
                         );
                       },
                     ),

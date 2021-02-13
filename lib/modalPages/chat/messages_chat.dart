@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:huna/modalPages/messages_chatNewBooking.dart';
+import 'package:huna/modalPages/newBooking/messages_chatNewBooking.dart';
 import 'package:bubble/bubble.dart';
 import 'package:huna/services/auth_services.dart';
 import 'messages_chat_model.dart';
@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 Widget buttonRet;
 
 class ChatPage extends StatefulWidget {
-  final tutorData, chatRoomId;
+  final tutorData, chatRoomId, page;
 
-  ChatPage({Key key, this.tutorData, this.chatRoomId});
+  ChatPage({Key key, this.tutorData, this.chatRoomId, this.page});
   @override
   _ChatState createState() => _ChatState();
   
@@ -23,7 +23,7 @@ class _ChatState extends State<ChatPage> {
 
   TextEditingController messageController = new TextEditingController();
   MessagesChatModel _model = new MessagesChatModel();
-  Widget bubble;
+  Widget bubble, bookingWidget;
   SharedPreferences sp;
 
   Stream conversationMessages;
@@ -39,6 +39,21 @@ class _ChatState extends State<ChatPage> {
     conversationMessages = _model.getConversationMessages(widget.chatRoomId);
   }
 
+  Widget getButtonWidget(){
+    if(widget.page == 0){
+      return IconButton(
+        icon: Icon(Icons.date_range, color: Colors.cyan),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData, chatRoomId: widget.chatRoomId)),
+          );
+        });
+    }else if(widget.page == 1){
+      return Container(width: 0, height: 0);
+    }
+    return getButtonWidget();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,15 +65,17 @@ class _ChatState extends State<ChatPage> {
             onPressed: () {
               Navigator.pop(context);
             }),
-        actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.date_range, color: Colors.cyan),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData)),
-                );
-              }),
+        actions: 
+        <Widget>[
+          getButtonWidget()
+            // IconButton(
+            //   icon: Icon(Icons.date_range, color: Colors.cyan),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(builder: (context) => new NewBooking(tutorInfo: widget.tutorData)),
+            //     );
+            //   }),
         ],
       ),
       body: SafeArea(

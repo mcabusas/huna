@@ -28,7 +28,6 @@ class _SideDrawerState extends State<SideDrawer> {
 
   Future<void> initAwait() async {
     sp = await SharedPreferences.getInstance();
-    print(sp.getString('uid'));
   }
 
   // initState() {

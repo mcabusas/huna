@@ -27,9 +27,8 @@ class _TutorProfileState extends State<TutorProfilePage> {
       'firstName': widget.tutorData['firstName'],
       'lastName' : widget.tutorData['lastName'],
       'tid': widget.tutorData['tid'],
-      'uid': widget.tutorData['uid']
-
-
+      'uid': widget.tutorData['uid'],
+      'rate': widget.tutorData['rate'],
     };
   }
 
@@ -56,7 +55,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
               chatRoomId =  await _model.createChatRoom(tutorData);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId)),
+                MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId, page: 1)),
               );
             },
           ),

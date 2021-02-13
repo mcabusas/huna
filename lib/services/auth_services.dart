@@ -66,6 +66,7 @@ class AuthServices with ChangeNotifier {
        .get().then((value) => {
          if(value.docs.length != 0){
            value.docs.forEach((element) {
+             print(element.data()['rate']);
             returnData['tid'] = element.data()['tid'];
             returnData['tutor_rate'] = element.data()['rate'];
             returnData['tutor_majors'] = element.data()['majors'];
@@ -98,8 +99,9 @@ class AuthServices with ChangeNotifier {
       sp.setString('lastName', data['lastName']);
       sp.setString('uid', data['uid']);
       sp.setString('tid', data['tid']);
+      sp.setString('rate', data['tutor_rate']);
 
-      print(sp.getString('tid'));
+      print(sp.getString('rate'));
   }
 
   Future<dynamic> getTutorData() async {

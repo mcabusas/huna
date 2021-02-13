@@ -43,7 +43,8 @@ class ViewTutorProfileModel {
           'tutorid': tutorData['tid'],
           'tutor_firstName': tutorData['firstName'],
           'tutor_lastName': tutorData['lastName'],
-          'tutor_userid': tutorData['uid']
+          'tutor_userid': tutorData['uid'],
+          'tutor_rate': tutorData['rate'],
         },
       
 
