@@ -17,6 +17,19 @@ class PretestModel{
     return null;
   }
 
+  Future<void> answerQuestion(String questionId, String answer, String pretestId) async {
+
+    await FirebaseFirestore.instance
+    .collection('pretest')
+    .doc(pretestId)
+    .collection('QnA')
+    .doc(questionId)
+    .update({
+      'students_answer': answer
+    });
+    
+  }
+
   Future<void> updatePretestStatus(String bookingId) async {
     await FirebaseFirestore.instance
     .collection('bookings')

@@ -16,7 +16,7 @@ class _PretestState extends State<PretestPage> {
   final _key = GlobalKey<FormState>();
   PretestModel _model = new PretestModel();
   bool isLoading;
-  String question, answer1, answer2, answer3, answer4 = '';
+  String question, answer1, answer2, answer3, answer4, studentsAnswer = '';
 
   uploadPretestData() async{
     if(_key.currentState.validate()){
@@ -30,7 +30,8 @@ class _PretestState extends State<PretestPage> {
         'answer1': answer1,
         'answer2': answer2,
         'answer3': answer3,
-        'answer4': answer4
+        'answer4': answer4,
+        'students_answer': studentsAnswer
       };
 
       await _model.addQuestion(pretestdata, widget.pretestid).then((value) => {

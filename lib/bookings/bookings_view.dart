@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:huna/components/buttons.dart' as component;
 import 'bookings_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../modalPages/bookings_pretest/results/results_page.dart';
 
 
 var jsonData;
@@ -191,13 +192,13 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                             : RaisedButton.icon(
                                 onPressed: () {
 
-                                  print(snapshot.data.docs[index]['bookingData']['pretest_status']);
+                                  print(snapshot.data.docs[index]['bookingId']);
                                   
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) => AnswerPretestPage(pretestId: snapshot.data.docs[index]['bookingId'])),
-                                  //   );
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ResultsPage(pretestId: snapshot.data.docs[index]['bookingId'])),
+                                    );
                                   
                                 },
                                 icon: Icon(Icons.assignment_late),

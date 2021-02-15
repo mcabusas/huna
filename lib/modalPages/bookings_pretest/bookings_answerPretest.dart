@@ -4,6 +4,7 @@ import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/modalPages/bookings_pretest/option_tile.dart';
 import 'package:huna/modalPages/bookings_pretest/question_model.dart';
 import 'bookings_pretest_model.dart';
+import 'results/results_page.dart';
 
 int _total, _correct, _incorrect_, _notAtttempted;
 
@@ -82,7 +83,12 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
         backgroundColor: Colors.blue,
         onPressed: (){
           print(widget.pretestId);
-          _model.updatePretestStatus(widget.pretestId);
+          _model.updatePretestStatus(widget.pretestId).then((value){
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ResultsPage(pretestId: widget.pretestId,)),
+              );
+          });
         },
       ),
       body: SingleChildScrollView(
@@ -100,7 +106,10 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
                 itemBuilder: (context, index){
                   return PretestTile(
                     questionModel: getQuestionModelFromDataSnapshot(questionsSnapshot.docs[index]),
-                    index: index
+                    index: index,
+                    model: _model,
+                    id: questionsSnapshot.docs[index].id,
+                    pretestId: widget.pretestId
                   );
                 },
               )
@@ -114,8 +123,11 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
 }
 class PretestTile extends StatefulWidget {
   final QuestionModel questionModel;
+  final PretestModel model;
+  final String id;
+  final String pretestId;
   final int index;
-  PretestTile({this.questionModel, this.index});
+  PretestTile({this.questionModel, this.index, this.model, this.id, this.pretestId});
   @override
   _PretestTileState createState() => _PretestTileState();
 }
@@ -153,6 +165,8 @@ class _PretestTileState extends State<PretestTile> {
                 optionSelected = widget.questionModel.option1;
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
+                print(optionSelected);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
                 setState(() {
                   
                 });
@@ -183,6 +197,7 @@ class _PretestTileState extends State<PretestTile> {
                 optionSelected = widget.questionModel.option2;
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
                 setState(() {
                   
                 });
@@ -213,6 +228,8 @@ class _PretestTileState extends State<PretestTile> {
                 optionSelected = widget.questionModel.option3;
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
+                print(optionSelected);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
                 setState(() {
                   
                 });
@@ -243,6 +260,8 @@ class _PretestTileState extends State<PretestTile> {
                 optionSelected = widget.questionModel.option4;
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
+                print(optionSelected);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
                 setState(() {
                   
                 });
