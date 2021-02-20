@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:huna/modalPages/bookings_pretest/bookings_answerPretest.dart';
+import 'package:huna/modalPages/test/answertest.dart';
 import 'package:huna/modalPages/bookings_viewTutorial/bookings_viewTutorial.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:huna/components/buttons.dart' as component;
 import 'bookings_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../modalPages/bookings_pretest/results/results_page.dart';
+import '../modalPages/test/results/results_pretestview.dart';
 
 
 var jsonData;
@@ -170,17 +170,19 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                             title: Text('${snapshot.data.docs[index]['bookingData']['tutor_firstName']} ${snapshot.data.docs[index]['bookingData']['tutor_lastName']}'),
                             //subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
                             trailing: 
-                            snapshot.data.docs[index]['bookingData']['pretest_id'] == ''  ?
+                            snapshot.data.docs[index]['pretestData']['pretest_id'] == ''  ?
                           
                               Container(height: 0, width: 0) : 
-                              snapshot.data.docs[index]['bookingData']['pretest_status'] == '0' ?
+                              
+                              snapshot.data.docs[index]['pretestData']['pretest_sentStatus'] == '1' && snapshot.data.docs[index]['pretestData']['pretest_answeredStatus'] == '0' ?
+                              
                               RaisedButton.icon(
                                 onPressed: () {
                                   
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AnswerPretestPage(pretestId: snapshot.data.docs[index]['bookingId'])),
+                                          builder: (context) => AnswerPretestPage(testId: snapshot.data.docs[index]['bookingId'])),
                                     );
                                   
                                 },
@@ -306,19 +308,68 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                 }else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted'){
                   check = false;
                 }
+
                 component.pretestBtn = new component.TrailingButton(
-                  buttonColor: Colors.blue.shade800, 
-                  buttonTitle: 'Pretest', 
-                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
-                  icon: Icon(Icons.assignment), 
-                  visible: !check, 
-                  onPressed: (){
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: snapshot.data.docs[index])),
-                    );
-                  }
-                );
+                    buttonColor: Colors.blue.shade800, 
+                    buttonTitle: 'Pretest', 
+                    padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
+                    icon: Icon(Icons.assignment), 
+                    visible: !check, 
+                    onPressed: (){
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: snapshot.data.docs[index])),
+                      );
+                    }
+                  );
+
+                // if(snapshot.data.docs[index]['pretestData']['pretest_answeredStatus'] == '0'){
+                //   component.pretestBtn = new component.TrailingButton(
+                //     buttonColor: Colors.blue.shade800, 
+                //     buttonTitle: 'Pretest', 
+                //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
+                //     icon: Icon(Icons.assignment), 
+                //     visible: !check, 
+                //     onPressed: (){
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: snapshot.data.docs[index])),
+                //       );
+                //     }
+                //   );
+                // }else if(snapshot.data.docs[index]['pretestData']['pretest_answeredStatus'] == '1'){
+                //   component.pretestBtn = new component.TrailingButton(
+                //     buttonColor: Colors.grey, 
+                //     buttonTitle: 'Completed', 
+                //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
+                //     icon: Icon(Icons.assignment_late), 
+                //     visible: !check, 
+                //     onPressed: (){
+                //       Navigator.push(
+                //                       context,
+                //                       MaterialPageRoute(
+                //                           builder: (context) => ResultsPage(pretestId: snapshot.data.docs[index]['bookingId'])),
+                //                     );
+                //     }
+                //   );
+                //   // RaisedButton.icon(
+                //   //               onPressed: () {
+
+                //   //                 print(snapshot.data.docs[index]['bookingId']);
+                                  
+                //   //                 Navigator.push(
+                //   //                     context,
+                //   //                     MaterialPageRoute(
+                //   //                         builder: (context) => ResultsPage(pretestId: snapshot.data.docs[index]['bookingId'])),
+                //   //                   );
+                                  
+                //   //               },
+                //   //               icon: Icon(Icons.assignment_late),
+                //   //               label: Text('Completed'),
+                //   //               color: Colors.grey,
+                //   //               textColor: Colors.black,
+                //   //             ); 
+                // }
                 return new Card(
                   child: ListView(
                     padding: EdgeInsets.all(10),
@@ -354,7 +405,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                           ),
                           ListTile(
                             leading: Icon(Icons.attach_money),
-                            title: Text('250.00'),
+                            title: Text('P ${snapshot.data.docs[index]['bookingData']['rate']}.00'),
                             dense: true
                           )
                         ],
@@ -400,156 +451,3 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
   }
 }
 
-
-
-
-// class TutorModeWidget extends StatefulWidget {
-//   final uid;
-//   TutorModeWidget({this.uid});
-//   @override
-//   _TutorModeWidgetState createState() => _TutorModeWidgetState();
-// }
-
-// class _TutorModeWidgetState extends State<TutorModeWidget> {
-
-//   bool check;
-
-//   Future<List<Map<String, dynamic>>> initAwait() async {
-//     return await _model.getTutorBookings(widget.uid);
-//   }
-
-//   initState() {
-//     super.initState();
-//     print(check.toString());
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-
-//     return FutureBuilder(
-//       future: initAwait(),
-//       builder: (context, AsyncSnapshot snapshot){
-//         if(snapshot.connectionState == ConnectionState.done){
-//           if(snapshot.data.length == 0){
-//             return Container(
-//               height: 100,
-//               width: 100,
-//               child: Center(
-//                 child: Text('empty')
-//               )
-//             );
-//           }else{
-//             return ListView.builder(
-//               shrinkWrap: true,
-//               padding: EdgeInsets.all(15.0),
-//               itemCount: snapshot == null ? 0 : snapshot.data.length,
-//               itemBuilder: (BuildContext context, int index){
-//                 var parsedDate = DateTime.parse(snapshot.data[index]['date']);
-
-//                 if(snapshot.data[index]['status'] == 'Pending'){
-//                   check = true;
-//                 }else if(snapshot.data[index]['status'] == 'Accepted'){
-//                   check = false;
-//                 }
-                
-//                 component.pretestBtn = new component.TrailingButton(
-//                   buttonColor: Colors.blue.shade800, 
-//                   buttonTitle: 'Pretest', 
-//                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 10), 
-//                   icon: Icon(Icons.assignment), 
-//                   visible: !check, 
-//                   onPressed: (){
-//                     Navigator.push(
-//                       context,
-//                       MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: jsonData[index])),
-//                     );
-//                   }
-//                 );
-//                 return new Card(
-//                   child: ListView(
-//                     padding: EdgeInsets.all(10),
-//                     shrinkWrap: true,
-//                     children: [
-//                       ExpansionTile(
-//                         leading: CircleAvatar(
-//                           backgroundImage: AssetImage('assets/images/opentutorials.jpg'),
-//                         ),
-//                         title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
-//                         //subtitle: Text(booking['username'], overflow: TextOverflow.ellipsis),
-//                         trailing: component.pretestBtn,
-//                         children: [
-//                           ListTile(
-//                             leading: Icon(Icons.import_contacts),
-//                             title: Text(snapshot.data[index]['topic']),
-//                             dense: true
-//                           ),
-//                           ListTile(
-//                             leading: Icon(Icons.place),
-//                             title: Text(snapshot.data[index]['location']),
-//                             dense: true
-//                           ),
-//                           ListTile(
-//                             leading: Icon(Icons.event),
-//                             title: Text(DateFormat.yMMMEd().format(parsedDate)),
-//                             dense: true,
-//                           ),
-//                           ListTile(
-//                             leading: Icon(Icons.access_time),
-//                             title: Text('${snapshot.data[index]['timeStart']} - ${snapshot.data[index]['timeEnd']}'),
-//                             dense: true
-//                           ),
-//                           ListTile(
-//                             leading: Icon(Icons.attach_money),
-//                             title: Text('P ${snapshot.data[index]['rate']}.00'),
-//                             dense: true
-//                           )
-//                         ],
-//                       ),
-
-//                       Row(
-//                         children: [
-//                           component.acceptBtn = new component.TrailingButton(
-//                             buttonColor: Colors.green,
-//                             buttonTitle: 'Accept Booking', 
-//                             icon: Icon(Icons.assignment), 
-//                             onPressed: (){
-//                               print(snapshot.data[index]['id']);
-//                               _model.updateBookingStatus(snapshot.data[index]['id'], 1);
-//                               setState(() {
-                                
-//                               });
-//                             }, 
-//                             padding: EdgeInsets.fromLTRB(0, 0, 0, 10), 
-//                             visible: check,
-//                           ),
-
-//                           component.cancelBtn = new component.TrailingButton(
-                            
-//                             onPressed: (){
-//                               //print(booking.id.runtimeType);
-//                               //bookingModel.updateBookingStatus(booking.id, 0);
-//                             }, 
-//                             buttonColor: Colors.red.shade800, 
-//                             buttonTitle: 'Cancel Booking', 
-//                             padding: const EdgeInsets.fromLTRB(25, 0, 0, 10), 
-//                             icon: Icon(Icons.cancel), 
-//                             visible: true,
-//                           )
-//                         ],
-//                       )
-//                     ],
-//                   )
-//                 );
-//               },
-//             );
-//           }
-//         }else{
-//           return Container(
-//             child: Center(child: CircularProgressIndicator())
-//           );
-//         }
-//       }
-//     );
-      
-//   }
-// }

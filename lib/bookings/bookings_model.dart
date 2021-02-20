@@ -35,8 +35,6 @@ class BookingsModel {
 
   }
 
- 
-
   void updateBookingStatus(String id, int flag){
     if(flag == 1){
       FirebaseFirestore.instance

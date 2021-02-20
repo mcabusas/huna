@@ -47,6 +47,18 @@ class _NewBookingState extends State<NewBooking> {
       'booking_status': 'Pending',
       'rate': ''
     };
+  
+  Map<String, dynamic> pretestData = {
+    'pretest_id': '',
+    'pretest_sentStatus': '0',
+    'pretest_answeredStatus': '0',
+  };
+
+  Map<String, dynamic> posttestData = {
+    'posttest_id': '',
+    'posttest_sentStatus': '0',
+    'posttest_answeredStatus': '0',
+  };
 
 
   _location(BuildContext context) async {
@@ -126,7 +138,7 @@ class _NewBookingState extends State<NewBooking> {
                       ),
                       SizedBox(height: 20),
                       Text(
-                        '${firstName} ${lastName}',
+                        '$firstName $lastName',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
@@ -367,7 +379,7 @@ class _NewBookingState extends State<NewBooking> {
                 width: MediaQuery.of(context).size.width,
                 child: RaisedButton.icon(
                   onPressed: () {
-                    _model.createBooking(bookingData, widget.chatRoomId);
+                    _model.createBooking(bookingData, pretestData, posttestData);
                     //insertBooking();
                     /*Navigator.push(
                       context,

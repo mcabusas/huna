@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
-import 'package:huna/modalPages/tutorialInSession.dart';
+import 'package:huna/modalPages/tutorialInSession/tutorialInSession.dart';
 import 'package:huna/secondaryPages/viewStudentProfile.dart';
 
 void main() => runApp(OnTheDay());

@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
-import 'package:huna/modalPages/bookings_pretest/bookings_pretest.dart';
+import 'package:huna/modalPages/test/bookings_pretest.dart';
+import 'package:huna/modalPages/test/results/results_pretestview.dart';
 import 'package:huna/secondaryPages/viewStudentProfile.dart';
 import 'package:intl/intl.dart';
 import 'bookings_viewTutorial_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import '../test/edit_test/edit_testview.dart';
+import '../tutorialInSession/tutorialInSession.dart';
 
 class ViewTutorialPage extends StatefulWidget {
   final studentData;
 
   const ViewTutorialPage({Key key, this.studentData});
-  
+
   @override
   _ViewTutorialState createState() => _ViewTutorialState();
 }
 
 class _ViewTutorialState extends State<ViewTutorialPage> {
-
   ViewTutorialModel _model = new ViewTutorialModel();
   String uid, tutorid;
   SharedPreferences sp;
-  Map<String, dynamic> pretestInfo; 
+  Map<String, dynamic> pretestInfo;
 
   Future<void> initAwait() async {
     sp = await SharedPreferences.getInstance();
@@ -32,29 +33,29 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
   }
 
   createPretest() async {
-     pretestInfo = {
-       'student_id': widget.studentData['bookingData']['student_id'],
-       'tutor_uid': uid,
-       'tutor_id': tutorid,
-       'pretest_id': widget.studentData['bookingId']
-     };
+    pretestInfo = {
+      'student_id': widget.studentData['bookingData']['student_id'],
+      'tutor_uid': uid,
+      'tutor_id': tutorid,
+      'pretest_id': widget.studentData['bookingId'],
+    };
 
-     await _model.createPretest(pretestInfo).then((value) => {
-       Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PretestPage(pretestid: pretestInfo['pretest_id'])
-                      ),
-                    )
-     });
+    await _model.createPretest(pretestInfo).then((value) => {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    PretestPage(pretestid: pretestInfo['pretest_id'])),
+          )
+        });
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    print(widget.studentData['bookingData']);
     initAwait();
-
   }
 
   @override
@@ -88,7 +89,9 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => StudentProfilePage(studentData: widget.studentData)),
+                        MaterialPageRoute(
+                            builder: (context) => StudentProfilePage(
+                                studentData: widget.studentData)),
                       );
                     },
                   ),
@@ -101,7 +104,7 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-             // Center(child: Text('@'+widget.studentData['username'])),
+              // Center(child: Text('@'+widget.studentData['username'])),
               Center(child: SizedBox(height: 20)),
               // BOOKING DETAILS
               Center(
@@ -131,148 +134,155 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
               ),
               ListTile(
                 leading: Icon(Icons.access_time),
-                title: Text('${widget.studentData['bookingData']['timeStart']} - ${widget.studentData['bookingData']['timeEnd']}'),
+                title: Text(
+                    '${widget.studentData['bookingData']['timeStart']} - ${widget.studentData['bookingData']['timeEnd']}'),
                 dense: true,
               ),
               ListTile(
                 leading: Icon(Icons.attach_money),
-                title: Text('P ' + widget.studentData['bookingData']['rate'] + ".00"),
+                title: Text(
+                    'P ' + widget.studentData['bookingData']['rate'] + ".00"),
                 dense: true,
               ),
               Center(child: SizedBox(height: 20)),
               // BUTTONS // ONLY ONE IS ACTIVATED AT A TIME.
               // CREATE PRETEST IF ONE HASN'T BEEN MADE YET
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton.icon(
-                  onPressed: () async {
-                    // Alert Dialog: Create Pretest
 
-                    createPretest();
+              widget.studentData['pretestData']['pretest_sentStatus'] == '0'
+                  ? Column(children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () async {
+                            // Alert Dialog: Create Pretest
 
-                    // Navigator.pushReplacement(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => PretestPage()
-                    //   ),
-                    // );
-                    // showDialog(
-                    //   context: context,
-                    //   child: AlertDialog(
-                    //     title: Text("Create Pretest"),
-                    //     content: TextField(
-                    //       controller: numOfQuestions,
-                    //       decoration: InputDecoration(
-                    //         hintText: 'Number of Questions',
-                    //       ),
-                    //       keyboardType: TextInputType.number,
-                    //     ),
-                    //     elevation: 24.0,
-                    //     actions: <Widget>[
-                    //       FlatButton(
-                    //         onPressed: () =>
-                    //             Navigator.of(context, rootNavigator: true).pop(
-                    //                 'dialog'), // Navigator.pop(context) closes the entire page.
-                    //         child: Text(
-                    //           "Cancel",
-                    //           style: TextStyle(color: Colors.cyan),
-                    //         ),
-                    //       ),
-                    //       FlatButton(
-                    //         onPressed: () {
-                    //           setState(() {
-                    //             questions = numOfQuestions.text;
-                    //           });
-                    //           print("continue " + questions);
-                    //           // Proceeding to Create a Pretest
-                    //           Navigator.push(
-                    //             context,
-                    //             MaterialPageRoute(
-                    //                 builder: (context) => PretestPage(totalQuestions: questions)),
-                    //           );
-                    //         },
-                    //         child: Text(
-                    //           "Continue",
-                    //           style: TextStyle(color: Colors.deepPurple),
-                    //         ),
-                    //       ),
-                    //     ],
-                    //   ),
-                    // );
-                  },
-                  icon: Icon(Icons.add),
-                  label: Text('Create Pretest'),
-                  color: Colors.lightGreen,
-                  textColor: Colors.white,
-                ),
-              ),
-              // IF PRETEST HAS BEEN CREATED
-              // SEND PRETEST
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton.icon(
-                  onPressed: () {
-                    // Alert Dialog: Create Pretest
-                    showDialog(
-                      context: context,
-                      child: AlertDialog(
-                        title: Text("Send Pretest"),
-                        content:
-                            Text("Are you sure you want to send the pretest?"),
-                        elevation: 24.0,
-                        actions: <Widget>[
-                          FlatButton(
-                            onPressed: () =>
-                                Navigator.of(context, rootNavigator: true).pop(
-                                    'dialog'), // Navigator.pop(context) closes the entire page.
-                            child: Text(
-                              "No",
-                              style: TextStyle(color: Colors.cyan),
-                            ),
-                          ),
-                          FlatButton(
-                            onPressed: () {
-                              // Proceeding to Create a Pretest
-                              Navigator.of(context, rootNavigator: true)
-                                  .pop('dialog');
-                            },
-                            child: Text(
-                              "Yes",
-                              style: TextStyle(color: Colors.deepPurple),
-                            ),
-                          ),
-                        ],
+                            createPretest();
+                          },
+                          icon: Icon(Icons.add),
+                          label: Text('Create Pretest Questions'),
+                          color: Colors.lightGreen,
+                          textColor: Colors.white,
+                        ),
                       ),
-                    );
-                  },
-                  icon: Icon(Icons.send),
-                  label: Text('Send Pretest'),
-                  color: Colors.cyan,
-                  textColor: Colors.white,
-                ),
-              ),
-              // VIEW PRETEST ANSWERS
-              // IF STUDENT HAS ANSWERED THE PRETEST
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.assignment),
-                  label: Text('View Pretest Answers'),
-                  color: Colors.purple, // Colors.grey if not yet answered.
-                  textColor: Colors.white,
-                ),
-              ),
-               SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: RaisedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.assignment),
-                  label: Text('View Pretest Answers'),
-                  color: Colors.purple, // Colors.grey if not yet answered.
-                  textColor: Colors.white,
-                ),
-              ),
+                      // IF PRETEST HAS BEEN CREATED
+
+                      // VIEW PRETEST ANSWERS
+                      // IF STUDENT HAS ANSWERED THE PRETEST
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => new EditPage(
+                                        pretestId:
+                                            widget.studentData['bookingId'],
+                                      )),
+                            );
+                          },
+                          icon: Icon(Icons.assignment),
+                          label: Text('Edit Pretest Questions/Answers'),
+                          color:
+                              Colors.purple, // Colors.grey if not yet answered.
+                          textColor: Colors.white,
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            // Alert Dialog: Create Pretest
+                            showDialog(
+                              context: context,
+                              child: AlertDialog(
+                                title: Text("Send Pretest"),
+                                content: Text(
+                                    "Are you sure you want to send the pretest?"),
+                                elevation: 24.0,
+                                actions: <Widget>[
+                                  FlatButton(
+                                    onPressed: () => Navigator.of(context,
+                                            rootNavigator: true)
+                                        .pop(
+                                            'dialog'), // Navigator.pop(context) closes the entire page.
+                                    child: Text(
+                                      "No",
+                                      style: TextStyle(color: Colors.cyan),
+                                    ),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () {
+                                      _model.updateSentStatus(
+                                          widget.studentData['bookingId']);
+
+                                      //Proceeding to Create a Pretest
+                                      Navigator.of(context, rootNavigator: true)
+                                          .pop('dialog');
+                                    },
+                                    child: Text(
+                                      "Yes",
+                                      style:
+                                          TextStyle(color: Colors.deepPurple),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          icon: Icon(Icons.send),
+                          label: Text('Send Pretest'),
+                          color: Colors.cyan,
+                          textColor: Colors.white,
+                        ),
+                      ),
+                    ])
+                  : Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ResultsPage(
+                                      pretestId: widget.studentData['bookingId'])),
+                            );
+                          },
+                          icon: Icon(Icons.assignment),
+                          label: Text('View Pretest Answers'),
+                          color:
+                              Colors.purple, // Colors.grey if not yet answered.
+                          textColor: Colors.white,
+                        ),
+                      ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () async {
+                            _model.beginTutorial(widget.studentData['bookingId']).then((value) => {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TutorialInSession(
+                                      studentData: widget.studentData
+                                        )),
+                              )
+                            });
+                            
+                          },
+                          icon: Icon(Icons.assignment_turned_in),
+                          label: Text('Begin Tutorial'),
+                          color:
+                              Colors.green, // Colors.grey if not yet answered.
+                          textColor: Colors.white,
+                        ),
+                      )
+                    ]
+                  ),
             ],
           ),
         ),

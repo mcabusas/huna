@@ -9,22 +9,52 @@ class ViewTutorialModel {
     .set(pretestInfo)
     .catchError((e) => {
       print(e.toString())
-    }); 
+    }).then((value) {
+
+      FirebaseFirestore.instance
+      .collection('posttest')
+      .doc(pretestInfo['pretest_id'])
+      .set(pretestInfo)
+      .then((value) => {
+
+        FirebaseFirestore.instance
+        .collection('bookings')
+        .doc(pretestInfo['pretest_id'])
+        .update({
+          'pretestData.pretest_id': pretestInfo['pretest_id'],
+          'posttestData.posttest_id': pretestInfo['pretest_id']
+        }).catchError((e) => {
+          print(e.toString())
+        })
+
+      });
+    });
   }
 
-  Future<void> addQuestion(Map<String, dynamic> questions, String pretestid) async {
-    
+  Future<void> updateSentStatus(String bookingId) async {
     await FirebaseFirestore.instance
-    .collection('pretest')
-    .doc(pretestid)
-    .collection('QnA')
-    .add(questions)
-    .catchError((e) => {
+    .collection('bookings')
+    .doc(bookingId)
+    .update({
+      'pretestData.pretest_sentStatus': '1',
+      'posttestData.posttest_sentStatus': '1'
+    }).catchError((e) => {
       print(e.toString())
     });
-    
-    return null;
   }
+
+  Future<void> beginTutorial(String bookingId) async {
+    await FirebaseFirestore.instance
+    .collection('bookings')
+    .doc(bookingId)
+    .update({
+      'bookingData.booking_status': 'Ongoing'
+    }).catchError((e) => {
+      print(e.toString())
+    });
+  }
+
+ 
 
 
 }
