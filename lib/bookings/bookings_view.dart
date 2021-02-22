@@ -292,7 +292,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
         return StreamBuilder(
           stream: _model.getTutorBookings(widget.uid),
           builder: (context, snapshot){
-            if(snapshot.data == null){
+            if(snapshot.data.docs.length == 0){
               return Center(child:CircularProgressIndicator());
             }
             return ListView.builder(
