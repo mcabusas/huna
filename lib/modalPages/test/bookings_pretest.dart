@@ -31,7 +31,8 @@ class _PretestState extends State<PretestPage> {
         'answer2': answer2,
         'answer3': answer3,
         'answer4': answer4,
-        'students_answer': studentsAnswer
+        'students_answer_pre-test': studentsAnswer,
+        'students_answer_post-test': studentsAnswer
       };
 
       await _model.addQuestion(pretestdata, widget.pretestid).then((value) => {

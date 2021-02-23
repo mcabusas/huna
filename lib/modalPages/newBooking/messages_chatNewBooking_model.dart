@@ -9,7 +9,7 @@ class MessagesNewBookingModel {
    SharedPreferences sp;
 
 
-  Future<void> createBooking(Map<String, dynamic> bookingData, Map<String, dynamic> pretestData, Map<String, dynamic> posttestData) async {
+  Future<void> createBooking(Map<String, dynamic> bookingData, Map<String, dynamic> testData) async {
     
     String bookingId = randomAlphaNumeric(15);
     print(bookingData);
@@ -22,8 +22,8 @@ class MessagesNewBookingModel {
 
       'bookingId': bookingId,
       'bookingData': bookingData,
-      'pretestData': pretestData,
-      'posttestData':posttestData
+      'testData': testData,
+      
 
     }).catchError((e) => {
       print(e.toString())

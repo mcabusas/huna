@@ -10,8 +10,9 @@ int _total, _correct, _incorrect_, _notAtttempted;
 
 
 class AnswerPretestPage extends StatefulWidget {
-  final testId;
-  AnswerPretestPage({this.testId});
+  final testData;
+  final flag;
+  AnswerPretestPage({this.testData, this.flag});
   @override
   _AnswerPretestState createState() => _AnswerPretestState();
 }
@@ -48,9 +49,7 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.testId);
-
-    _model.getQuestions(widget.testId).then((value){
+    _model.getQuestions(widget.testData['testData']['test_id']).then((value){
       setState(() {
         questionsSnapshot = value;
         _notAtttempted = 0;
@@ -64,6 +63,18 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    String testFlag;
+
+    if(widget.flag == 0){
+      setState(() {
+        testFlag = 'Answer: Pre-test';
+      });
+    }else if(widget.flag == 1){
+      setState(() {
+        testFlag = 'Answer: Post-test';
+      });
+    }
     return Scaffold(
 
 
@@ -76,18 +87,18 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
                 MaterialPageRoute(builder: (context) => Bookings()),
               );
             }),
-        title: Text('Pretest'),
+        title: Text(testFlag),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         backgroundColor: Colors.blue,
         onPressed: (){
-          print(widget.testId);
-          _model.updatePretestStatus(widget.testId).then((value){
+          print(widget.testData);
+          _model.updatePretestStatus(widget.testData['testData']['test_id'], widget.flag).then((value){
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ResultsPage(pretestId: widget.testId,)),
-              );
+                MaterialPageRoute(builder: (context) => ResultsPage(testData: widget.testData, flag: widget.flag)),
+            );
           });
         },
       ),
@@ -109,7 +120,8 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
                     index: index,
                     model: _model,
                     id: questionsSnapshot.docs[index].id,
-                    pretestId: widget.testId
+                    pretestId: widget.testData['testData']['test_id'],
+                    flag: widget.flag
                   );
                 },
               )
@@ -126,8 +138,9 @@ class PretestTile extends StatefulWidget {
   final TestModel model;
   final String id;
   final String pretestId;
+  final int flag;
   final int index;
-  PretestTile({this.questionModel, this.index, this.model, this.id, this.pretestId});
+  PretestTile({this.questionModel, this.index, this.model, this.id, this.pretestId, this.flag});
   @override
   _PretestTileState createState() => _PretestTileState();
 }
@@ -166,7 +179,9 @@ class _PretestTileState extends State<PretestTile> {
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
                 print(optionSelected);
-                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
+                print(widget.id);
+                print(widget.pretestId);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId, widget.flag);
                 setState(() {
                   
                 });
@@ -197,7 +212,7 @@ class _PretestTileState extends State<PretestTile> {
                 optionSelected = widget.questionModel.option2;
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
-                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId, widget.flag);
                 setState(() {
                   
                 });
@@ -229,7 +244,7 @@ class _PretestTileState extends State<PretestTile> {
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
                 print(optionSelected);
-                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId, widget.flag);
                 setState(() {
                   
                 });
@@ -261,7 +276,7 @@ class _PretestTileState extends State<PretestTile> {
                 widget.questionModel.answered = true;
                 _notAtttempted -=1;
                 print(optionSelected);
-                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId);
+                widget.model.answerQuestion(widget.id, optionSelected, widget.pretestId, widget.flag);
                 setState(() {
                   
                 });

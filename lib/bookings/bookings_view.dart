@@ -7,6 +7,8 @@ import 'package:huna/components/buttons.dart' as component;
 import 'bookings_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../modalPages/test/results/results_pretestview.dart';
+import '../modalPages/tutorialInSession/tutorialInSession.dart';
+import '../modalPages/tutorialComplete/tutorial_complete.dart';
 
 
 var jsonData;
@@ -170,11 +172,11 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                             title: Text('${snapshot.data.docs[index]['bookingData']['tutor_firstName']} ${snapshot.data.docs[index]['bookingData']['tutor_lastName']}'),
                             //subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
                             trailing: 
-                            snapshot.data.docs[index]['pretestData']['pretest_id'] == ''  ?
+                            snapshot.data.docs[index]['testData']['test_id'] == ''  ?
                           
                               Container(height: 0, width: 0) : 
                               
-                              snapshot.data.docs[index]['pretestData']['pretest_sentStatus'] == '1' && snapshot.data.docs[index]['pretestData']['pretest_answeredStatus'] == '0' ?
+                              snapshot.data.docs[index]['testData']['test_sentStatus'] == '1' && snapshot.data.docs[index]['testData']['pretest_answeredStatus'] == '0' ?
                               
                               RaisedButton.icon(
                                 onPressed: () {
@@ -182,7 +184,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => AnswerPretestPage(testId: snapshot.data.docs[index]['bookingId'])),
+                                          builder: (context) => AnswerPretestPage(testData: snapshot.data.docs[index], flag: 0)),
                                     );
                                   
                                 },
@@ -199,7 +201,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => ResultsPage(pretestId: snapshot.data.docs[index]['bookingId'])),
+                                          builder: (context) => ResultsPage(testData: snapshot.data.docs[index])),
                                     );
                                   
                                 },
@@ -235,21 +237,70 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                 title: Text('P ${snapshot.data.docs[index]['bookingData']['rate']}.00'),
                                 dense: true,
                               ),
-                              Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                                  child: RaisedButton.icon(
-                                    onPressed: () {
-                                      //setStatusBooking(jsonData[index]['booking_id'], 0);
-                                    },
-                                    icon: Icon(Icons.cancel),
-                                    label: Text('Cancel Booking'),
-                                    color: Colors.red.shade800,
-                                    textColor: Colors.white,
+
+                              Row(
+                                children: [
+                                  snapshot.data.docs[index]['testData']['pretest_answeredStatus']  == '1' && (snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Ongoing' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Finished') ? 
+
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                      child: RaisedButton.icon(
+                                        onPressed: () {
+
+                                          if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted'){
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => ViewTutorialPage(data: snapshot.data.docs[index], flag: 0)),
+                                            );
+
+                                          }else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Ongoing'){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => TutorialInSession(data: snapshot.data.docs[index])),
+                                            );
+                                          }else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Finished'){
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => TutorialComplete(data: snapshot.data.docs[index], flag: 1), ),
+                                            );
+                                          }
+                                          
+                                          //setStatusBooking(jsonData[index]['booking_id'], 0);
+                                        },
+                                        icon: Icon(Icons.assignment),
+                                        label: Text('Tutorial'),
+                                        color: Colors.green.shade800,
+                                        textColor: Colors.white,
+                                      ),
+                                    ),
+                                  )
+                                  :
+                                  Container(height: 0, width: 0),
+
+                                  SizedBox(width: 20),
+
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                                      child: RaisedButton.icon(
+                                        onPressed: () {
+                                          //setStatusBooking(jsonData[index]['booking_id'], 0);
+                                        },
+                                        icon: Icon(Icons.cancel),
+                                        label: Text('Cancel Booking'),
+                                        color: Colors.red.shade800,
+                                        textColor: Colors.white,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
+
+                              
                             ],
                           ),
                         ],
@@ -292,7 +343,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
         return StreamBuilder(
           stream: _model.getTutorBookings(widget.uid),
           builder: (context, snapshot){
-            if(snapshot.data.docs.length == 0){
+            if(snapshot.data == null){
               return Center(child:CircularProgressIndicator());
             }
             return ListView.builder(
@@ -305,7 +356,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                 var parsedDate = DateTime.parse(snapshot.data.docs[index]['bookingData']['date']);
                 if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Pending'){
                   check = true;
-                }else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted'){
+                }else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Ongoing'){
                   check = false;
                 }
 
@@ -318,7 +369,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ViewTutorialPage(studentData: snapshot.data.docs[index])),
+                        MaterialPageRoute(builder: (context) => ViewTutorialPage(data: snapshot.data.docs[index], flag: 1)),
                       );
                     }
                   );

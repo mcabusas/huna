@@ -200,7 +200,7 @@ class _EditPageState extends State<EditPage> {
                                       'a3': questions['answer3'],
                                       'a4': questions['answer4'],
                                       'qid': questions.id,
-                                      'pretest_id': widget.pretestId
+                                      'test_id': widget.pretestId
                                     };
                                   });
                                   //print(questionData);

@@ -48,17 +48,13 @@ class _NewBookingState extends State<NewBooking> {
       'rate': ''
     };
   
-  Map<String, dynamic> pretestData = {
-    'pretest_id': '',
-    'pretest_sentStatus': '0',
+  Map<String, dynamic> testData = {
+    'test_id': '',
+    'test_sentStatus': '0',
     'pretest_answeredStatus': '0',
+    'posttest_answeredStatus': '0'
   };
 
-  Map<String, dynamic> posttestData = {
-    'posttest_id': '',
-    'posttest_sentStatus': '0',
-    'posttest_answeredStatus': '0',
-  };
 
 
   _location(BuildContext context) async {
@@ -379,7 +375,7 @@ class _NewBookingState extends State<NewBooking> {
                 width: MediaQuery.of(context).size.width,
                 child: RaisedButton.icon(
                   onPressed: () {
-                    _model.createBooking(bookingData, pretestData, posttestData);
+                    _model.createBooking(bookingData, testData);
                     //insertBooking();
                     /*Navigator.push(
                       context,

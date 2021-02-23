@@ -23,8 +23,8 @@ import '../tutorialComplete/tutorial_complete.dart';
 // }
 
 class TutorialInSession extends StatefulWidget {
-  final studentData;
-  TutorialInSession({this.studentData});
+  final data;
+  TutorialInSession({this.data});
   @override
   _TutorialInSessionState createState() => _TutorialInSessionState();
 }
@@ -38,7 +38,7 @@ class _TutorialInSessionState extends State<TutorialInSession> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.studentData['bookingData']['student_firstName']);
+    //print(widget.studentData['bookingData']['student_firstName']);
   }
   @override
   Widget build(BuildContext context) {
@@ -96,11 +96,11 @@ class _TutorialInSessionState extends State<TutorialInSession> {
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
                         onPressed: () async{
-                          _model.endTutorial(widget.studentData['bookingId']);
+                          _model.endTutorial(widget.data['bookingId']);
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TutorialComplete(studentData: widget.studentData,)),
+                                  builder: (context) => TutorialComplete(data: widget.data, flag: 0)),
                             );
                         },
                         icon: Icon(Icons.assignment),

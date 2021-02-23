@@ -2,32 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewTutorialModel {
 
-  Future<void> createPretest(Map<String, dynamic> pretestInfo) async {
+  Future<void> createPretest(Map<String, dynamic> testInfo) async {
     await FirebaseFirestore.instance
-    .collection('pretest')
-    .doc(pretestInfo['pretest_id'])
-    .set(pretestInfo)
+    .collection('test')
+    .doc(testInfo['pretest_id'])
+    .set(testInfo)
     .catchError((e) => {
       print(e.toString())
     }).then((value) {
 
-      FirebaseFirestore.instance
-      .collection('posttest')
-      .doc(pretestInfo['pretest_id'])
-      .set(pretestInfo)
-      .then((value) => {
-
-        FirebaseFirestore.instance
+       FirebaseFirestore.instance
         .collection('bookings')
-        .doc(pretestInfo['pretest_id'])
+        .doc(testInfo['pretest_id'])
         .update({
-          'pretestData.pretest_id': pretestInfo['pretest_id'],
-          'posttestData.posttest_id': pretestInfo['pretest_id']
+          'testData.test_id': testInfo['pretest_id'],
         }).catchError((e) => {
           print(e.toString())
-        })
+        });
 
-      });
     });
   }
 
@@ -36,8 +28,7 @@ class ViewTutorialModel {
     .collection('bookings')
     .doc(bookingId)
     .update({
-      'pretestData.pretest_sentStatus': '1',
-      'posttestData.posttest_sentStatus': '1'
+      'testData.test_sentStatus': '1'
     }).catchError((e) => {
       print(e.toString())
     });
