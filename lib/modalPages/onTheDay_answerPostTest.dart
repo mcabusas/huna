@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
-import 'package:huna/modalPages/onTheDay_rateReview.dart';
+import 'package:huna/modalPages/rate/rateReview_view.dart';
 import 'package:huna/modalPages/tutorialInSession/tutorialInSession.dart';
 
 void main() => runApp(AnswerPostTest());
@@ -77,12 +77,12 @@ class _AnswerPostTestState extends State<AnswerPostTestPage> {
                 ),
                 // ONLY APPEARS IF ON THE LAST PAGE.
                 RaisedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RateReview()),
-                    );
-                  },
+                  // onPressed: () {
+                  //   Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(builder: (context) => RateReview()),
+                  //   );
+                  // },
                   icon: Icon(Icons.check),
                   label: Text('Finish'),
                   color: Colors.lightGreen,
