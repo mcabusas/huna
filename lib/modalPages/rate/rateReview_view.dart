@@ -23,6 +23,7 @@ class _RateReviewState extends State<RateReviewView> {
     // TODO: implement initState
     super.initState();
     print(widget.data['bookingData']);
+    print(widget.flag);
   }
 
   @override
@@ -53,9 +54,9 @@ class _RateReviewState extends State<RateReviewView> {
         //     ),
         //   ),
         // ),
-        widget.flag == 1 ?
-        RateViewTutor(flag: widget.flag, data: widget.data) :
-        RateViewStudent(flag: widget.flag, data: widget.data)
+        widget.flag == 0 ?
+        RateViewStudent(flag: widget.flag, data: widget.data) :
+        RateViewTutor(flag: widget.flag, data: widget.data)
         
       ]),
     );

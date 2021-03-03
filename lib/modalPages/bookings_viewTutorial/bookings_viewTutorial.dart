@@ -56,6 +56,7 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
     super.initState();
     print(widget.data['bookingData']);
     initAwait();
+    print(widget.flag);
   }
   int flag = 0;
   @override
@@ -72,7 +73,7 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
             }),
         title: Text('Tutorial'),
       ),
-      body: widget.flag == 1 ? Tutor(studentData: widget.data) : Student(tutorData: widget.data)
+      body: widget.flag == 1 ? Tutor(studentData: widget.data, flag: widget.flag) : Student(tutorData: widget.data, flag: widget.flag)
     );
   }
 }
@@ -81,7 +82,8 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
 
 class Student extends StatefulWidget {
   final tutorData;
-  Student({this.tutorData});
+  final flag;
+  Student({this.tutorData, this.flag});
   @override
   _StudentState createState() => _StudentState();
 }
@@ -174,7 +176,7 @@ class _StudentState extends State<Student> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ResultsPage(
-                                      testData: widget.tutorData)),
+                                      testData: widget.tutorData, flag: 0)),
                             );
                           },
                           icon: Icon(Icons.assignment),
@@ -193,7 +195,8 @@ class _StudentState extends State<Student> {
 
 class Tutor extends StatefulWidget {
   final studentData;
-  Tutor({this.studentData});
+  final flag;
+  Tutor({this.studentData, this.flag});
 
   
   @override
@@ -418,7 +421,7 @@ class _TutorState extends State<Tutor> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ResultsPage(
-                                      testData: widget.studentData)),
+                                      testData: widget.studentData, flag: 0)),
                             );
                           },
                           icon: Icon(Icons.assignment),
@@ -438,7 +441,8 @@ class _TutorState extends State<Tutor> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => TutorialInSession(
-                                      data: widget.studentData
+                                      data: widget.studentData,
+                                      flag: widget.flag
                                         )),
                               )
                             });

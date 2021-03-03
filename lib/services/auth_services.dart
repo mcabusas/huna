@@ -8,6 +8,13 @@ class AuthServices with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   SharedPreferences sp;
 
+  Stream getTutorTag(String uid){
+    return FirebaseFirestore.instance
+    .collection('tutors')
+    .where('uid', isEqualTo: uid)
+    .snapshots();
+  }
+
 
   Future<User> getCurrentUser() async {
     User user = await (_auth.currentUser);
@@ -35,9 +42,9 @@ class AuthServices with ChangeNotifier {
     }
   }
 
-  Future userProfile(String uid) async{
+  Map<String,dynamic> userProfile(String uid) {
 
-    sp = await SharedPreferences.getInstance();
+    //sp = await SharedPreferences.getInstance();
 
     Map<String, dynamic> returnData = {
       'firstName': '',
@@ -45,8 +52,10 @@ class AuthServices with ChangeNotifier {
       'uid': '',
       'tid': '',
       'rate': '',
-      'majors': '',
-      'topics': ''
+      'city': '',
+      'country': '',
+      'majors': [],
+      'topics': []
     };
 
 
@@ -54,15 +63,17 @@ class AuthServices with ChangeNotifier {
     .collection('users')
     .doc(uid);
 
-     await retVal.get().then((snapshot)async{
+    retVal.get().then((snapshot)async{
 
        returnData['firstName'] = snapshot.data()['firstName'];
        returnData['lastName'] = snapshot.data()['lastName'];
        returnData['uid'] = snapshot.data()['uid'];
+       returnData['city'] = snapshot.data()['city'];
+       returnData['country'] = snapshot.data()['country'];
 
-       await FirebaseFirestore.instance
+      FirebaseFirestore.instance
        .collection('tutors')
-       .where('uid', isEqualTo: uid)
+       .where('uid', isEqualTo: returnData['uid'])
        .get().then((value) => {
          if(value.docs.length != 0){
            value.docs.forEach((element) {
@@ -88,6 +99,7 @@ class AuthServices with ChangeNotifier {
 
 
     //print(returnData);
+    return returnData;
 
   }
 
@@ -100,7 +112,8 @@ class AuthServices with ChangeNotifier {
       sp.setString('uid', data['uid']);
       sp.setString('tid', data['tid']);
       sp.setString('rate', data['tutor_rate']);
-
+      sp.setString('country', data['country']);
+      sp.setString('city', data['city']);
       print(sp.getString('rate'));
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/modalPages/chat/messages_chat.dart';
 import 'viewTutorProfile_model.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 var data, majors, languages, topics; 
 
@@ -19,142 +21,162 @@ class _TutorProfileState extends State<TutorProfilePage> {
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
   String chatRoomId;
   Map<String,dynamic> tutorData;
+  bool retVal = false;
+  bool showSpinner = false;
   
   void initState(){
     super.initState();
     print(widget.tutorData['tid']);
+    
     tutorData = {
       'firstName': widget.tutorData['firstName'],
       'lastName' : widget.tutorData['lastName'],
-      'tid': widget.tutorData['tid'],
-      'uid': widget.tutorData['uid'],
+      'tutor_id': widget.tutorData['tid'],
+      'tutor_uid': widget.tutorData['uid'],
       'rate': widget.tutorData['rate'],
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey.shade900,
-      resizeToAvoidBottomPadding: false,
-      appBar: AppBar(
-        elevation: 0,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.favorite,
-              color: Colors.red.shade800,
+    return ModalProgressHUD(
+      inAsyncCall: showSpinner,
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade900,
+        resizeToAvoidBottomPadding: false,
+        appBar: AppBar(
+          elevation: 0,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.favorite,
+                color: Colors.red.shade800,
+              ),
+              onPressed: () async {
+                try{
+                  retVal = await _model.addToFavorites(tutorData);
+                  if(retVal == true){
+                    Fluttertoast.showToast(
+                      msg: 'Tutor added to your favorites.',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white);
+                  }
+
+                }catch (e) {
+                  print(e.toString());
+                }
+              },
             ),
-            onPressed: () async {
-              _model.addToFavorites(widget.tutorData['tid']);
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.forum),
-            onPressed: () async {
-              chatRoomId =  await _model.createChatRoom(tutorData);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId, page: 1)),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.error),
-            onPressed: () {
-              // Alert Dialog: Report Tutor
-              showDialog(
-                context: context,
-                child: AlertDialog(
-                  title: Text("Report Tutor"),
-                  content: SingleChildScrollView(
-                    padding: EdgeInsets.only(bottom: 0),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text('Select a reason: '),
-                        DropdownButtonFormField(
-                          hint: Text("Select Reason"),
-                          value: _value,
-                          isDense: false,
-                          isExpanded: true,
-                          items: <DropdownMenuItem>[
-                            DropdownMenuItem(
-                              child: Text('Inappropriate behavior'),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Profile contains offensive content'),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('User send spam messages'),
-                              value: 3,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Fake Profile'),
-                              value: 4,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Deceased Profile'),
-                              value: 5,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                  'Charged an extra fee outside of booking'),
-                              value: 6,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Others'),
-                              value: 7,
-                            ),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              _value = value;
-                            });
-                          },
-                        ),
-                        SizedBox(height: 20.0),
-                        Text('Additional comments: '),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Comments',
+            IconButton(
+              icon: Icon(Icons.forum),
+              onPressed: () async {
+                chatRoomId =  await _model.createChatRoom(tutorData);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId, page: 1)),
+                );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.error),
+              onPressed: () {
+                // Alert Dialog: Report Tutor
+                showDialog(
+                  context: context,
+                  child: AlertDialog(
+                    title: Text("Report Tutor"),
+                    content: SingleChildScrollView(
+                      padding: EdgeInsets.only(bottom: 0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text('Select a reason: '),
+                          DropdownButtonFormField(
+                            hint: Text("Select Reason"),
+                            value: _value,
+                            isDense: false,
+                            isExpanded: true,
+                            items: <DropdownMenuItem>[
+                              DropdownMenuItem(
+                                child: Text('Inappropriate behavior'),
+                                value: 1,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('Profile contains offensive content'),
+                                value: 2,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('User send spam messages'),
+                                value: 3,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('Fake Profile'),
+                                value: 4,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('Deceased Profile'),
+                                value: 5,
+                              ),
+                              DropdownMenuItem(
+                                child: Text(
+                                    'Charged an extra fee outside of booking'),
+                                value: 6,
+                              ),
+                              DropdownMenuItem(
+                                child: Text('Others'),
+                                value: 7,
+                              ),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                _value = value;
+                              });
+                            },
                           ),
+                          SizedBox(height: 20.0),
+                          Text('Additional comments: '),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: 'Comments',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    elevation: 24.0,
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () =>
+                            Navigator.of(context, rootNavigator: true).pop(
+                                'dialog'), // Navigator.pop(context) closes the entire page.
+                        child: Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.cyan),
                         ),
-                      ],
-                    ),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          // Update Base Price
+                        },
+                        child: Text(
+                          "Save",
+                          style: TextStyle(color: Colors.deepPurple),
+                        ),
+                      ),
+                    ],
                   ),
-                  elevation: 24.0,
-                  actions: <Widget>[
-                    FlatButton(
-                      onPressed: () =>
-                          Navigator.of(context, rootNavigator: true).pop(
-                              'dialog'), // Navigator.pop(context) closes the entire page.
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(color: Colors.cyan),
-                      ),
-                    ),
-                    FlatButton(
-                      onPressed: () {
-                        // Update Base Price
-                      },
-                      child: Text(
-                        "Save",
-                        style: TextStyle(color: Colors.deepPurple),
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ],
+                );
+              },
+            ),
+          ],
+        ),
+        body: TutorProfileWidget(tutorData: widget.tutorData),
       ),
-      body: TutorProfileWidget(tutorData: widget.tutorData),
     );
   }
 }
@@ -169,6 +191,9 @@ class TutorProfileWidget extends StatefulWidget {
 }
 
 class _TutorProfileWidgetState extends State<TutorProfileWidget> {
+
+  bool retVal;
+  bool showSpinner = false;
 
   void initState(){
     super.initState();

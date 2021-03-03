@@ -24,7 +24,8 @@ import '../tutorialComplete/tutorial_complete.dart';
 
 class TutorialInSession extends StatefulWidget {
   final data;
-  TutorialInSession({this.data});
+  final flag;
+  TutorialInSession({this.data, this.flag});
   @override
   _TutorialInSessionState createState() => _TutorialInSessionState();
 }
@@ -38,7 +39,7 @@ class _TutorialInSessionState extends State<TutorialInSession> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //print(widget.studentData['bookingData']['student_firstName']);
+    print(widget.flag);
   }
   @override
   Widget build(BuildContext context) {
@@ -100,7 +101,7 @@ class _TutorialInSessionState extends State<TutorialInSession> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TutorialComplete(data: widget.data, flag: 0)),
+                                  builder: (context) => TutorialComplete(data: widget.data, flag: widget.flag)),
                             );
                         },
                         icon: Icon(Icons.assignment),

@@ -1,268 +1,302 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:huna/profile/myProfileSettings.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'myProfile_model.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/auth_services.dart';
 
 int _selectedIndex = 0;
+enum WidgetMaker { student, tutor }
 final tabs = [StudentProfileWidget(), TutorProfileWidget()];
 final children = <Widget>[];
 var data;
-String page;
-
-
+MyProfileModel _model = new MyProfileModel();
+double ratings;
 
 class MyProfile extends StatefulWidget {
   _MyProfileState createState() => _MyProfileState();
 }
 
 class _MyProfileState extends State<MyProfile> {
+  SharedPreferences sp;
+  String uid, tid;
+  AuthServices _auth = new AuthServices();
+  WidgetMaker selectedWidget = WidgetMaker.student;
 
-  MyProfileModel profile = new MyProfileModel();
+  Map<String, dynamic> userData = {};
 
-  Future<Map<String,dynamic>> initAwait() async {
-    return profile.myProfileData();
+  Future<void> initAwait() async {
+    sp = await SharedPreferences.getInstance();
+    setState(() {
+      uid = sp.getString('uid');
+      tid = sp.getString('tid');
+      userData = (_auth.userProfile(uid));
+    });
   }
-  // Widget bottomNavBar(){
-  //   if(u.tutorID == null){
-  //     return null;
-  //   }else{
-  //     return BottomAppBar(
-  //       shape: CircularNotchedRectangle(),
-  //       notchMargin: 4,
-  //       clipBehavior: Clip.antiAlias,
-  //       child: BottomNavigationBar(
-  //         currentIndex: _selectedIndex,
-  //         items: [
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.school),
-  //             title: Text('Student'),
-  //           ),
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.local_cafe),
-  //             title: Text('Tutor'),
-  //           ),
-  //         ],
-  //         onTap: (index) {
-  //           setState(() {
-  //             _selectedIndex = index;
-  //             if(index == 0){
-  //               page = 'student';
-  //             }else if(index == 1){
-  //               page = 'tutor';
-  //             }
-  //           });
-  //         },
-  //       ),
-  //     );
-  //   }
-  // }
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initAwait(),
-      builder: (context, AsyncSnapshot snapshot){
-        if(snapshot.connectionState == ConnectionState.done){
-          return Scaffold(
-            backgroundColor: Colors.grey.shade900,
-            appBar: AppBar(
-              title: Text('Profile'),
-              elevation: 0,
-              actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MyProfileSettings()),
-                    );
-                  },
-                ),
-              ],
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initAwait();
+  }
+
+  Widget getScreen() {
+    switch (selectedWidget) {
+      case WidgetMaker.student:
+        return StudentProfileWidget(id: uid, flag: 0);
+
+      case WidgetMaker.tutor:
+        return TutorProfileWidget(id: uid, flag: 1);
+    }
+  }
+
+  Widget bottomNavBar() {
+    if (tid == null) {
+      return null;
+    } else {
+      return BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4,
+        clipBehavior: Clip.antiAlias,
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              title: Text('Student'),
             ),
-            drawer:SideDrawer(),
-            body: Stack(
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(top: 180),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_cafe),
+              title: Text('Tutor'),
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+              if (index == 0) {
+                setState(() {
+                  selectedWidget = WidgetMaker.student;
+                });
+              } else if (index == 1) {
+                setState(() {
+                  selectedWidget = WidgetMaker.tutor;
+                });
+              }
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey.shade900,
+      appBar: AppBar(
+        title: Text('Profile'),
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyProfileSettings()),
+              );
+            },
+          ),
+        ],
+      ),
+      drawer: SideDrawer(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(top: 180),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35),
+                topRight: Radius.circular(35),
+              ),
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                children: <Widget>[
+                  CircleAvatar(
+                    radius: 40,
+                    backgroundImage: AssetImage('assets/images/profile.jpg'),
+                  ),
+                  SizedBox(height: 20),
+                  // Profile Text
+                  Center(
+                    child: Text(
+                      '${sp.getString('firstName')} ${sp.getString('lastName')}',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
                     ),
                   ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(),
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Column(
+                  // Center(
+                  //   child: Text(
+                  //     snapshot.data['username'],
+                  //     style: TextStyle(color: Colors.white70),
+                  //   ),
+                  // ),
+                  SizedBox(height: 20),
+                  // Location
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                    child: Row(
                       children: <Widget>[
-                        CircleAvatar(
-                          radius: 40,
-                          backgroundImage: AssetImage('assets/images/profile.jpg'),
+                        Icon(
+                          Icons.location_on,
+                          color: Colors.white,
+                          size: 15,
                         ),
-                        SizedBox(height: 20),
-                        // Profile Text
-                        Center(
-                          child: Text(
-                            '${snapshot.data['firstName']} ${snapshot.data['lastName']}',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
+                        Text(
+                          '${sp.getString('city')}, ${sp.getString('country')}',
+                          style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
-                        Center(
-                          child: Text(
-                            snapshot.data['username'],
-                            style: TextStyle(color: Colors.white70),
-                          ),
-                        ),
-                        SizedBox(height: 20),
-                        // Location
-                        Padding(
-                          padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                                size: 15,
-                              ),
-                              Text(
-                              '${snapshot.data['city']}, ${snapshot.data['country']}',
-                                style: TextStyle(color: Colors.white, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // Reviews Label
-                              Text(
-                                'Reviews',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              // Average Star Ratings
-                              Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    Icon(Icons.star, size: 20),
-                                    Icon(Icons.star, size: 20),
-                                    Icon(Icons.star, size: 20),
-                                    Icon(Icons.star, size: 20),
-                                    Icon(Icons.star, size: 20),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        // Reviews and Average Star Ratings
-                        tabs[_selectedIndex],
                       ],
                     ),
                   ),
-                ),
-              ],
+                  getScreen(),
+                ],
+              ),
             ),
-            //bottomNavigationBar: bottomNavBar(),
-            
-          );
-        }else{
-          return Scaffold(
-            body: Container(
-              child: Center(
-                child: CircularProgressIndicator()
-              )
-            )
-          );
-        }
-      }
+          ),
+        ],
+      ),
+      bottomNavigationBar: bottomNavBar(),
     );
   }
 }
 
 class TutorProfileWidget extends StatefulWidget {
+  final id;
+  final flag;
+  TutorProfileWidget({this.id, this.flag});
   @override
   _TutorProfileWidgetState createState() => _TutorProfileWidgetState();
 }
 
 class _TutorProfileWidgetState extends State<TutorProfileWidget> {
-    bool isLoading = false;
+  
+  Future<List<Map<String, dynamic>>> initAwait() async {
+    ratings = await _model.getRating(widget.id, 1);
+    print(ratings.toString());
+    return await _model.getTutorReviews(widget.id);
+  }
 
+  @override
 
-    // getData() async{
-    //   print(page);
-    //   final response = await http.get(
-    //     Uri.encodeFull("https://hunacapstone.com/database_files/profile.php?id=${u.tutorID}&page=$page"),
-    //     headers: {
-    //       "Accept": 'application/json',
-    //     }
-    //   );
-    //   if(response.statusCode == 200){
-    //     if(!mounted) return;
-    //     setState(() {
-    //       isLoading = true;
-    //       data = jsonDecode(response.body);
-    //     });
-    //   }
-    //   print(data);
-    // }
-
-    // void initState()  {
-    //   super.initState();
-    //   this.getData();
-    // }
+  void initState()  {
+    super.initState();
+    initAwait();
+    print(widget.flag);
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(isLoading == true){
-      return Container(
-        child: Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            padding: EdgeInsets.all(15),
-            itemCount: data == null ? 0 : data.length,
-            itemBuilder: (BuildContext context, int index) {
-              if(data == null){
-                return new Container();
-              }else{
-                return new Card(
-                  child: ListTile(
-                    contentPadding: EdgeInsets.all(20),
-                    subtitle: Text(
-                      data[index]['content']
-                    ),
-                    isThreeLine: true,
-                  ),
-                );
+    return Container(
+      child: FutureBuilder(
+        future: initAwait(),
+        builder: (context, AsyncSnapshot snapshot){
+          if(snapshot.connectionState == ConnectionState.done){
+            if(snapshot.data.length == 0){
+              return Center(
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: Text('You have no reviews.'),
+                ),
+              );
+            }else{
+              return Column(
+                children: [
 
-              }
-            },
-          ),
-        ),
-      );
-    }else{
-      return Center(child:CircularProgressIndicator());
-    }
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        // Reviews Label
+                        Text(
+                          'Reviews',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Average Star Ratings
+                        IconTheme(
+                          data: IconThemeData(
+                            color: Colors.amber,
+                            size: 20
+                          ),
+                          child: StarDisplay(value: ratings)
+                        )
+                      ],
+                    ),
+                  ),
+
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(15),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (snapshot.data.length == 0) {
+                        return new Container();
+                      } else {
+                        return new Card(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(20),
+                            title: IconTheme(
+                              data: IconThemeData(
+                                color: Colors.amber,
+                                size: 20
+                              ),
+                              child: StarDisplay(value: snapshot.data[index]['tutor_rating'].toDouble(),),
+                            ),
+                            subtitle: Text(snapshot.data[index]['content']),
+                            isThreeLine: true,
+                          ),
+                        );
+                      }
+                    },
+                  )
+
+                ],
+              );
+            }
+          }else {
+            return Container(
+              child: Center(child: CircularProgressIndicator())
+            );
+          }
+        },
+      )
+    );
   }
 }
 
 class StudentProfileWidget extends StatefulWidget {
+  final id;
+  final flag;
+  StudentProfileWidget({this.id, this.flag});
   @override
   _StudentProfileWidgetState createState() => _StudentProfileWidgetState();
 }
 
 class _StudentProfileWidgetState extends State<StudentProfileWidget> {
-
   // getData() async{
 
   //   print(page);
@@ -279,41 +313,114 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
   //   }
   // }
 
+  Future<List<Map<String, dynamic>>> initAwait() async {
+    ratings = await _model.getRating(widget.id, 1);
+    print(ratings.toString());
+    return await _model.getStudentReviews(widget.id);
+  }
 
-  // @override
-  
-  // void initState()  {
-  //   super.initState();
-  //   this.getData();
-  // }
-  
+  @override
+
+  void initState()  {
+    super.initState();
+    initAwait();
+  }
+
   Widget build(BuildContext context) {
     return Container(
-      child: Expanded(
-        child: ListView.builder(
-          shrinkWrap: true,
-          padding: EdgeInsets.all(15),
-          itemCount: data == null ? 0 : data.length,
-          itemBuilder: (BuildContext context, int index) {
-            return new Card(
-              child: ListTile(
-                contentPadding: EdgeInsets.all(20),
-                subtitle: Text(
-                  data[index],
-                            //'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. ',
+      child: FutureBuilder(
+        future: initAwait(),
+        builder: (context, AsyncSnapshot snapshot){
+          if(snapshot.connectionState == ConnectionState.done){
+            if(snapshot.data.length == 0){
+              return Center(
+                child: Container(
+                  height: 100,
+                  width: 100,
+                  child: Text('You have no reviews.'),
                 ),
-                isThreeLine: true,
-              ),
-            );
-          },
-        ),
-      ),
+              );
+            }else{
+              return Column(
+                children: [
 
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        // Reviews Label
+                        Text(
+                          'Reviews',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        // Average Star Ratings
+                        IconTheme(
+                          data: IconThemeData(
+                            color: Colors.amber,
+                            size: 20
+                          ),
+                          child: StarDisplay(value: ratings)
+                        )
+                      ],
+                    ),
+                  ),
+
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(15),
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (snapshot.data.length == 0) {
+                        return new Container();
+                      } else {
+                        return new Card(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(20),
+                            title: IconTheme(
+                              data: IconThemeData(
+                                color: Colors.amber,
+                                size: 20
+                              ),
+                              child: StarDisplay(value: snapshot.data[index]['student_rating'].toDouble(),),
+                            ),
+                            subtitle: Text(snapshot.data[index]['content']),
+                            isThreeLine: true,
+                          ),
+                        );
+                      }
+                    },
+                  )
+
+                ],
+              );
+            }
+          }else {
+            return Container(
+              child: Center(child: CircularProgressIndicator())
+            );
+          }
+        },
+      )
     );
-    
-      
   }
-  
- 
 }
 
+class StarDisplay extends StatelessWidget {
+  final double value;
+  StarDisplay({this.value = 0.0})
+    :assert(value != null);
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: List.generate(5, (index) {
+         return Icon(
+          index < value ? Icons.star : Icons.star_border
+        );
+      })
+    );
+  }
+}

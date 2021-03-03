@@ -4,8 +4,8 @@ import 'package:huna/login/login.dart';
 import 'package:huna/payment.dart';
 import 'package:huna/services/auth_services.dart';
 import 'package:huna/bookings/bookings_view.dart';
-import 'package:huna/favorites.dart';
-import 'package:huna/feedback.dart';
+import 'package:huna/favorites/favorites.dart';
+import 'package:huna/feedback/feedback.dart';
 import 'package:huna/messages/messages.dart';
 import 'package:huna/profile/myProfile.dart';
 import 'package:huna/dashboard/dashboard.dart';
@@ -117,12 +117,14 @@ class _SideDrawerState extends State<SideDrawer> {
                     leading: Icon(Icons.exit_to_app),
                     title: Text('Logout'),
                     onTap: () {
-                      _authServices.signOut();
-                      // signOut();
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => LoginPage()),
-                      // );
+                      _authServices.signOut().then((value) => {
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
+                        )
+
+                      });
                     }),
               ],
             ),

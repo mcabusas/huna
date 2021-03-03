@@ -63,10 +63,11 @@ class _TutorialCompleteState extends State<TutorialComplete> {
         body: SingleChildScrollView(
             child: Column(children: [
           widget.flag == 0
-              ? Student(tutorData: widget.data)
-              : Tutor(
-                  studentData: widget.data,
-                ),
+              ? Tutor(
+                  tutorData: widget.data,
+                  flag: widget.flag
+                )
+              : Student(studentData: widget.data, flag: widget.flag),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -112,8 +113,9 @@ class _TutorialCompleteState extends State<TutorialComplete> {
 }
 
 class Student extends StatefulWidget {
-  final tutorData;
-  Student({this.tutorData});
+  final studentData;
+  final flag;
+  Student({this.studentData, this.flag});
   @override
   _StudentState createState() => _StudentState();
 }
@@ -147,101 +149,11 @@ class _StudentState extends State<Student> {
           SizedBox(height: 20),
           Center(
             child: Text(
-              '${widget.tutorData['bookingData']['tutor_firstName']} ${widget.tutorData['bookingData']['tutor_lastName']}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Center(child: Text('@'+widget.tutorData['username'])),
-          Center(child: SizedBox(height: 20)),
-          // BOOKING DETAILS
-          Center(
-            child: Text(
-              'Booking Details',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          ListTile(
-            leading: Icon(Icons.import_contacts),
-            title: Text(widget.tutorData['bookingData']['topic']),
-            dense: true,
-          ),
-          ListTile(
-            leading: Icon(Icons.place),
-            title: Text(widget.tutorData['bookingData']['location']),
-            dense: true,
-          ),
-          ListTile(
-            leading: Icon(Icons.event),
-            title: Text(DateFormat.yMMMEd().format(
-                DateTime.parse(widget.tutorData['bookingData']['date']))),
-            dense: true,
-          ),
-          ListTile(
-            leading: Icon(Icons.access_time),
-            title: Text(
-                '${widget.tutorData['bookingData']['timeStart']} - ${widget.tutorData['bookingData']['timeEnd']}'),
-            dense: true,
-          ),
-          ListTile(
-            leading: Icon(Icons.attach_money),
-            title: Text('P ' + widget.tutorData['bookingData']['rate'] + ".00"),
-            dense: true,
-          ),
-          Center(child: SizedBox(height: 20)),
-          // BUTTONS // ONLY ONE IS ACTIVATED AT A TIME.
-          // CREATE PRETEST IF ONE HASN'T BEEN MADE YET
-        ],
-      ),
-    );
-  }
-}
-
-class Tutor extends StatefulWidget {
-  final studentData;
-  Tutor({this.studentData});
-
-  @override
-  _TutorState createState() => _TutorState();
-}
-
-class _TutorState extends State<Tutor> {
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(30),
-      child: Column(
-        children: <Widget>[
-          Center(
-            child: Container(
-              width: 75,
-              height: 75,
-              child: GestureDetector(
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/tutor2.jpg'),
-                ),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => StudentProfilePage(
-                            studentData: widget.studentData)),
-                  );
-                },
-              ),
-            ),
-          ),
-          SizedBox(height: 20),
-          Center(
-            child: Text(
               '${widget.studentData['bookingData']['student_firstName']} ${widget.studentData['bookingData']['student_lastName']}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
-          // Center(child: Text('@'+widget.studentData['username'])),
+          // Center(child: Text('@'+widget.tutorData['username'])),
           Center(child: SizedBox(height: 20)),
           // BOOKING DETAILS
           Center(
@@ -278,10 +190,11 @@ class _TutorState extends State<Tutor> {
           ),
           ListTile(
             leading: Icon(Icons.attach_money),
-            title:
-                Text('P ' + widget.studentData['bookingData']['rate'] + ".00"),
+            title: Text('P ' + widget.studentData['bookingData']['rate'] + ".00"),
             dense: true,
           ),
+          Center(child: SizedBox(height: 20)),
+
           Center(child: SizedBox(height: 20)),
 
           widget.studentData['testData']['posttest_answeredStatus'] == '0'
@@ -333,6 +246,158 @@ class _TutorState extends State<Tutor> {
                             MaterialPageRoute(
                                 builder: (context) => ResultsPage(
                                     testData: widget.studentData, flag: 1)),
+                          );
+                        },
+                        icon: Icon(Icons.assignment),
+                        label: Text('View Post-test Results'),
+                        color: Colors.green, // Colors.grey if not yet answered.
+                        textColor: Colors.white,
+                      ),
+                    )
+                  ],
+                )
+          // BUTTONS // ONLY ONE IS ACTIVATED AT A TIME.
+          // CREATE PRETEST IF ONE HASN'T BEEN MADE YET
+        ],
+      ),
+    );
+  }
+}
+
+class Tutor extends StatefulWidget {
+  final flag;
+  final tutorData;
+  Tutor({this.tutorData, this.flag});
+
+  @override
+  _TutorState createState() => _TutorState();
+}
+
+class _TutorState extends State<Tutor> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        children: <Widget>[
+          Center(
+            child: Container(
+              width: 75,
+              height: 75,
+              child: GestureDetector(
+                child: CircleAvatar(
+                  backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => StudentProfilePage(
+                            studentData: widget.tutorData)),
+                  );
+                },
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          Center(
+            child: Text(
+              '${widget.tutorData['bookingData']['tutor_firstName']} ${widget.tutorData['bookingData']['tutor_lastName']}',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // Center(child: Text('@'+widget.tutorData['username'])),
+          Center(child: SizedBox(height: 20)),
+          // BOOKING DETAILS
+          Center(
+            child: Text(
+              'Booking Details',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          SizedBox(height: 20),
+          ListTile(
+            leading: Icon(Icons.import_contacts),
+            title: Text(widget.tutorData['bookingData']['topic']),
+            dense: true,
+          ),
+          ListTile(
+            leading: Icon(Icons.place),
+            title: Text(widget.tutorData['bookingData']['location']),
+            dense: true,
+          ),
+          ListTile(
+            leading: Icon(Icons.event),
+            title: Text(DateFormat.yMMMEd().format(
+                DateTime.parse(widget.tutorData['bookingData']['date']))),
+            dense: true,
+          ),
+          ListTile(
+            leading: Icon(Icons.access_time),
+            title: Text(
+                '${widget.tutorData['bookingData']['timeStart']} - ${widget.tutorData['bookingData']['timeEnd']}'),
+            dense: true,
+          ),
+          ListTile(
+            leading: Icon(Icons.attach_money),
+            title:
+                Text('P ' + widget.tutorData['bookingData']['rate'] + ".00"),
+            dense: true,
+          ),
+          Center(child: SizedBox(height: 20)),
+
+          widget.tutorData['testData']['posttest_answeredStatus'] == '0'
+              ? SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton.icon(
+                    onPressed: () {
+                      print(widget.tutorData['testData'].toString());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AnswerPretestPage(
+                                testData: widget.tutorData, flag: 1)),
+                      );
+                    },
+                    icon: Icon(Icons.assignment),
+                    label: Text('Answer Post-test'),
+                    color: Colors.purple, // Colors.grey if not yet answered.
+                    textColor: Colors.white,
+                  ),
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton.icon(
+                        onPressed: () {
+                          print(widget.tutorData['testData'].toString());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.tutorData, flag: 0)),
+                          );
+                        },
+                        icon: Icon(Icons.assignment),
+                        label: Text('View Pre-test Results'),
+                        color: Colors.blue, // Colors.grey if not yet answered.
+                        textColor: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton.icon(
+                        onPressed: () {
+                          print(widget.tutorData['testData'].toString());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.tutorData, flag: 1)),
                           );
                         },
                         icon: Icon(Icons.assignment),

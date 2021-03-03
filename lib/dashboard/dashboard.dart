@@ -131,7 +131,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     stream: tutorsStream,
                     builder: (context, snapshot){
                       if(snapshot.connectionState == ConnectionState.waiting){
-                        return new Container(width: 10, height: 10, color: Colors.red);
+                        return new Center(child: CircularProgressIndicator());
                       }else if(snapshot.connectionState == ConnectionState.active){
                         return new Container(
                           height: 225,

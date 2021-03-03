@@ -67,22 +67,18 @@ class ViewTutorProfileModel {
     }
   }
 
-  Future<bool> addToFavorites(String tid) async {
+  Future<bool> addToFavorites(Map<String, dynamic> data) async {
 
     bool retVal = false;
 
     User user = await _authServices.getCurrentUser();
     print(user.uid);
-    print(tid);
+    data['user_id'] = user.uid;
+    print(data);
 
     await FirebaseFirestore.instance
     .collection('favorites')
-    .add(
-      {
-        'uid': user.uid,
-        'tid': tid,
-      }
-    ).then((value) {
+    .add(data).then((value) {
       retVal = true;
     });
 
