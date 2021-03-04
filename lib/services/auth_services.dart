@@ -42,6 +42,8 @@ class AuthServices with ChangeNotifier {
     }
   }
 
+  
+
   Map<String,dynamic> userProfile(String uid) {
 
     //sp = await SharedPreferences.getInstance();
@@ -55,7 +57,14 @@ class AuthServices with ChangeNotifier {
       'city': '',
       'country': '',
       'majors': [],
-      'topics': []
+      'topics': [],
+      'zipCode': '',
+      'homeAddress': '',
+      'contactNumber': '',
+      'emergencyFirstName': '',
+      'emergencyLastName': '',
+      'emergencyRelation': '',
+      'emergencyContactNumber': ''
     };
 
 
@@ -70,6 +79,13 @@ class AuthServices with ChangeNotifier {
        returnData['uid'] = snapshot.data()['uid'];
        returnData['city'] = snapshot.data()['city'];
        returnData['country'] = snapshot.data()['country'];
+       returnData['homeAddress'] = snapshot.data()['homeAddress'];
+       returnData['zipCode'] = snapshot.data()['zipCode'];
+       returnData['contactNumber'] = snapshot.data()['contactNumber'];
+       returnData['emergencyFirstName'] = snapshot.data()['emergencyFirstName'];
+       returnData['emergencyLastName'] = snapshot.data()['emergencyLastName'];
+       returnData['emergencyContactNumber'] = snapshot.data()['emergencyContactNumber'];
+       returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
 
       FirebaseFirestore.instance
        .collection('tutors')
@@ -114,6 +130,13 @@ class AuthServices with ChangeNotifier {
       sp.setString('rate', data['tutor_rate']);
       sp.setString('country', data['country']);
       sp.setString('city', data['city']);
+      sp.setString('homeAddress', data['homeAddress']);
+      sp.setString('emergencyFirstName', data['emergencyFirstName']);
+      sp.setString('emergencyLastName', data['emergencyLastName']);
+      sp.setString('contactNumber', data['contactNumber']);
+      sp.setString('emergencyContactNumber', data['emergencyContactNumber']);
+      sp.setString('emergencyRelation', data['emergencyRelation']);
+      sp.setString('zipCode', data['zipCode']);
       print(sp.getString('rate'));
   }
 

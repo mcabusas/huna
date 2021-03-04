@@ -6,15 +6,18 @@ import 'package:huna/profile/myProfile.dart';
 import 'package:huna/profile/myProfileSettingsTags.dart';
 import 'package:huna/profile/myProfileSettingsAcct.dart';
 import 'package:huna/drawer/drawer.dart';
+import 'package:huna/services/auth_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
 int _selectedIndex = 0;
 int rate;
-final tabs = [StudentProfileSettingsWidget(), TutorProfileSettingsWidget()];
 var jsonData;
 TextEditingController currentpasswordController = new TextEditingController();
 int tutorPage;
+enum WidgetMaker { student, tutor }
+SharedPreferences sp;
 
 class MyProfileSettings extends StatefulWidget {
   @override
@@ -22,37 +25,77 @@ class MyProfileSettings extends StatefulWidget {
 }
 
 class _MyProfileSettingsState extends State<MyProfileSettings> {
+  String uid, tid;
+  WidgetMaker selectedWidget = WidgetMaker.student;
+  AuthServices _auth = new AuthServices();
 
-  // Widget bottomNavBar(){
-  //   if(u.tutorID == null){
-  //     return null;
-  //   }else{
-  //     return BottomAppBar(
-  //       shape: CircularNotchedRectangle(),
-  //       notchMargin: 4,
-  //       clipBehavior: Clip.antiAlias,
-  //       child: BottomNavigationBar(
-  //         currentIndex: _selectedIndex,
-  //         items: [
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.school),
-  //             title: Text('Student'),
-  //           ),
-  //           BottomNavigationBarItem(
-  //             icon: Icon(Icons.local_cafe),
-  //             title: Text('Tutor'),
-  //           ),
-  //         ],
-  //         onTap: (index) {
-  //           setState(() {
-  //             _selectedIndex = index;
-  //           });
-  //         },
-  //       ),
-  //     );
-  //   }
-  // }
-  
+  void initAwait() async {
+    sp = await SharedPreferences.getInstance();
+    setState(() {
+      uid = sp.getString('uid');
+      tid = sp.getString('tid');
+      print(sp.getString('country'));
+    });
+  }
+
+  Widget getScreen() {
+    switch (selectedWidget) {
+      case WidgetMaker.student:
+        return StudentProfileSettingsWidget();
+
+      case WidgetMaker.tutor:
+        return TutorProfileSettingsWidget();
+    }
+
+    return getScreen();
+  }
+
+
+  Widget bottomNavBar() {
+    if (tid == null) {
+      return null;
+    } else {
+      return BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 4,
+        clipBehavior: Clip.antiAlias,
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              title: Text('Student'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.local_cafe),
+              title: Text('Tutor'),
+            ),
+          ],
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+              if (index == 0) {
+                setState(() {
+                  selectedWidget = WidgetMaker.student;
+                });
+              } else if (index == 1) {
+                setState(() {
+                  selectedWidget = WidgetMaker.tutor;
+                });
+              }
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initAwait();
+  }
   
 
   @override
@@ -101,19 +144,19 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                 // Profile Text
                 Center(
                   child: Text(
-                    'fsd',
+                    '${sp.getString('firstName')} ${sp.getString('lastName')}',
                     style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
                 ),
-                Center(
-                  child: Text(
-                    'u.username',
-                    style: TextStyle(color: Colors.white70),
-                  ),
-                ),
+                // Center(
+                //   child: Text(
+                //     'u.username',
+                //     style: TextStyle(color: Colors.white70),
+                //   ),
+                // ),
                 SizedBox(height: 20),
                 // Location
                 Padding(
@@ -126,7 +169,7 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                         size: 15,
                       ),
                       Text(
-                        ' Cebu City, Philippines',
+                        "${sp.getString('city')}, ${sp.getString('country')}",
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ],
@@ -137,10 +180,10 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
             ),
           ),
         ),
-        tabs[_selectedIndex],
+        getScreen(),
       ]
     ),
-      //bottomNavigationBar: bottomNavBar(),
+      bottomNavigationBar: bottomNavBar(),
     );
   }
 }
@@ -151,6 +194,17 @@ class StudentProfileSettingsWidget extends StatefulWidget {
 }
 
 class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWidget> {
+
+  void initAwait() async {
+    sp = await SharedPreferences.getInstance();
+    setState(() {
+      // uid = sp.getString('uid');
+      // tid = sp.getString('tid');
+      print(sp.getString('country'));
+    });
+  }
+
+  
 
 
  Future createAlertDialog(BuildContext context){
@@ -173,6 +227,13 @@ class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWid
       );
     });
     
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initAwait();
   }
 
 
@@ -267,7 +328,14 @@ class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWid
                               },
                               title: Text('Personal Details'), 
                               children: <Widget>[
-                                PersonalDetails(),
+                                PersonalDetails(
+                                  homeAddress: sp.getString('homeAddress'), 
+                                  city: sp.getString('city'), 
+                                  country: sp.getString('country'), 
+                                  zipCode: sp.getString('zipCode'), 
+                                  contactNumber: sp.getString('contactNumber'),
+                                  uid: sp.getString('uid')
+                                ),
                               ],
                               trailing: IgnorePointer(
                                 child: Icon(Icons.edit),
@@ -285,7 +353,16 @@ class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWid
 
                               },
                               title: Text('In Case of Emergency'),
-                              children: <Widget>[EmergencyDetails()],
+                              children: <Widget>
+                              [
+                                EmergencyDetails(
+                                  emergencyFirstName: sp.getString('emergencyFirstName'),
+                                  emergencyLastName: sp.getString('emergencyLastName'),
+                                  emergencyRelation: sp.getString('emergencyRelation'),
+                                  emergencyContactNumber: sp.getString('emergencyContactNumber'),
+                                  uid: sp.getString('uid')
+                                )
+                              ],
                               trailing: IgnorePointer(
                                 child: Icon(Icons.edit),
                               ),
@@ -293,21 +370,21 @@ class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWid
                             SizedBox(
                               height: 25,
                             ),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              child: new MaterialButton(
-                                color: Colors.grey.shade900,
-                                textColor: Colors.white,
-                                child: new Text(
-                                  "Save",
-                                  style: TextStyle(fontSize: 15.0),
-                                ),
-                                onPressed: () {
-                                  createAlertDialog(context);
+                            // SizedBox(
+                            //   width: MediaQuery.of(context).size.width,
+                            //   child: new MaterialButton(
+                            //     color: Colors.grey.shade900,
+                            //     textColor: Colors.white,
+                            //     child: new Text(
+                            //       "Save",
+                            //       style: TextStyle(fontSize: 15.0),
+                            //     ),
+                            //     onPressed: () {
+                            //       createAlertDialog(context);
                                   
-                                },
-                              ),
-                            ),
+                            //     },
+                            //   ),
+                            // ),
                             
                           ],
                         ),

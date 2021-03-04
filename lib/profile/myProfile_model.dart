@@ -1,10 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:huna/services/auth_services.dart';
-import '../services/auth_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MyProfileModel {
 
-  AuthServices _services = new AuthServices();
+  SharedPreferences sp;
 
   Stream getReview(String uid, int flag) {
     var ret;
@@ -49,6 +48,58 @@ class MyProfileModel {
 
       return retData;
     
+
+  }
+
+  Future<bool> editStudentEmergencyContant(String uid, Map<String, dynamic> data) async {
+    bool retVal = false;  
+    print(data);
+
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(uid)
+    .update({
+
+      'emergencyFirstName': data['emergencyFirstName'],
+      'emergencyLastName': data['emergencyLastName'],
+      'emergencyContactNumber': data['emergencyContactNumber'],
+      'emergencyRelation': data['emergencyRelation']
+
+    }).then((value) async => {
+      sp = await SharedPreferences.getInstance(),
+      retVal = true,
+      sp.setString('emergencyFirstName', data['emergencyFirstName']),
+      sp.setString('emergencyLastName', data['emergencyLastName']),
+      sp.setString('emergencyContactNumber', data['emergencyContactNumber']),
+      sp.setString('emergencyRelation', data['emergencyRelation ']),
+
+    }).catchError((e) => {
+      print(e.toString())
+    });
+
+    return retVal;
+  }
+
+  Future<bool> editStudentPersonalDetails(String uid, Map<String, dynamic> data) async {
+    print(data);
+    bool retVal = false;
+    await FirebaseFirestore.instance
+    .collection('users')
+    .doc(uid)
+    .update({
+      'homeAddress': data['homeAddress'],
+      'city': data['city'],
+      'country': data['country'],
+      'zipCode': data['zipCode'],
+      'contactNumber': data['contactNumber']
+
+    }).then((value) => {
+      retVal = true
+    }).catchError((e) => {
+      print(e.toString())
+    });
+
+    return retVal;
 
   }
 

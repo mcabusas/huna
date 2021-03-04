@@ -8,7 +8,7 @@ import '../services/auth_services.dart';
 
 int _selectedIndex = 0;
 enum WidgetMaker { student, tutor }
-final tabs = [StudentProfileWidget(), TutorProfileWidget()];
+//final tabs = [StudentProfileWidget(), TutorProfileWidget()];
 final children = <Widget>[];
 var data;
 MyProfileModel _model = new MyProfileModel();
@@ -31,6 +31,7 @@ class _MyProfileState extends State<MyProfile> {
     setState(() {
       uid = sp.getString('uid');
       tid = sp.getString('tid');
+      print(sp.getString('emergencyFirstName'));
       userData = (_auth.userProfile(uid));
     });
   }
@@ -50,6 +51,8 @@ class _MyProfileState extends State<MyProfile> {
       case WidgetMaker.tutor:
         return TutorProfileWidget(id: uid, flag: 1);
     }
+
+    return getScreen();
   }
 
   Widget bottomNavBar() {
