@@ -31,7 +31,7 @@ class _MyProfileState extends State<MyProfile> {
     setState(() {
       uid = sp.getString('uid');
       tid = sp.getString('tid');
-      print(sp.getString('emergencyFirstName'));
+      print(sp.getString('tid') + 'this is tid');
       userData = (_auth.userProfile(uid));
     });
   }

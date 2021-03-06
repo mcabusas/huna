@@ -23,6 +23,10 @@ class MyProfileModel {
     
   }
 
+  Future<bool> editRate(String uid, String newRate){
+
+  }
+
   Future<List<Map<String, dynamic>>> getTutorReviews(String uid) async {
     List<Map<String, dynamic>> retData = [];
 
@@ -48,6 +52,17 @@ class MyProfileModel {
 
       return retData;
     
+
+  }
+
+  Stream getTutorRateAndTags(String uid){
+    return FirebaseFirestore.instance
+    .collection('tutors')
+    .where('uid', isEqualTo: uid)
+    .snapshots()
+    .handleError((e) => {
+      print(e.toString())
+    });
 
   }
 

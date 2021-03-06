@@ -72,7 +72,7 @@ class AuthServices with ChangeNotifier {
     .collection('users')
     .doc(uid);
 
-    retVal.get().then((snapshot)async{
+    retVal.get().then((snapshot) async {
 
        returnData['firstName'] = snapshot.data()['firstName'];
        returnData['lastName'] = snapshot.data()['lastName'];
@@ -87,17 +87,16 @@ class AuthServices with ChangeNotifier {
        returnData['emergencyContactNumber'] = snapshot.data()['emergencyContactNumber'];
        returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
 
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
        .collection('tutors')
        .where('uid', isEqualTo: returnData['uid'])
        .get().then((value) => {
          if(value.docs.length != 0){
            value.docs.forEach((element) {
-             print(element.data()['rate']);
             returnData['tid'] = element.data()['tid'];
-            returnData['tutor_rate'] = element.data()['rate'];
-            returnData['tutor_majors'] = element.data()['majors'];
-            returnData['tutor_topics'] = element.data()['topics'];
+            returnData['rate'] = element.data()['rate'];
+            returnData['majors'] = element.data()['majors'];
+            returnData['topics'] = element.data()['topics'];
             // returnData = {
             //   'tid': element.data()['tid'],
             //   'tutor_rate': element.data()['rate'],
@@ -114,12 +113,12 @@ class AuthServices with ChangeNotifier {
     });
 
 
-    //print(returnData);
+    print(returnData);
     return returnData;
 
   }
 
-  Future setPref(Map<String, dynamic> data)async{
+  Future setPref(Map<String, dynamic> data) async {
 
     sp = await SharedPreferences.getInstance();
     print(data);
@@ -127,7 +126,7 @@ class AuthServices with ChangeNotifier {
       sp.setString('lastName', data['lastName']);
       sp.setString('uid', data['uid']);
       sp.setString('tid', data['tid']);
-      sp.setString('rate', data['tutor_rate']);
+      sp.setString('rate', data['rate']);
       sp.setString('country', data['country']);
       sp.setString('city', data['city']);
       sp.setString('homeAddress', data['homeAddress']);
