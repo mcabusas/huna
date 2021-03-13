@@ -23,7 +23,24 @@ class MyProfileModel {
     
   }
 
-  Future<bool> editRate(String uid, String newRate){
+  Future<bool> editRate(String tid, String newRate) async {
+
+    bool retVal = false;
+
+    await FirebaseFirestore.instance
+    .collection('tutors')
+    .doc(tid)
+    .update({
+
+      'rate': newRate
+
+    }).then((value) => {
+      retVal = true
+    }).catchError((e){
+      print(e.toString());
+    });
+
+    return retVal;
 
   }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:huna/login/login.dart';
@@ -8,6 +9,7 @@ import 'package:huna/profile/myProfileSettingsAcct.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'myProfile_model.dart';
+import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 int _selectedIndex = 0;
 int rate;
@@ -393,12 +395,14 @@ class TutorProfileSettingsWidget extends StatefulWidget {
 class _TutorProfileSettingsWidgetState
     extends State<TutorProfileSettingsWidget> {
   MyProfileModel _model = new MyProfileModel();
-  String uid;
+  String uid, tid;
+  bool showSpinner = false;
+  final _key = new GlobalKey<FormState>();
   void initAwait() async {
     sp = await SharedPreferences.getInstance();
     setState(() {
       uid = sp.getString('uid');
-      // tid = sp.getString('tid');
+      tid = sp.getString('tid');
       print(sp.getString('rate'));
     });
   }
@@ -409,31 +413,7 @@ class _TutorProfileSettingsWidgetState
     initAwait();
   }
 
-  TextEditingController newRate = new TextEditingController();
   List<String> majors, languages, topics;
-
-  createAlertDialog(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Type your current password for confirmation'),
-            content: TextFormField(
-              controller: currentpasswordController,
-            ),
-            actions: <Widget>[
-              MaterialButton(
-                color: Colors.grey.shade900,
-                textColor: Colors.white,
-                onPressed: () {
-                  //updateProfileTutor();
-                },
-                child: Text('Submit'),
-              )
-            ],
-          );
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -581,21 +561,34 @@ class _TutorProfileSettingsWidgetState
                             icon: Icon(Icons.edit),
                             onPressed: () {
                               // Alert Dialog: Edit Base Price
+                              String newRate;
+                              bool retVal;
                               showDialog(
                                 context: context,
                                 child: AlertDialog(
                                   title: Text("Edit Base Price"),
-                                  content: TextFormField(
-                                    controller: newRate,
-                                    decoration: InputDecoration(
-                                      hintText: 'Base Price',
+                                  content: Form(
+                                    key: _key,
+                                    child: TextFormField(
+                                      validator: (val) {
+                                        if (val.isEmpty) {
+                                          return 'Please input value for new rate';
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (val) {
+                                        newRate = val;
+                                      },
+                                      decoration: InputDecoration(
+                                        hintText: 'Base Price',
+                                      ),
+                                      keyboardType: TextInputType.number,
                                     ),
-                                    keyboardType: TextInputType.number,
                                   ),
                                   elevation: 24.0,
                                   actions: <Widget>[
                                     FlatButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         Navigator.of(context,
                                                 rootNavigator: true)
                                             .pop('dialog');
@@ -607,9 +600,54 @@ class _TutorProfileSettingsWidgetState
                                       ),
                                     ),
                                     FlatButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         // Update Base Price
-                                        createAlertDialog(context);
+                                        print(tid);
+                                        if (_key.currentState.validate()) {
+                                          setState(() {
+                                            showSpinner = true;
+                                          });
+
+                                          try {
+                                            retVal = await _model.editRate(
+                                                tid, newRate);
+                                            if (retVal == true) {
+                                              setState(() {
+                                                showSpinner = false;
+                                              });
+
+                                              Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .pop('dialog');
+
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Your rate has been editted successfully.",
+                                                  toastLength:
+                                                      Toast.LENGTH_SHORT,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIos: 1,
+                                                  backgroundColor: Colors.blue,
+                                                  textColor: Colors.white,
+                                                  fontSize: 16.0);
+                                            }
+                                          } catch (e) {
+                                            setState(() {
+                                              showSpinner = false;
+                                            });
+
+                                            Fluttertoast.showToast(
+                                                msg:
+                                                    "Not able to update your rate, please try again later",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIos: 1,
+                                                backgroundColor: Colors.blue,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0);
+                                            print(e.toString());
+                                          }
+                                        }
                                       },
                                       child: Text(
                                         "Save",

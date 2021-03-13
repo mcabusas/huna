@@ -12,15 +12,48 @@ class ViewTutorProfileModel {
 
   Future<Map<String, dynamic>> getTutorData(String tid) async {
 
-    DocumentReference tutorRef = await FirebaseFirestore.instance
+    Map<String, dynamic> tutorData = {
+      'majors': [],
+      'topics': [],
+      'rating': 0.0,
+    };
+
+    await FirebaseFirestore.instance
     .collection('tutors')
     .doc(tid)
     .get()
-    .then((value) {
-      
+    .then((value) async {
+
+      tutorData['majors'] = value.data()['majors'];
+      tutorData['topics'] = value.data()['topics'];
+
+      QuerySnapshot ratingsQuery =  await FirebaseFirestore.instance
+      .collection('reviews')
+      .where('t_uid', isEqualTo: tid)
+      .get();
+
+      for(int i = 0; i < ratingsQuery.docs.length; i++){
+        String ratingsid = ratingsQuery.docs[i].id;
+
+        DocumentReference ratingsRef = FirebaseFirestore.instance
+        .collection('reviews')
+        .doc(ratingsid);
+
+        await ratingsRef.get().then((value){
+          tutorData['rating'] += value.data()['tutor_rating'];
+        });
+      }
+
+      tutorData['rating']/=ratingsQuery.docs.length;
+
+
     });
 
-    return null;
+    print(tutorData);
+    
+
+
+    return tutorData;
   }
 
   Future<String> createChatRoom(Map<String, dynamic> tutorData) async {

@@ -143,8 +143,7 @@ class _DashboardPageState extends State<DashboardPage> {
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: (){
-                                   print(snapshot.data.docs[index]['tid']);
-                                   print(snapshot.data.docs[index]['uid']);
+                                   print(snapshot.data.docs[index]['majors']);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data.docs[index])),

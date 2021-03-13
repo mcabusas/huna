@@ -49,7 +49,7 @@ class _MyProfileState extends State<MyProfile> {
         return StudentProfileWidget(id: uid, flag: 0);
 
       case WidgetMaker.tutor:
-        return TutorProfileWidget(id: uid, flag: 1);
+        return TutorProfileWidget(id: uid, flag: 1, tid: tid);
     }
 
     return getScreen();
@@ -186,7 +186,8 @@ class _MyProfileState extends State<MyProfile> {
 class TutorProfileWidget extends StatefulWidget {
   final id;
   final flag;
-  TutorProfileWidget({this.id, this.flag});
+  final tid;
+  TutorProfileWidget({this.id, this.flag, this.tid});
   @override
   _TutorProfileWidgetState createState() => _TutorProfileWidgetState();
 }
