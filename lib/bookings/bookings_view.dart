@@ -164,7 +164,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
 
                 if (snapshot.data.docs[index]['bookingData']
                         ['booking_status'] ==
-                    'Finished') {
+                    'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == 1) {
                   return Center(
                     child: Align(
                         alignment: Alignment.center,
@@ -277,21 +277,13 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
 
                             Row(
                               children: [
-                                snapshot.data.docs[index]['testData']
-                                                ['pretest_answeredStatus'] ==
-                                            '1' &&
-                                        (snapshot.data.docs[index]
-                                                        ['bookingData']
-                                                    ['booking_status'] ==
-                                                'Accepted' ||
+                                snapshot.data.docs[index]['testData']['pretest_answeredStatus'] =='1' &&(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted' ||
                                             snapshot.data.docs[index]
                                                         ['bookingData']
                                                     ['booking_status'] ==
                                                 'Ongoing' ||
-                                            snapshot.data.docs[index]
-                                                        ['bookingData']
-                                                    ['booking_status'] ==
-                                                'Finished')
+                                            (snapshot.data.docs[index]['bookingData']['booking_status'] =='Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == '0')
+                                            )
                                     ? Align(
                                         alignment: Alignment.bottomLeft,
                                         child: Padding(
@@ -330,11 +322,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                                               flag: 0
                                                               )),
                                                 );
-                                              } else if (snapshot
-                                                              .data.docs[index]
-                                                          ['bookingData']
-                                                      ['booking_status'] ==
-                                                  'Finished') {
+                                              } else if(snapshot.data.docs[index]['bookingData']['booking_status'] == 'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == '0'){
                                                 Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
@@ -539,6 +527,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                           ),
                           component.cancelBtn = new component.TrailingButton(
                             onPressed: () {
+                              print(snapshot.data.docs[index]['bookingId']);
                               //print(booking.id.runtimeType);
                               //_model.updateBookingStatus(snapshot.data.docs[index]['bookingId'], 0);
                             },

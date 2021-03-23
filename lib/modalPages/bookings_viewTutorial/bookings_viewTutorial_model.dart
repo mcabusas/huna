@@ -2,6 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ViewTutorialModel {
 
+  Stream getStatus(String bookingId){
+    return FirebaseFirestore.instance
+    .collection('bookings')
+    .where('bookingId', isEqualTo: bookingId)
+    .snapshots()
+    .handleError((onError) => {
+      print(onError.toString())
+    });
+  }
+
   Future<void> createPretest(Map<String, dynamic> testInfo) async {
     await FirebaseFirestore.instance
     .collection('test')

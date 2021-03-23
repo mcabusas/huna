@@ -24,24 +24,23 @@ class _TutorialCompleteState extends State<TutorialComplete> {
   TutorialCompleteModal _modal = TutorialCompleteModal();
 
   Map<String, int> retVal;
-  int preCorrect, postCorrect, total;
 
   var ret;
 
-  Future<void> initAwait() async {
-    retVal = await _modal.getPretestResult(widget.data['testData']['test_id']);
-    print(retVal);
-    setState(() {
-      preCorrect = retVal['pre-correct'];
-      postCorrect = retVal['post-correct'];
-      total = retVal['total'];
-    });
-  }
+  // Future<void> initAwait() async {
+  //   retVal = await _modal.getPretestResult(widget.data['testData']['test_id']);
+  //   print(retVal);
+  //   setState(() {
+  //     preCorrect = retVal['pre-correct'];
+  //     postCorrect = retVal['post-correct'];
+  //     total = retVal['total'];
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    initAwait();
+    //initAwait();
     print(widget.flag);
   }
 
@@ -68,46 +67,114 @@ class _TutorialCompleteState extends State<TutorialComplete> {
                   flag: widget.flag
                 )
               : Student(studentData: widget.data, flag: widget.flag),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                  child: Column(
-                children: [
-                  Text('${preCorrect} / ${total}'),
-                  Text('Pre-test Results')
-                ],
-              )),
-              Container(
-                  child: Column(
-                children: [
-                  Text('${postCorrect} / ${total}'),
-                  Text('Post-test Results')
-                ],
-              )),
-            ],
-          ),
-          widget.data['testData']['posttest_answeredStatus'] == '1'
-              ? Padding(
-                padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
-                child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: RaisedButton.icon(
-                      onPressed: () {
-                        //print(widget.studentData['testData'].toString());
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
-                        );
-                      },
-                      icon: Icon(Icons.assignment),
-                      label: Text('Rate and Review'),
-                      color: Colors.purple, // Colors.grey if not yet answered.
-                      textColor: Colors.white,
-                    )),
-              )
-              : Container(height: 0, width: 0)
+          StreamBuilder(
+            stream: _modal.getResults(widget.data['bookingId']),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              Widget retWidget;
+              int preCorrect = 0;
+              int postCorrect = 0;
+              int total = 0;
+              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                retWidget = Container(height: 0, width: 0);
+              }
+              if(snapshot.hasData) {
+
+                for(int i = 0; i < snapshot.data.docs.length; i++) {
+                  print(snapshot.data.docs[i]['students_answer_pre-test']);
+                  var questionSnapshot = snapshot.data.docs[i];
+                  if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1'] && questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
+                    preCorrect++;
+                    postCorrect++;
+                  }
+                  else if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1']){
+                    preCorrect++;
+                  } 
+                  else if(questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
+                    postCorrect++;
+                  }
+                  
+                }
+                total = snapshot.data.docs.length;
+                retWidget = Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            child: Column(
+                          children: [
+                            Text('$preCorrect / $total'),
+                            Text('Pre-test Results')
+                          ],
+                        )),
+                        Container(
+                            child: Column(
+                          children: [
+                            Text('$postCorrect / $total'),
+                            Text('Post-test Results')
+                          ],
+                        )),
+                      ],
+                    );
+
+              }
+              return retWidget;
+            }
+          ),  
+          StreamBuilder(
+            stream: _modal.getStatus(widget.data['bookingId']),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              Widget retWidget;
+              int postCorrect, preCorrect, total = 0;
+              if(!snapshot.hasData || snapshot.data.docs.isEmpty){
+                retWidget = Container(height: 0, width: 0);
+              }
+              if(snapshot.hasData){
+                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '1' 
+                ?
+                retWidget = Padding(
+                  padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
+                  child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: RaisedButton.icon(
+                        onPressed: () {
+                          //print(widget.studentData['testData'].toString());
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
+                          );
+                        },
+                        icon: Icon(Icons.assignment),
+                        label: Text('Rate and Review'),
+                        color: Colors.purple, // Colors.grey if not yet answered.
+                        textColor: Colors.white,
+                      )),
+                )
+                :
+                retWidget = Container(height: 0, width: 0);
+              }
+              return retWidget;
+            },
+          )
+          // widget.data['testData']['posttest_answeredStatus'] == '1'
+          //     ? Padding(
+          //       padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
+          //       child: SizedBox(
+          //           width: MediaQuery.of(context).size.width,
+          //           child: RaisedButton.icon(
+          //             onPressed: () {
+          //               //print(widget.studentData['testData'].toString());
+          //               Navigator.push(
+          //                 context,
+          //                 MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
+          //               );
+          //             },
+          //             icon: Icon(Icons.assignment),
+          //             label: Text('Rate and Review'),
+          //             color: Colors.purple, // Colors.grey if not yet answered.
+          //             textColor: Colors.white,
+          //           )),
+          //     )
+          //     : Container(height: 0, width: 0)
         ])));
   }
 }

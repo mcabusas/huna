@@ -2,6 +2,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TutorialCompleteModal {
 
+  Stream getStatus(String bookingId){
+    return FirebaseFirestore.instance
+    .collection('bookings')
+    .where('bookingId', isEqualTo: bookingId)
+    .snapshots()
+    .handleError((onError) => {
+      print(onError.toString())
+    });
+  }
+
+  Stream getResults(String testId){
+    return FirebaseFirestore.instance
+    .collection('test')
+    .doc(testId)
+    .collection('QnA')
+    .snapshots()
+    .handleError((e) => {
+      print(e.toString())
+    });
+  }
+
   Future<Map<String, int>> getPretestResult(String testId) async {
     Map<String, int> pretestResult = {
       'pre-correct': 0,
