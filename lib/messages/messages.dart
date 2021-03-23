@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:huna/historyPages/bookingHistory.dart';
+import 'package:huna/historyPages/boookingHistory/bookingHistory.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/modalPages/chat/messages_chat.dart';
 import 'package:huna/drawer/drawer.dart';

@@ -10,12 +10,15 @@ class ViewTutorProfileModel {
   AuthServices _authServices = new AuthServices();
   
 
-  Future<Map<String, dynamic>> getTutorData(String tid) async {
+  Future<Map<String, dynamic>> getTutorData(String uid, String tid) async {
 
     Map<String, dynamic> tutorData = {
       'majors': [],
       'topics': [],
+      'languages': [],
       'rating': 0.0,
+      'city': '',
+      'country': ''
     };
 
     await FirebaseFirestore.instance
@@ -26,25 +29,39 @@ class ViewTutorProfileModel {
 
       tutorData['majors'] = value.data()['majors'];
       tutorData['topics'] = value.data()['topics'];
+      tutorData['languages'] = value.data()['languages'];
 
       QuerySnapshot ratingsQuery =  await FirebaseFirestore.instance
       .collection('reviews')
-      .where('t_uid', isEqualTo: tid)
+      .where('t_uid', isEqualTo: uid)
       .get();
 
-      for(int i = 0; i < ratingsQuery.docs.length; i++){
-        String ratingsid = ratingsQuery.docs[i].id;
+      if(ratingsQuery.docs.length != 0){
 
-        DocumentReference ratingsRef = FirebaseFirestore.instance
-        .collection('reviews')
-        .doc(ratingsid);
+        for(int i = 0; i < ratingsQuery.docs.length; i++){
+          String ratingsid = ratingsQuery.docs[i].id;
 
-        await ratingsRef.get().then((value){
-          tutorData['rating'] += value.data()['tutor_rating'];
-        });
+          DocumentReference ratingsRef = FirebaseFirestore.instance
+          .collection('reviews')
+          .doc(ratingsid);
+
+          await ratingsRef.get().then((value){
+            tutorData['rating'] += value.data()['tutor_rating'];
+          });
+        }
+
+        tutorData['rating']/=ratingsQuery.docs.length;
+
       }
 
-      tutorData['rating']/=ratingsQuery.docs.length;
+      await FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .get()
+      .then((value){
+        tutorData['city'] = value.data()['city'];
+        tutorData['country'] = value.data()['country'];
+      });
 
 
     });
@@ -56,7 +73,7 @@ class ViewTutorProfileModel {
     return tutorData;
   }
 
-  Future<String> createChatRoom(Map<String, dynamic> tutorData) async {
+  Future<String> createChatRoom(QueryDocumentSnapshot tutorData) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     print(sp.getString('uid'));
 

@@ -30,7 +30,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
   @override
   void initState(){
     super.initState();
-    print(widget.tutorData['tid']);
+    print(widget.tutorData['firstName']);
   }
 
   @override
@@ -67,10 +67,11 @@ class _TutorProfileState extends State<TutorProfilePage> {
           IconButton(
             icon: Icon(Icons.forum),
             onPressed: () async {
-              chatRoomId =  await _model.createChatRoom(tutorData);
+              print(widget.tutorData['tid']);
+              chatRoomId =  await _model.createChatRoom(widget.tutorData);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatPage(tutorData: tutorData, chatRoomId: chatRoomId, page: 1)),
+                MaterialPageRoute(builder: (context) => ChatPage(tutorData: widget.tutorData, chatRoomId: chatRoomId, page: 1)),
               );
             },
           ),
@@ -190,7 +191,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
 
   Future<Map<String, dynamic>> initAwait() async {
-    return await _model.getTutorData(widget.tutorData['tid']);
+    return await _model.getTutorData(widget.tutorData['uid'], widget.tutorData['tid']);
   }
 
   @override
@@ -205,7 +206,8 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
       builder: (BuildContext context, AsyncSnapshot snapshot){
         if(snapshot.connectionState == ConnectionState.waiting){
           retWidget =  Container(child: Center(child: CircularProgressIndicator()));
-        } else if (snapshot.connectionState == ConnectionState.done){
+        } 
+        if (snapshot.connectionState == ConnectionState.done){
           retWidget =  Stack(
             children: <Widget>[
               Container(
@@ -240,13 +242,13 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               color: Colors.white),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          'usename',
-                          //'@${data[0]['username']}',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ),
+                      // Center(
+                      //   child: Text(
+                      //     'usename',
+                      //     //'@${data[0]['username']}',
+                      //     style: TextStyle(color: Colors.white70),
+                      //   ),
+                      // ),
                       SizedBox(height: 20),
                       // Location
                       Padding(
@@ -259,7 +261,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               size: 15,
                             ),
                             Text(
-                              ' Cebu City, Philippines',
+                              '${snapshot.data['city']}, ${snapshot.data['country']}',
                               style: TextStyle(color: Colors.white, fontSize: 12),
                             ),
                           ],
@@ -286,7 +288,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Average Rating: 5.0',
+                                  'Average Rating: ${snapshot.data['rating']}',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -367,11 +369,11 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                       GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: majors == null ? 0 : majors.length,
+                                          itemCount: snapshot.data['majors'].length == null ? 0 : snapshot.data['majors'].length,
                                           itemBuilder: (BuildContext context, int index) {
                                             return new Chip(
                                               label: Text(
-                                                'dfas',
+                                                snapshot.data['majors'][index],
                                                 //majors[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -392,11 +394,11 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: languages== null ? 0 : languages.length,
+                                          itemCount: snapshot.data['languages'].length == null ? 0 : snapshot.data['languages'].length,
                                           itemBuilder: (BuildContext context, int index) {
                                             return new Chip(
                                               label: Text(
-                                                'dfasdf',
+                                                snapshot.data['languages'][index],
                                                 //languages[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -417,11 +419,11 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: topics== null ? 0 : topics.length,
+                                          itemCount: snapshot.data['topics'].length == null ? 0 : snapshot.data['topics'].length,
                                           itemBuilder: (BuildContext context, int index) {
                                             return new Chip(
                                               label: Text(
-                                                'topics[index]',
+                                                snapshot.data['topics'][index],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold),

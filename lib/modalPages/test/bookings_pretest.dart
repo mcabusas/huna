@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'test_model.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 
 // ignore: must_be_immutable
 class PretestPage extends StatefulWidget {
@@ -72,7 +72,7 @@ class _PretestState extends State<PretestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pretest'),
+        title: Text('Pre-test / Post-test'),
         automaticallyImplyLeading: false
       ),
       body: isLoading == true ? Container(child: Center(child: CircularProgressIndicator())) : ListView(
@@ -91,11 +91,16 @@ class _PretestState extends State<PretestPage> {
                 // ONLY APPEARS IF ON THE LAST PAGE.
                 RaisedButton.icon(
                   onPressed: () {
-                    //insertPretest();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Bookings()),
-                    // );
+                    Fluttertoast.showToast(
+                      msg: "Test created",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );
+                    Navigator.pop(context);
                   },
                   icon: Icon(Icons.check),
                   label: Text('Finish'),

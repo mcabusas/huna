@@ -63,10 +63,7 @@ class _ResultsPageState extends State<ResultsPage> {
           leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Bookings()),
-                );
+                Navigator.pop(context);
               }),
           title: Text('Results Page - $testFlag'),
         ),

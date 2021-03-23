@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huna/historyPages/boookingHistory/bookingHistory.dart';
 import 'package:huna/modalPages/test/answertest.dart';
 import 'package:huna/modalPages/bookings_viewTutorial/bookings_viewTutorial.dart';
 import 'package:huna/drawer/drawer.dart';
@@ -101,10 +102,10 @@ class _BookingsState extends State<Bookings> {
           IconButton(
             icon: Icon(Icons.history),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => BookingHistoryPage(tutorID: u.tutorID)),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => BookingHistoryPage()),
+              );
             },
           ),
         ],
@@ -221,25 +222,26 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                       color: Colors.purple,
                                       textColor: Colors.white,
                                     )
-                                  : RaisedButton.icon(
-                                      onPressed: () {
-                                        print(snapshot.data.docs[index]
-                                            ['bookingId']);
+                                  : Container(height: 0, width: 0),
+                                  // RaisedButton.icon(
+                                  //     onPressed: () {
+                                  //       print(snapshot.data.docs[index]
+                                  //           ['bookingId']);
 
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => ResultsPage(
-                                                  testData:
-                                                      snapshot.data.docs[index],
-                                                  flag: 0)),
-                                        );
-                                      },
-                                      icon: Icon(Icons.assignment_late),
-                                      label: Text('Completed'),
-                                      color: Colors.grey,
-                                      textColor: Colors.black,
-                                    ),
+                                  //       Navigator.push(
+                                  //         context,
+                                  //         MaterialPageRoute(
+                                  //             builder: (context) => ResultsPage(
+                                  //                 testData:
+                                  //                     snapshot.data.docs[index],
+                                  //                 flag: 0)),
+                                  //       );
+                                  //     },
+                                  //     icon: Icon(Icons.assignment_late),
+                                  //     label: Text('Completed'),
+                                  //     color: Colors.grey,
+                                  //     textColor: Colors.black,
+                                  //   ),
                           children: <Widget>[
                             // Expanded Contents
                             ListTile(

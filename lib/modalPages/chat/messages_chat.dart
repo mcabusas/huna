@@ -37,6 +37,7 @@ class _ChatState extends State<ChatPage> {
     super.initState();
     initAwait();
     conversationMessages = _model.getConversationMessages(widget.chatRoomId);
+    print(widget.tutorData['firstName']);
   }
 
   Widget getButtonWidget(){
@@ -79,81 +80,83 @@ class _ChatState extends State<ChatPage> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            //Container(width: 0, height: 0),
-            StreamBuilder(
-              stream: conversationMessages,
-              builder: (context, snapshot){
-                if(snapshot.data == null){
-                  return Center(child:Text('Start Chatting...'));
-                }
-                return ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.all(15.0),
-                  itemCount: snapshot.data.docs.length,
-                  itemBuilder: (context, index){
-                    DocumentSnapshot message = snapshot.data.docs[index];
-                    if(message['sentBy'] == sp.getString('uid')){
-                      bubble = ChatBubble(
-                        message: message['message'],
-                        messageSide: Alignment.centerRight,
-                        textSide: TextAlign.end,
-                        bubbleColor: Colors.deepPurple,
-                        textColor: Colors.white,
-                      );
-                    }else {
-                      bubble = ChatBubble(
-                        message: message['message'],
-                        messageSide: Alignment.centerLeft,
-                        textSide: TextAlign.start,
-                        bubbleColor: Colors.white,
-                        textColor: Colors.black,
-                      );
-                    }
-                    return bubble;
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              //Container(width: 0, height: 0),
+              StreamBuilder(
+                stream: conversationMessages,
+                builder: (context, snapshot){
+                  if(snapshot.data == null){
+                    return Center(child:Text('Start Chatting...'));
                   }
-                  
-                );
-              },
-            ),
-            Container(
-              color: Colors.white,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: TextField(
-                    textCapitalization: TextCapitalization.sentences,
-                    autocorrect: true,
-                    controller: messageController,
-                    style: TextStyle(fontSize: 18),
-                    decoration: InputDecoration(
-                      enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                      focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                      hintText: 'Message',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          Icons.send, 
-                          color: Colors.deepPurple, 
-                          size: 45,
-                        ),
-                        onPressed: (){
-                          if(messageController.text.isNotEmpty){
-                            _model.insertMessage(widget.chatRoomId, messageController.text);
-                            messageController.clear();
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(15.0),
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index){
+                      DocumentSnapshot message = snapshot.data.docs[index];
+                      if(message['sentBy'] == sp.getString('uid')){
+                        bubble = ChatBubble(
+                          message: message['message'],
+                          messageSide: Alignment.centerRight,
+                          textSide: TextAlign.end,
+                          bubbleColor: Colors.deepPurple,
+                          textColor: Colors.white,
+                        );
+                      }else {
+                        bubble = ChatBubble(
+                          message: message['message'],
+                          messageSide: Alignment.centerLeft,
+                          textSide: TextAlign.start,
+                          bubbleColor: Colors.white,
+                          textColor: Colors.black,
+                        );
+                      }
+                      return bubble;
+                    }
+                    
+                  );
+                },
+              ),
+              Container(
+                color: Colors.white,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: TextField(
+                      textCapitalization: TextCapitalization.sentences,
+                      autocorrect: true,
+                      controller: messageController,
+                      style: TextStyle(fontSize: 18),
+                      decoration: InputDecoration(
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                        hintText: 'Message',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            Icons.send, 
+                            color: Colors.deepPurple, 
+                            size: 45,
+                          ),
+                          onPressed: (){
+                            if(messageController.text.isNotEmpty){
+                              _model.insertMessage(widget.chatRoomId, messageController.text);
+                              messageController.clear();
 
+                            }
                           }
-                        }
-                      ),
-                    ),  
+                        ),
+                      ),  
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

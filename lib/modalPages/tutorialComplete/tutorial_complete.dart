@@ -113,6 +113,7 @@ class _TutorialCompleteState extends State<TutorialComplete> {
 }
 
 class Student extends StatefulWidget {
+  //left
   final studentData;
   final flag;
   Student({this.studentData, this.flag});
@@ -197,28 +198,7 @@ class _StudentState extends State<Student> {
 
           Center(child: SizedBox(height: 20)),
 
-          widget.studentData['testData']['posttest_answeredStatus'] == '0'
-              ? SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: RaisedButton.icon(
-                    onPressed: () {
-                      print(widget.studentData['testData'].toString());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AnswerPretestPage(
-                                testData: widget.studentData, flag: 1)),
-                      );
-                    },
-                    icon: Icon(Icons.assignment),
-                    label: Text('Answer Post-test'),
-                    color: Colors.purple, // Colors.grey if not yet answered.
-                    textColor: Colors.white,
-                  ),
-                )
-              : Column(
-                  children: [
-                    SizedBox(
+          SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
                         onPressed: () {
@@ -254,8 +234,66 @@ class _StudentState extends State<Student> {
                         textColor: Colors.white,
                       ),
                     )
-                  ],
-                )
+
+          // widget.studentData['testData']['posttest_answeredStatus'] == '0'
+          //     ? SizedBox(
+          //         width: MediaQuery.of(context).size.width,
+          //         child: RaisedButton.icon(
+          //           onPressed: () {
+          //             print(widget.studentData['testData'].toString());
+          //             Navigator.push(
+          //               context,
+          //               MaterialPageRoute(
+          //                   builder: (context) => AnswerPretestPage(
+          //                       testData: widget.studentData, flag: 1)),
+          //             );
+          //           },
+          //           icon: Icon(Icons.assignment),
+          //           label: Text('Answer Post-test'),
+          //           color: Colors.purple, // Colors.grey if not yet answered.
+          //           textColor: Colors.white,
+          //         ),
+          //       )
+          //     : Column(
+          //         children: [
+          //           SizedBox(
+          //             width: MediaQuery.of(context).size.width,
+          //             child: RaisedButton.icon(
+          //               onPressed: () {
+          //                 print(widget.studentData['testData'].toString());
+          //                 Navigator.push(
+          //                   context,
+          //                   MaterialPageRoute(
+          //                       builder: (context) => ResultsPage(
+          //                           testData: widget.studentData, flag: 0)),
+          //                 );
+          //               },
+          //               icon: Icon(Icons.assignment),
+          //               label: Text('View Pre-test Results'),
+          //               color: Colors.blue, // Colors.grey if not yet answered.
+          //               textColor: Colors.white,
+          //             ),
+          //           ),
+          //           SizedBox(
+          //             width: MediaQuery.of(context).size.width,
+          //             child: RaisedButton.icon(
+          //               onPressed: () {
+          //                 print(widget.studentData['testData'].toString());
+          //                 Navigator.push(
+          //                   context,
+          //                   MaterialPageRoute(
+          //                       builder: (context) => ResultsPage(
+          //                           testData: widget.studentData, flag: 1)),
+          //                 );
+          //               },
+          //               icon: Icon(Icons.assignment),
+          //               label: Text('View Post-test Results'),
+          //               color: Colors.green, // Colors.grey if not yet answered.
+          //               textColor: Colors.white,
+          //             ),
+          //           )
+          //         ],
+          //       )
           // BUTTONS // ONLY ONE IS ACTIVATED AT A TIME.
           // CREATE PRETEST IF ONE HASN'T BEEN MADE YET
         ],
@@ -265,9 +303,12 @@ class _StudentState extends State<Student> {
 }
 
 class Tutor extends StatefulWidget {
+  //right
   final flag;
   final tutorData;
   Tutor({this.tutorData, this.flag});
+
+  
 
   @override
   _TutorState createState() => _TutorState();
