@@ -75,60 +75,62 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
         testFlag = 'Answer: Post-test';
       });
     }
-    return Scaffold(
-
-
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Bookings()),
-              );
-            }),
-        title: Text(testFlag),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.check),
-        backgroundColor: Colors.blue,
-        onPressed: (){
-          print(widget.testData);
-          _model.updatePretestStatus(widget.testData['testData']['test_id'], widget.flag).then((value){
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ResultsPage(testData: widget.testData, flag: widget.flag)),
-            );
-          });
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              questionsSnapshot == null ? 
-              Container(child: Center(child: CircularProgressIndicator())):
-              ListView.builder(
-                shrinkWrap: true,
-                physics: ClampingScrollPhysics(),
-                itemCount: questionsSnapshot.docs.length,
-                itemBuilder: (context, index){
-                  return PretestTile(
-                    questionModel: getQuestionModelFromDataSnapshot(questionsSnapshot.docs[index]),
-                    index: index,
-                    model: _model,
-                    id: questionsSnapshot.docs[index].id,
-                    pretestId: widget.testData['testData']['test_id'],
-                    flag: widget.flag
-                  );
-                },
-              )
-            ],
-          )
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Container(height: 0, width: 0,),
+          // IconButton(
+          // //     icon: Icon(Icons.arrow_back_ios),
+          // //     onPressed: () {
+          // //       Navigator.push(
+          // //         context,
+          // //         MaterialPageRoute(builder: (context) => Bookings()),
+          // //       );
+          // //     }),
+          title: Text(testFlag),
         ),
-      )
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          backgroundColor: Colors.blue,
+          onPressed: (){
+            print(widget.testData);
+            _model.updatePretestStatus(widget.testData['testData']['test_id'], widget.flag).then((value){
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ResultsPage(testData: widget.testData, flag: widget.flag)),
+              );
+            });
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(15.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                questionsSnapshot == null ? 
+                Container(child: Center(child: CircularProgressIndicator())):
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: ClampingScrollPhysics(),
+                  itemCount: questionsSnapshot.docs.length,
+                  itemBuilder: (context, index){
+                    return PretestTile(
+                      questionModel: getQuestionModelFromDataSnapshot(questionsSnapshot.docs[index]),
+                      index: index,
+                      model: _model,
+                      id: questionsSnapshot.docs[index].id,
+                      pretestId: widget.testData['testData']['test_id'],
+                      flag: widget.flag
+                    );
+                  },
+                )
+              ],
+            )
+          ),
+        )
+      ),
     );
   }
   

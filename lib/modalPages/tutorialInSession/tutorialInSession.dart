@@ -43,96 +43,91 @@ class _TutorialInSessionState extends State<TutorialInSession> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.deepPurple,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => OnTheDay()),
-              // );
-            }),
-        title: Text('In Session'),
-      ),
-      body: Stack(children: <Widget>[
-        Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('assets/images/bgk.jpg'), 
-                  colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.85), 
-                    BlendMode.darken,
-                    ),                    
-                  fit: BoxFit.fill,
-                  ),
-              ),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        // backgroundColor: Colors.deepPurple,
+        appBar: AppBar(
+          leading: Container(height: 0, width: 0),
+          title: Text('In Session'),
         ),
-        SingleChildScrollView(
-          child: Container(
-            color: Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Center(child: SizedBox(height: 80)),
-                    Center(
-                      child: Text(
-                        "Tutorial \n is in session.",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+        body: Stack(children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/bgk.jpg'), 
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.85), 
+                      BlendMode.darken,
+                      ),                    
+                    fit: BoxFit.fill,
+                    ),
+                ),
+          ),
+          SingleChildScrollView(
+            child: Container(
+              color: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Center(child: SizedBox(height: 80)),
+                      Center(
+                        child: Text(
+                          "Tutorial \n is in session.",
+                          style: TextStyle(
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    Center(child: SizedBox(height: 200)),
-                    // BUTTONS
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () async{
-                          _model.endTutorial(widget.data['bookingId']);
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => TutorialComplete(data: widget.data, flag: widget.flag)),
-                            );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('End Tutorial'),
-                        color: Colors.deepPurple,
-                        textColor: Colors.white,
+                      Center(child: SizedBox(height: 200)),
+                      // BUTTONS
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () async{
+                            _model.endTutorial(widget.data['bookingId']);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => TutorialComplete(data: widget.data, flag: widget.flag)),
+                              );
+                          },
+                          icon: Icon(Icons.assignment),
+                          label: Text('End Tutorial'),
+                          color: Colors.deepPurple,
+                          textColor: Colors.white,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SOS()),
-                            );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('SOS'),
-                        color: Colors.black,
-                        textColor: Colors.white,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SOS()),
+                              );
+                          },
+                          icon: Icon(Icons.assignment),
+                          label: Text('SOS'),
+                          color: Colors.black,
+                          textColor: Colors.white,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

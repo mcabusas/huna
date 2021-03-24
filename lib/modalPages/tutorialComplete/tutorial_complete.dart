@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'tutorial_complete_modal.dart';
 import '../test/answertest.dart';
 
+TutorialCompleteModal _modal = TutorialCompleteModal();
+
 class TutorialComplete extends StatefulWidget {
   final data;
   final flag;
@@ -21,21 +23,9 @@ class TutorialComplete extends StatefulWidget {
 
 class _TutorialCompleteState extends State<TutorialComplete> {
   //ViewTutorialModel _model = new ViewTutorialModel();
-  TutorialCompleteModal _modal = TutorialCompleteModal();
+  
 
   Map<String, int> retVal;
-
-  var ret;
-
-  // Future<void> initAwait() async {
-  //   retVal = await _modal.getPretestResult(widget.data['testData']['test_id']);
-  //   print(retVal);
-  //   setState(() {
-  //     preCorrect = retVal['pre-correct'];
-  //     postCorrect = retVal['post-correct'];
-  //     total = retVal['total'];
-  //   });
-  // }
 
   @override
   void initState() {
@@ -61,7 +51,7 @@ class _TutorialCompleteState extends State<TutorialComplete> {
         ),
         body: SingleChildScrollView(
             child: Column(children: [
-          widget.flag == 0
+          widget.flag == 1
               ? Tutor(
                   tutorData: widget.data,
                   flag: widget.flag
@@ -217,7 +207,7 @@ class _StudentState extends State<Student> {
           SizedBox(height: 20),
           Center(
             child: Text(
-              '${widget.studentData['bookingData']['student_firstName']} ${widget.studentData['bookingData']['student_lastName']}',
+              '${widget.studentData['bookingData']['tutor_firstName']} ${widget.studentData['bookingData']['tutor_lastName']}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -265,17 +255,48 @@ class _StudentState extends State<Student> {
 
           Center(child: SizedBox(height: 20)),
 
-          SizedBox(
+          StreamBuilder(
+            stream: _modal.getStatus(widget.studentData['bookingId']),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              Widget retWidget;
+              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                retWidget = Container(height: 0, width: 0);
+              }
+              if(snapshot.hasData){
+                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '0' ?
+
+                retWidget = SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton.icon(
+                    onPressed: () {
+                      print(widget.studentData['testData'].toString());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AnswerPretestPage(
+                                testData: widget.studentData, flag: 1)),
+                      );
+                    },
+                    icon: Icon(Icons.assignment),
+                    label: Text('Answer Post-test'),
+                    color: Colors.purple, // Colors.grey if not yet answered.
+                    textColor: Colors.white,
+                  ),
+                )
+                :
+                retWidget = Column(
+                  children: [
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.studentData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.studentData, flag: 0)),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => ResultsPage(
+                          //           testData: widget.tutorData, flag: 0)),
+                          // );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Pre-test Results'),
@@ -288,12 +309,12 @@ class _StudentState extends State<Student> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.studentData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.studentData, flag: 1)),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => ResultsPage(
+                          //           testData: widget.tutorData, flag: 1)),
+                          // );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Post-test Results'),
@@ -301,29 +322,15 @@ class _StudentState extends State<Student> {
                         textColor: Colors.white,
                       ),
                     )
+                  ],
+                );
 
-          // widget.studentData['testData']['posttest_answeredStatus'] == '0'
-          //     ? SizedBox(
-          //         width: MediaQuery.of(context).size.width,
-          //         child: RaisedButton.icon(
-          //           onPressed: () {
-          //             print(widget.studentData['testData'].toString());
-          //             Navigator.push(
-          //               context,
-          //               MaterialPageRoute(
-          //                   builder: (context) => AnswerPretestPage(
-          //                       testData: widget.studentData, flag: 1)),
-          //             );
-          //           },
-          //           icon: Icon(Icons.assignment),
-          //           label: Text('Answer Post-test'),
-          //           color: Colors.purple, // Colors.grey if not yet answered.
-          //           textColor: Colors.white,
-          //         ),
-          //       )
-          //     : Column(
-          //         children: [
-          //           SizedBox(
+              }
+              return retWidget;
+            }
+          )
+
+          // SizedBox(
           //             width: MediaQuery.of(context).size.width,
           //             child: RaisedButton.icon(
           //               onPressed: () {
@@ -359,10 +366,6 @@ class _StudentState extends State<Student> {
           //               textColor: Colors.white,
           //             ),
           //           )
-          //         ],
-          //       )
-          // BUTTONS // ONLY ONE IS ACTIVATED AT A TIME.
-          // CREATE PRETEST IF ONE HASN'T BEEN MADE YET
         ],
       ),
     );
@@ -457,8 +460,17 @@ class _TutorState extends State<Tutor> {
           ),
           Center(child: SizedBox(height: 20)),
 
-          widget.tutorData['testData']['posttest_answeredStatus'] == '0'
-              ? SizedBox(
+          StreamBuilder(
+            stream: _modal.getStatus(widget.tutorData['bookingId']),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
+              Widget retWidget;
+              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                retWidget = Container(height: 0, width: 0);
+              }
+              if(snapshot.hasData){
+                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '0' ?
+
+                retWidget = SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton.icon(
                     onPressed: () {
@@ -476,19 +488,20 @@ class _TutorState extends State<Tutor> {
                     textColor: Colors.white,
                   ),
                 )
-              : Column(
+                :
+                retWidget = Column(
                   children: [
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.tutorData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.tutorData, flag: 0)),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => ResultsPage(
+                          //           testData: widget.tutorData, flag: 0)),
+                          // );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Pre-test Results'),
@@ -501,12 +514,12 @@ class _TutorState extends State<Tutor> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.tutorData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.tutorData, flag: 1)),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => ResultsPage(
+                          //           testData: widget.tutorData, flag: 1)),
+                          // );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Post-test Results'),
@@ -515,7 +528,12 @@ class _TutorState extends State<Tutor> {
                       ),
                     )
                   ],
-                )
+                );
+
+              }
+              return retWidget;
+            }
+          )
         ],
       ),
     );

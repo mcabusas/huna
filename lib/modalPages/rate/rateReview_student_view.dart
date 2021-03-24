@@ -24,7 +24,7 @@ class _RateViewStudentState extends State<RateViewStudent> {
     't_uid': ''
   };
 
-  double rating = 2.5;
+  double rating = 0.0;
   int starCount = 5;
   @override
   Widget build(BuildContext context) {
@@ -54,6 +54,7 @@ class _RateViewStudentState extends State<RateViewStudent> {
                   SizedBox(height: 20),
                   Center(
                     child: Text(
+                      //'test',
                       '${widget.data['bookingData']['tutor_firstName']} ${widget.data['bookingData']['tutor_lastName']}',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -70,7 +71,7 @@ class _RateViewStudentState extends State<RateViewStudent> {
                           rating: rating,
                           color: Colors.amber.shade400,
                           borderColor: Colors.grey,
-                          starCount: starCount,
+                          starCount: 5,
                           onRatingChanged: (rating) => setState(
                             () {
                               reviewContent['rating'] = rating;
@@ -110,7 +111,7 @@ class _RateViewStudentState extends State<RateViewStudent> {
                               reviewContent['t_uid'] = widget.data['bookingData']['tutor_userid'];
                             });
                             print(reviewContent);
-                            print(widget.flag);
+                            //print(widget.flag);
                             _model.addReview(reviewContent, widget.flag).catchError((e)=>{
                               print(e.toString())
                             });

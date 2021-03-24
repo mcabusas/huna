@@ -58,59 +58,62 @@ class _ResultsPageState extends State<ResultsPage> {
         testFlag = 'Post-test';
       });
     }
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Navigator.pop(context);
-              }),
-          title: Text('Results Page - $testFlag'),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.check),
-          backgroundColor: Colors.blue,
-          onPressed: () {
-            print(widget.testData);
-            if (widget.flag == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Bookings()),
-              );
-            }else if(widget.flag == 1){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TutorialComplete(data: widget.testData, flag: widget.flag)),
-              );
-            }
-          },
-        ),
-        body: SingleChildScrollView(
-          child: Container(
-              padding: EdgeInsets.all(15.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  questionSnapshot == null
-                      ? Container(
-                          child: Center(child: CircularProgressIndicator()))
-                      : ListView.builder(
-                          shrinkWrap: true,
-                          physics: ClampingScrollPhysics(),
-                          itemCount: questionSnapshot.docs.length,
-                          itemBuilder: (context, index) {
-                            return ResultsTile(
-                              results: getResults(questionSnapshot.docs[index]),
-                              index: index,
-                              // model: _model,
-                              // id: questionSnapshot.docs[index].id,
-                              // testData: widget.testData
-                            );
-                          },
-                        )
-                ],
-              )),
-        ));
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            // leading: IconButton(
+            //     icon: Icon(Icons.arrow_back_ios),
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //     }),
+            title: Text('Results Page - $testFlag'),
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.check),
+            backgroundColor: Colors.blue,
+            onPressed: () {
+              print(widget.testData);
+              if (widget.flag == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Bookings()),
+                );
+              }else if(widget.flag == 1){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TutorialComplete(data: widget.testData, flag: widget.flag)),
+                );
+              }
+            },
+          ),
+          body: SingleChildScrollView(
+            child: Container(
+                padding: EdgeInsets.all(15.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    questionSnapshot == null
+                        ? Container(
+                            child: Center(child: CircularProgressIndicator()))
+                        : ListView.builder(
+                            shrinkWrap: true,
+                            physics: ClampingScrollPhysics(),
+                            itemCount: questionSnapshot.docs.length,
+                            itemBuilder: (context, index) {
+                              return ResultsTile(
+                                results: getResults(questionSnapshot.docs[index]),
+                                index: index,
+                                // model: _model,
+                                // id: questionSnapshot.docs[index].id,
+                                // testData: widget.testData
+                              );
+                            },
+                          )
+                  ],
+                )),
+          )),
+    );
   }
 }
 
