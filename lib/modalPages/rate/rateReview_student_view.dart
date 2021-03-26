@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/modalPages/rate/rateReview_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class RateViewStudent extends StatefulWidget {
@@ -115,11 +117,17 @@ class _RateViewStudentState extends State<RateViewStudent> {
                             _model.addReview(reviewContent, widget.flag).catchError((e)=>{
                               print(e.toString())
                             });
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => DashboardPage()),
-                            // );
+                            Fluttertoast.showToast(
+                                msg: "Thank you!",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                            DashboardPage()), (Route<dynamic> route) => false);
                           },
                           icon: Icon(Icons.send),
                           label: Text('Finish'),

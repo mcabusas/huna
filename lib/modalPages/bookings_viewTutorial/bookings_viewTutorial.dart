@@ -176,7 +176,7 @@ class _StudentState extends State<Student> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ResultsPage(
-                                      testData: widget.tutorData, flag: 0)),
+                                      testData: widget.tutorData, flag: 0, stackFlag: 0)),
                             );
                           },
                           icon: Icon(Icons.assignment),

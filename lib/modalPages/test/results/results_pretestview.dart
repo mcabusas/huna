@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import '../test_model.dart';
 import 'results.dart';
 import '../../tutorialComplete/tutorial_complete.dart';
@@ -8,7 +9,8 @@ import '../../tutorialComplete/tutorial_complete.dart';
 class ResultsPage extends StatefulWidget {
   final testData;
   final flag;
-  ResultsPage({this.testData, this.flag});
+  final stackFlag;
+  ResultsPage({this.testData, this.flag, this.stackFlag});
   @override
   _ResultsPageState createState() => _ResultsPageState();
 }
@@ -74,16 +76,44 @@ class _ResultsPageState extends State<ResultsPage> {
             backgroundColor: Colors.blue,
             onPressed: () {
               print(widget.testData);
+              print(widget.stackFlag);
               if (widget.flag == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Bookings()),
-                );
+
+                if(widget.stackFlag == 0){
+                  Navigator.pop(context);
+                }
+
+                if(widget.stackFlag == 1){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  DashboardPage()), (Route<dynamic> route) => false);
+                }
+
+                if(widget.stackFlag == 2){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  TutorialComplete(data: widget.testData, flag: widget.flag)), (Route<dynamic> route) => false);
+                }
+
+                // if(testFlag == 'Pre-test') {
+
+                //   if(widget.stackFlag == 0 || widget.stackFlag == 1){
+                //     Navigator.pop(context);
+                //   }
+                //   if(widget.stackFlag == 2){
+                //     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                //     DashboardPage()), (Route<dynamic> route) => false);
+                //   }
+                // } else if(testFlag == 'Post-test') {
+                //   Navigator.pop(context);
+                // }
+                
+                
               }else if(widget.flag == 1){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TutorialComplete(data: widget.testData, flag: widget.flag)),
-                );
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                TutorialComplete(data: widget.testData, flag: widget.flag)), (Route<dynamic> route) => false);
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => TutorialComplete(data: widget.testData, flag: widget.flag)),
+                // );
               }
             },
           ),

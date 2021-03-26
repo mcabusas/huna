@@ -54,7 +54,7 @@ class _RateReviewState extends State<RateReviewView> {
         //     ),
         //   ),
         // ),
-        widget.flag == 0 ?
+        widget.flag == 1 ?
         RateViewStudent(flag: widget.flag, data: widget.data) :
         RateViewTutor(flag: widget.flag, data: widget.data)
         

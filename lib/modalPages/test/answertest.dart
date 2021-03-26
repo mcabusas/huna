@@ -96,10 +96,13 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
           onPressed: (){
             print(widget.testData);
             _model.updatePretestStatus(widget.testData['testData']['test_id'], widget.flag).then((value){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ResultsPage(testData: widget.testData, flag: widget.flag)),
-              );
+              Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+              ResultsPage(testData: widget.testData, flag: widget.flag, stackFlag: 2)), (Route<dynamic> route) => false);
+
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => ResultsPage(testData: widget.testData, flag: widget.flag)),
+              // );
             });
           },
         ),

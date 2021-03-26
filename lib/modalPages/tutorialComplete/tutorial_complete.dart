@@ -37,135 +37,138 @@ class _TutorialCompleteState extends State<TutorialComplete> {
   @override
   Widget build(BuildContext context) {
     //var parsedDate = DateTime.parse(widget.studentData['bookingData']['date']);
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Bookings()),
-                // );
-              }),
-          title: Text('Tutorial Complete'),
-        ),
-        body: SingleChildScrollView(
-            child: Column(children: [
-          widget.flag == 1
-              ? Tutor(
-                  tutorData: widget.data,
-                  flag: widget.flag
-                )
-              : Student(studentData: widget.data, flag: widget.flag),
-          StreamBuilder(
-            stream: _modal.getResults(widget.data['bookingId']),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              Widget retWidget;
-              int preCorrect = 0;
-              int postCorrect = 0;
-              int total = 0;
-              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
-                retWidget = Container(height: 0, width: 0);
-              }
-              if(snapshot.hasData) {
-
-                for(int i = 0; i < snapshot.data.docs.length; i++) {
-                  print(snapshot.data.docs[i]['students_answer_pre-test']);
-                  var questionSnapshot = snapshot.data.docs[i];
-                  if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1'] && questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
-                    preCorrect++;
-                    postCorrect++;
-                  }
-                  else if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1']){
-                    preCorrect++;
-                  } 
-                  else if(questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
-                    postCorrect++;
-                  }
-                  
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back_ios),
+                onPressed: () {
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => Bookings()),
+                  // );
+                }),
+            title: Text('Tutorial Complete'),
+          ),
+          body: SingleChildScrollView(
+              child: Column(children: [
+            widget.flag == 1
+                ? Tutor(
+                    tutorData: widget.data,
+                    flag: widget.flag
+                  )
+                : Student(studentData: widget.data, flag: widget.flag),
+            StreamBuilder(
+              stream: _modal.getResults(widget.data['bookingId']),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                Widget retWidget;
+                int preCorrect = 0;
+                int postCorrect = 0;
+                int total = 0;
+                if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                  retWidget = Container(height: 0, width: 0);
                 }
-                total = snapshot.data.docs.length;
-                retWidget = Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                            child: Column(
-                          children: [
-                            Text('$preCorrect / $total'),
-                            Text('Pre-test Results')
-                          ],
-                        )),
-                        Container(
-                            child: Column(
-                          children: [
-                            Text('$postCorrect / $total'),
-                            Text('Post-test Results')
-                          ],
-                        )),
-                      ],
-                    );
+                if(snapshot.hasData) {
 
+                  for(int i = 0; i < snapshot.data.docs.length; i++) {
+                    print(snapshot.data.docs[i]['students_answer_pre-test']);
+                    var questionSnapshot = snapshot.data.docs[i];
+                    if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1'] && questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
+                      preCorrect++;
+                      postCorrect++;
+                    }
+                    else if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1']){
+                      preCorrect++;
+                    } 
+                    else if(questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
+                      postCorrect++;
+                    }
+                    
+                  }
+                  total = snapshot.data.docs.length;
+                  retWidget = Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              child: Column(
+                            children: [
+                              Text('$preCorrect / $total'),
+                              Text('Pre-test Results')
+                            ],
+                          )),
+                          Container(
+                              child: Column(
+                            children: [
+                              Text('$postCorrect / $total'),
+                              Text('Post-test Results')
+                            ],
+                          )),
+                        ],
+                      );
+
+                }
+                return retWidget;
               }
-              return retWidget;
-            }
-          ),  
-          StreamBuilder(
-            stream: _modal.getStatus(widget.data['bookingId']),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              Widget retWidget;
-              int postCorrect, preCorrect, total = 0;
-              if(!snapshot.hasData || snapshot.data.docs.isEmpty){
-                retWidget = Container(height: 0, width: 0);
-              }
-              if(snapshot.hasData){
-                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '1' 
-                ?
-                retWidget = Padding(
-                  padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
-                  child: SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          //print(widget.studentData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('Rate and Review'),
-                        color: Colors.purple, // Colors.grey if not yet answered.
-                        textColor: Colors.white,
-                      )),
-                )
-                :
-                retWidget = Container(height: 0, width: 0);
-              }
-              return retWidget;
-            },
-          )
-          // widget.data['testData']['posttest_answeredStatus'] == '1'
-          //     ? Padding(
-          //       padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
-          //       child: SizedBox(
-          //           width: MediaQuery.of(context).size.width,
-          //           child: RaisedButton.icon(
-          //             onPressed: () {
-          //               //print(widget.studentData['testData'].toString());
-          //               Navigator.push(
-          //                 context,
-          //                 MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
-          //               );
-          //             },
-          //             icon: Icon(Icons.assignment),
-          //             label: Text('Rate and Review'),
-          //             color: Colors.purple, // Colors.grey if not yet answered.
-          //             textColor: Colors.white,
-          //           )),
-          //     )
-          //     : Container(height: 0, width: 0)
-        ])));
+            ),  
+            StreamBuilder(
+              stream: _modal.getStatus(widget.data['bookingId']),
+              builder: (BuildContext context, AsyncSnapshot snapshot){
+                Widget retWidget;
+                int postCorrect, preCorrect, total = 0;
+                if(!snapshot.hasData || snapshot.data.docs.isEmpty){
+                  retWidget = Container(height: 0, width: 0);
+                }
+                if(snapshot.hasData){
+                  snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '1' 
+                  ?
+                  retWidget = Padding(
+                    padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
+                    child: SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: RaisedButton.icon(
+                          onPressed: () {
+                            //print(widget.studentData['testData'].toString());
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
+                            );
+                          },
+                          icon: Icon(Icons.assignment),
+                          label: Text('Rate and Review'),
+                          color: Colors.purple, // Colors.grey if not yet answered.
+                          textColor: Colors.white,
+                        )),
+                  )
+                  :
+                  retWidget = Container(height: 0, width: 0);
+                }
+                return retWidget;
+              },
+            )
+            // widget.data['testData']['posttest_answeredStatus'] == '1'
+            //     ? Padding(
+            //       padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
+            //       child: SizedBox(
+            //           width: MediaQuery.of(context).size.width,
+            //           child: RaisedButton.icon(
+            //             onPressed: () {
+            //               //print(widget.studentData['testData'].toString());
+            //               Navigator.push(
+            //                 context,
+            //                 MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
+            //               );
+            //             },
+            //             icon: Icon(Icons.assignment),
+            //             label: Text('Rate and Review'),
+            //             color: Colors.purple, // Colors.grey if not yet answered.
+            //             textColor: Colors.white,
+            //           )),
+            //     )
+            //     : Container(height: 0, width: 0)
+          ]))),
+    );
   }
 }
 
@@ -291,12 +294,12 @@ class _StudentState extends State<Student> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.studentData['testData'].toString());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ResultsPage(
-                          //           testData: widget.tutorData, flag: 0)),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.studentData, flag: 0, stackFlag: 0)),
+                          );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Pre-test Results'),
@@ -309,12 +312,12 @@ class _StudentState extends State<Student> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.studentData['testData'].toString());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ResultsPage(
-                          //           testData: widget.tutorData, flag: 1)),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.studentData, flag: 1, stackFlag: 0)),
+                          );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Post-test Results'),
@@ -496,12 +499,12 @@ class _TutorState extends State<Tutor> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.tutorData['testData'].toString());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ResultsPage(
-                          //           testData: widget.tutorData, flag: 0)),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.tutorData, flag: 0)),
+                          );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Pre-test Results'),
@@ -514,12 +517,12 @@ class _TutorState extends State<Tutor> {
                       child: RaisedButton.icon(
                         onPressed: () {
                           print(widget.tutorData['testData'].toString());
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ResultsPage(
-                          //           testData: widget.tutorData, flag: 1)),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ResultsPage(
+                                    testData: widget.tutorData, flag: 1)),
+                          );
                         },
                         icon: Icon(Icons.assignment),
                         label: Text('View Post-test Results'),
