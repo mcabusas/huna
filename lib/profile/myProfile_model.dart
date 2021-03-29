@@ -1,9 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'flutter_storage';
 
 class MyProfileModel {
 
   SharedPreferences sp;
+
+  Future<bool> uploadPicture(String uid, String fileName) async {
+    bool retVal = false;
+
+    //FirebaseStorage _storage = FirebaseStorage.instance;
+
+
+
+    return retVal;
+  }
 
   Stream getReview(String uid, int flag) {
     var ret;

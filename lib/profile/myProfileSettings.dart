@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:huna/profile/myProfile.dart';
 import 'package:huna/profile/myProfileSettingsTags.dart';
 import 'package:huna/profile/myProfileSettingsAcct.dart';
 import 'package:huna/drawer/drawer.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'myProfile_model.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -27,6 +29,64 @@ class MyProfileSettings extends StatefulWidget {
 class _MyProfileSettingsState extends State<MyProfileSettings> {
   String uid, tid;
   WidgetMaker selectedWidget = WidgetMaker.student;
+  
+  File _productImage;
+
+  Future imageFromGallery() async {
+
+    try{
+      final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _productImage = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future imageFromCamera() async {
+    try{
+      final File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+      setState(() {
+        _productImage = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _showPicker(context) {
+  showModalBottomSheet(
+      context: context,
+      builder: (BuildContext bc) {
+        return SafeArea(
+          child: Container(
+            child: new Wrap(
+              children: <Widget>[
+                new ListTile(
+                    leading: new Icon(Icons.photo_library),
+                    title: new Text('Photo Library'),
+                    onTap: () {
+                      imageFromGallery();
+                      Navigator.of(context).pop();
+                    }),
+                new ListTile(
+                  leading: new Icon(Icons.photo_camera),
+                  title: new Text('Camera'),
+                  onTap: () {
+                    imageFromCamera();
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      }
+    );
+}
 
   void initAwait() async {
     sp = await SharedPreferences.getInstance();
@@ -106,10 +166,7 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
           IconButton(
             icon: Icon(Icons.account_circle),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyProfile()),
-              );
+              Navigator.pop(context);
             },
           ),
         ],
@@ -132,9 +189,32 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
             alignment: Alignment.topCenter,
             child: Column(
               children: <Widget>[
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/images/profile.jpg'),
+
+                GestureDetector(
+                  onTap: (){
+                    _showPicker(context);
+                    //print('no babe, it was you dealing with your own shit, you were not a bad person, you were a great person to my friends');
+                  },
+                  child: Stack(
+                    children: [
+                      
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: AssetImage('assets/images/profile.jpg'),
+                      ),
+
+                      Positioned(
+                        left: 90,
+                        top: 10,
+                        child: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                          size: 20
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ),
                 SizedBox(height: 20),
                 // Profile Text

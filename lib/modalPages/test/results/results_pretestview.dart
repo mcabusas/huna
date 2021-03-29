@@ -39,6 +39,8 @@ class _ResultsPageState extends State<ResultsPage> {
 
   @override
   void initState() {
+    print(widget.stackFlag.toString() + ': stackFlag');
+    print(widget.flag.toString() + ": flag");
     super.initState();
     _model.getQuestions(widget.testData['testData']['test_id']).then((value) {
       setState(() {
@@ -80,40 +82,22 @@ class _ResultsPageState extends State<ResultsPage> {
               if (widget.flag == 0) {
 
                 if(widget.stackFlag == 0){
-                  Navigator.pop(context);
+                    Navigator.pop(context);
                 }
-
-                if(widget.stackFlag == 1){
+                if(widget.stackFlag == 1 || widget.stackFlag == 2){
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                   DashboardPage()), (Route<dynamic> route) => false);
                 }
-
-                if(widget.stackFlag == 2){
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                  TutorialComplete(data: widget.testData, flag: widget.flag)), (Route<dynamic> route) => false);
-                }
-
-                // if(testFlag == 'Pre-test') {
-
-                //   if(widget.stackFlag == 0 || widget.stackFlag == 1){
-                //     Navigator.pop(context);
-                //   }
-                //   if(widget.stackFlag == 2){
-                //     Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                //     DashboardPage()), (Route<dynamic> route) => false);
-                //   }
-                // } else if(testFlag == 'Post-test') {
-                //   Navigator.pop(context);
-                // }
                 
                 
               }else if(widget.flag == 1){
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                TutorialComplete(data: widget.testData, flag: widget.flag)), (Route<dynamic> route) => false);
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => TutorialComplete(data: widget.testData, flag: widget.flag)),
-                // );
+                
+                if (widget.stackFlag == 0){
+                    Navigator.pop(context);
+                } if(widget.stackFlag == 2){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  TutorialComplete(data: widget.testData, flag: 0)), (Route<dynamic> route) => false);
+                }
               }
             },
           ),

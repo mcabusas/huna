@@ -56,9 +56,9 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
     super.initState();
     print(widget.data['bookingData']);
     initAwait();
-    print(widget.flag);
+    print(widget.flag.toString() + "this is flag");
   }
-  int flag = 0;
+  //int flag = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -240,6 +240,7 @@ class _TutorState extends State<Tutor> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print('tutor');
     initAwait();
   }
   @override
@@ -431,7 +432,7 @@ class _TutorState extends State<Tutor> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => ResultsPage(
-                                        testData: widget.studentData, flag: 0)),
+                                        testData: widget.studentData, flag: 0, stackFlag: 0,)),
                               );
                             },
                             icon: Icon(Icons.assignment),

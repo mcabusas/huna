@@ -23,7 +23,6 @@ class TutorialComplete extends StatefulWidget {
 
 class _TutorialCompleteState extends State<TutorialComplete> {
   //ViewTutorialModel _model = new ViewTutorialModel();
-  
 
   Map<String, int> retVal;
 
@@ -31,7 +30,7 @@ class _TutorialCompleteState extends State<TutorialComplete> {
   void initState() {
     super.initState();
     //initAwait();
-    print(widget.flag);
+    print(widget.flag.toString() + " this is flag");
   }
 
   @override
@@ -54,95 +53,97 @@ class _TutorialCompleteState extends State<TutorialComplete> {
           body: SingleChildScrollView(
               child: Column(children: [
             widget.flag == 1
-                ? Tutor(
-                    tutorData: widget.data,
-                    flag: widget.flag
-                  )
+                ? Tutor(tutorData: widget.data, flag: widget.flag)
                 : Student(studentData: widget.data, flag: widget.flag),
             StreamBuilder(
-              stream: _modal.getResults(widget.data['bookingId']),
-              builder: (BuildContext context, AsyncSnapshot snapshot){
-                Widget retWidget;
-                int preCorrect = 0;
-                int postCorrect = 0;
-                int total = 0;
-                if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
-                  retWidget = Container(height: 0, width: 0);
-                }
-                if(snapshot.hasData) {
-
-                  for(int i = 0; i < snapshot.data.docs.length; i++) {
-                    print(snapshot.data.docs[i]['students_answer_pre-test']);
-                    var questionSnapshot = snapshot.data.docs[i];
-                    if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1'] && questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
-                      preCorrect++;
-                      postCorrect++;
-                    }
-                    else if(questionSnapshot['students_answer_pre-test'] == questionSnapshot['answer1']){
-                      preCorrect++;
-                    } 
-                    else if(questionSnapshot['students_answer_post-test'] == questionSnapshot['answer1']){
-                      postCorrect++;
-                    }
-                    
+                stream: _modal.getResults(widget.data['bookingId']),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  Widget retWidget;
+                  int preCorrect = 0;
+                  int postCorrect = 0;
+                  int total = 0;
+                  if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                    retWidget = Container(height: 0, width: 0);
                   }
-                  total = snapshot.data.docs.length;
-                  retWidget = Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                              child: Column(
-                            children: [
-                              Text('$preCorrect / $total'),
-                              Text('Pre-test Results')
-                            ],
-                          )),
-                          Container(
-                              child: Column(
-                            children: [
-                              Text('$postCorrect / $total'),
-                              Text('Post-test Results')
-                            ],
-                          )),
-                        ],
-                      );
-
-                }
-                return retWidget;
-              }
-            ),  
+                  if (snapshot.hasData) {
+                    for (int i = 0; i < snapshot.data.docs.length; i++) {
+                      print(snapshot.data.docs[i]['students_answer_pre-test']);
+                      var questionSnapshot = snapshot.data.docs[i];
+                      if (questionSnapshot['students_answer_pre-test'] ==
+                              questionSnapshot['answer1'] &&
+                          questionSnapshot['students_answer_post-test'] ==
+                              questionSnapshot['answer1']) {
+                        preCorrect++;
+                        postCorrect++;
+                      } else if (questionSnapshot['students_answer_pre-test'] ==
+                          questionSnapshot['answer1']) {
+                        preCorrect++;
+                      } else if (questionSnapshot[
+                              'students_answer_post-test'] ==
+                          questionSnapshot['answer1']) {
+                        postCorrect++;
+                      }
+                    }
+                    total = snapshot.data.docs.length;
+                    retWidget = Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                            child: Column(
+                          children: [
+                            Text('$preCorrect / $total'),
+                            Text('Pre-test Results')
+                          ],
+                        )),
+                        Container(
+                            child: Column(
+                          children: [
+                            Text('$postCorrect / $total'),
+                            Text('Post-test Results')
+                          ],
+                        )),
+                      ],
+                    );
+                  }
+                  return retWidget;
+                }),
             StreamBuilder(
               stream: _modal.getStatus(widget.data['bookingId']),
-              builder: (BuildContext context, AsyncSnapshot snapshot){
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
                 Widget retWidget;
                 int postCorrect, preCorrect, total = 0;
-                if(!snapshot.hasData || snapshot.data.docs.isEmpty){
+                if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
                   retWidget = Container(height: 0, width: 0);
                 }
-                if(snapshot.hasData){
-                  snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '1' 
-                  ?
-                  retWidget = Padding(
-                    padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
-                    child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: RaisedButton.icon(
-                          onPressed: () {
-                            //print(widget.studentData['testData'].toString());
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
-                            );
-                          },
-                          icon: Icon(Icons.assignment),
-                          label: Text('Rate and Review'),
-                          color: Colors.purple, // Colors.grey if not yet answered.
-                          textColor: Colors.white,
-                        )),
-                  )
-                  :
-                  retWidget = Container(height: 0, width: 0);
+                if (snapshot.hasData) {
+                  snapshot.data.docs[0]['testData']
+                              ['posttest_answeredStatus'] ==
+                          '1'
+                      ? retWidget = Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30.0, right: 30, top: 15),
+                          child: SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: RaisedButton.icon(
+                                onPressed: () {
+                                  //print(widget.studentData['testData'].toString());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => RateReviewView(
+                                            flag: widget.flag,
+                                            data: widget.data)),
+                                  );
+                                },
+                                icon: Icon(Icons.assignment),
+                                label: Text('Rate and Review'),
+                                color: Colors
+                                    .purple, // Colors.grey if not yet answered.
+                                textColor: Colors.white,
+                              )),
+                        )
+                      : retWidget = Container(height: 0, width: 0);
                 }
                 return retWidget;
               },
@@ -251,7 +252,8 @@ class _StudentState extends State<Student> {
           ),
           ListTile(
             leading: Icon(Icons.attach_money),
-            title: Text('P ' + widget.studentData['bookingData']['rate'] + ".00"),
+            title:
+                Text('P ' + widget.studentData['bookingData']['rate'] + ".00"),
             dense: true,
           ),
           Center(child: SizedBox(height: 20)),
@@ -259,116 +261,86 @@ class _StudentState extends State<Student> {
           Center(child: SizedBox(height: 20)),
 
           StreamBuilder(
-            stream: _modal.getStatus(widget.studentData['bookingId']),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              Widget retWidget;
-              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
-                retWidget = Container(height: 0, width: 0);
-              }
-              if(snapshot.hasData){
-                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '0' ?
-
-                retWidget = SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: RaisedButton.icon(
-                    onPressed: () {
-                      print(widget.studentData['testData'].toString());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AnswerPretestPage(
-                                testData: widget.studentData, flag: 1)),
-                      );
-                    },
-                    icon: Icon(Icons.assignment),
-                    label: Text('Answer Post-test'),
-                    color: Colors.purple, // Colors.grey if not yet answered.
-                    textColor: Colors.white,
-                  ),
-                )
-                :
-                retWidget = Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          print(widget.studentData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.studentData, flag: 0, stackFlag: 0)),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('View Pre-test Results'),
-                        color: Colors.blue, // Colors.grey if not yet answered.
-                        textColor: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          print(widget.studentData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.studentData, flag: 1, stackFlag: 0)),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('View Post-test Results'),
-                        color: Colors.green, // Colors.grey if not yet answered.
-                        textColor: Colors.white,
-                      ),
-                    )
-                  ],
-                );
-
-              }
-              return retWidget;
-            }
-          )
-
-          // SizedBox(
-          //             width: MediaQuery.of(context).size.width,
-          //             child: RaisedButton.icon(
-          //               onPressed: () {
-          //                 print(widget.studentData['testData'].toString());
-          //                 Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                       builder: (context) => ResultsPage(
-          //                           testData: widget.studentData, flag: 0)),
-          //                 );
-          //               },
-          //               icon: Icon(Icons.assignment),
-          //               label: Text('View Pre-test Results'),
-          //               color: Colors.blue, // Colors.grey if not yet answered.
-          //               textColor: Colors.white,
-          //             ),
-          //           ),
-          //           SizedBox(
-          //             width: MediaQuery.of(context).size.width,
-          //             child: RaisedButton.icon(
-          //               onPressed: () {
-          //                 print(widget.studentData['testData'].toString());
-          //                 Navigator.push(
-          //                   context,
-          //                   MaterialPageRoute(
-          //                       builder: (context) => ResultsPage(
-          //                           testData: widget.studentData, flag: 1)),
-          //                 );
-          //               },
-          //               icon: Icon(Icons.assignment),
-          //               label: Text('View Post-test Results'),
-          //               color: Colors.green, // Colors.grey if not yet answered.
-          //               textColor: Colors.white,
-          //             ),
-          //           )
+              stream: _modal.getStatus(widget.studentData['bookingId']),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                Widget retWidget;
+                if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                  retWidget = Container(height: 0, width: 0);
+                }
+                if (snapshot.hasData) {
+                  snapshot.data.docs[0]['testData']
+                              ['posttest_answeredStatus'] ==
+                          '0'
+                      ? retWidget = SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton.icon(
+                            onPressed: () {
+                              print(widget.studentData['testData'].toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AnswerPretestPage(
+                                        testData: widget.studentData, flag: 1)),
+                              );
+                            },
+                            icon: Icon(Icons.assignment),
+                            label: Text('Answer Post-test'),
+                            color: Colors
+                                .purple, // Colors.grey if not yet answered.
+                            textColor: Colors.white,
+                          ),
+                        )
+                      : retWidget = Column(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: RaisedButton.icon(
+                                onPressed: () {
+                                  print(widget.studentData['testData']
+                                      .toString());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ResultsPage(
+                                            testData: widget.studentData,
+                                            flag: widget.flag,
+                                            stackFlag: 0)),
+                                  );
+                                },
+                                icon: Icon(Icons.assignment),
+                                label: Text('View Pre-test Results'),
+                                color: Colors
+                                    .blue, // Colors.grey if not yet answered.
+                                textColor: Colors.white,
+                              ),
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: RaisedButton.icon(
+                                onPressed: () {
+                                  print(widget.studentData['testData']
+                                      .toString());
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ResultsPage(
+                                            testData: widget.studentData,
+                                            flag: widget.flag,
+                                            stackFlag: 0)),
+                                  );
+                                },
+                                icon: Icon(Icons.assignment),
+                                label: Text('View Post-test Results'),
+                                color: Colors
+                                    .green, // Colors.grey if not yet answered.
+                                textColor: Colors.white,
+                              ),
+                            )
+                          ],
+                        );
+                }
+                return retWidget;
+              })
         ],
       ),
     );
@@ -380,8 +352,6 @@ class Tutor extends StatefulWidget {
   final flag;
   final tutorData;
   Tutor({this.tutorData, this.flag});
-
-  
 
   @override
   _TutorState createState() => _TutorState();
@@ -406,8 +376,8 @@ class _TutorState extends State<Tutor> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => StudentProfilePage(
-                            studentData: widget.tutorData)),
+                        builder: (context) =>
+                            StudentProfilePage(studentData: widget.tutorData)),
                   );
                 },
               ),
@@ -416,7 +386,7 @@ class _TutorState extends State<Tutor> {
           SizedBox(height: 20),
           Center(
             child: Text(
-              '${widget.tutorData['bookingData']['tutor_firstName']} ${widget.tutorData['bookingData']['tutor_lastName']}',
+              '${widget.tutorData['bookingData']['student_firstName']} ${widget.tutorData['bookingData']['student_lastName']}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
@@ -457,86 +427,118 @@ class _TutorState extends State<Tutor> {
           ),
           ListTile(
             leading: Icon(Icons.attach_money),
-            title:
-                Text('P ' + widget.tutorData['bookingData']['rate'] + ".00"),
+            title: Text('P ' + widget.tutorData['bookingData']['rate'] + ".00"),
             dense: true,
           ),
           Center(child: SizedBox(height: 20)),
 
-          StreamBuilder(
-            stream: _modal.getStatus(widget.tutorData['bookingId']),
-            builder: (BuildContext context, AsyncSnapshot snapshot){
-              Widget retWidget;
-              if(!snapshot.hasData || snapshot.data.docs.isEmpty) {
-                retWidget = Container(height: 0, width: 0);
-              }
-              if(snapshot.hasData){
-                snapshot.data.docs[0]['testData']['posttest_answeredStatus'] == '0' ?
-
-                retWidget = SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: RaisedButton.icon(
-                    onPressed: () {
-                      print(widget.tutorData['testData'].toString());
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => AnswerPretestPage(
-                                testData: widget.tutorData, flag: 1)),
-                      );
-                    },
-                    icon: Icon(Icons.assignment),
-                    label: Text('Answer Post-test'),
-                    color: Colors.purple, // Colors.grey if not yet answered.
-                    textColor: Colors.white,
-                  ),
-                )
-                :
-                retWidget = Column(
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          print(widget.tutorData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.tutorData, flag: 0)),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('View Pre-test Results'),
-                        color: Colors.blue, // Colors.grey if not yet answered.
-                        textColor: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: RaisedButton.icon(
-                        onPressed: () {
-                          print(widget.tutorData['testData'].toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ResultsPage(
-                                    testData: widget.tutorData, flag: 1)),
-                          );
-                        },
-                        icon: Icon(Icons.assignment),
-                        label: Text('View Post-test Results'),
-                        color: Colors.green, // Colors.grey if not yet answered.
-                        textColor: Colors.white,
-                      ),
-                    )
-                  ],
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: RaisedButton.icon(
+              onPressed: () {
+                print(widget.tutorData['testData'].toString());
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ResultsPage(
+                            testData: widget.tutorData,
+                            flag: 0,
+                            stackFlag: 0,
+                          )),
                 );
+              },
+              icon: Icon(Icons.assignment),
+              label: Text('View Pre-test Results'),
+              color: Colors.blue, // Colors.grey if not yet answered.
+              textColor: Colors.white,
+            ),
+          ),
 
-              }
-              return retWidget;
-            }
-          )
+          StreamBuilder(
+              stream: _modal.getStatus(widget.tutorData['bookingId']),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                Widget retWidget;
+                if (!snapshot.hasData || snapshot.data.docs.isEmpty) {
+                  retWidget = Container(height: 0, width: 0);
+                }
+                if (snapshot.hasData) {
+                  snapshot.data.docs[0]['testData']
+                              ['posttest_answeredStatus'] ==
+                          '1'
+                      ? retWidget = SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton.icon(
+                            onPressed: () {
+                              print(widget.tutorData['testData'].toString());
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ResultsPage(
+                                        testData: widget.tutorData,
+                                        flag: 1,
+                                        stackFlag: 0)),
+                              );
+                            },
+                            icon: Icon(Icons.assignment),
+                            label: Text('View Post-test Results'),
+                            color: Colors.green,
+                            textColor: Colors.white,
+                          ),
+                        )
+                      : 
+                      retWidget = Container(width: 0, height: 0,);
+                      // Column(
+                      //     children: [
+                      //       SizedBox(
+                      //         width: MediaQuery.of(context).size.width,
+                      //         child: RaisedButton.icon(
+                      //           onPressed: () {
+                      //             print(
+                      //                 widget.tutorData['testData'].toString());
+                      //             Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                   builder: (context) => ResultsPage(
+                      //                         testData: widget.tutorData,
+                      //                         flag: 0,
+                      //                         stackFlag: 0,
+                      //                       )),
+                      //             );
+                      //           },
+                      //           icon: Icon(Icons.assignment),
+                      //           label: Text('View Pre-test Results'),
+                      //           color: Colors
+                      //               .blue, // Colors.grey if not yet answered.
+                      //           textColor: Colors.white,
+                      //         ),
+                      //       ),
+                      //       SizedBox(
+                      //         width: MediaQuery.of(context).size.width,
+                      //         child: RaisedButton.icon(
+                      //           onPressed: () {
+                      //             print(
+                      //                 widget.tutorData['testData'].toString());
+                      //             Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                   builder: (context) => ResultsPage(
+                      //                       testData: widget.tutorData,
+                      //                       flag: 1,
+                      //                       stackFlag: 0)),
+                      //             );
+                      //           },
+                      //           icon: Icon(Icons.assignment),
+                      //           label: Text('View Post-test Results'),
+                      //           color: Colors
+                      //               .green, // Colors.grey if not yet answered.
+                      //           textColor: Colors.white,
+                      //         ),
+                      //       )
+                      //     ],
+                      //   );
+                }
+                return retWidget;
+              })
         ],
       ),
     );

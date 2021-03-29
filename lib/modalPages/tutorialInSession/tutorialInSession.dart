@@ -39,7 +39,7 @@ class _TutorialInSessionState extends State<TutorialInSession> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    print(widget.flag);
+    print(widget.flag.toString() + "this is flag");
   }
   @override
   Widget build(BuildContext context) {
