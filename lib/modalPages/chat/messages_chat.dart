@@ -58,7 +58,7 @@ class _ChatState extends State<ChatPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text('${widget.tutorData['firstName']} ${widget.tutorData['lastName']}'),
         leading: IconButton(

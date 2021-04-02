@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../profile/myProfile_model.dart';
 
-
-class DashboardModel {
+class DashboardModel extends MyProfileModel{
 
 
   Stream getTutors()   {

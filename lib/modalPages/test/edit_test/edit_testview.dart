@@ -13,7 +13,7 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   EditPretestModal _model = new EditPretestModal();
-  Stream questionSnapshot;
+   Stream questionSnapshot;
   final _key = GlobalKey<FormState>();
   Map<String, dynamic> questionData;
 

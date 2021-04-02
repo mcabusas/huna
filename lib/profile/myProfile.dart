@@ -5,6 +5,7 @@ import 'package:huna/drawer/drawer.dart';
 import 'myProfile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_services.dart';
+import '../components/profilePicture.dart';
 
 int _selectedIndex = 0;
 enum WidgetMaker { student, tutor }
@@ -130,49 +131,66 @@ class _MyProfileState extends State<MyProfile> {
             padding: EdgeInsets.only(),
             child: Align(
               alignment: Alignment.topCenter,
-              child: Column(
-                children: <Widget>[
-                  CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile.jpg'),
-                  ),
-                  SizedBox(height: 20),
-                  // Profile Text
-                  Center(
-                    child: Text(
-                      '${sp.getString('firstName')} ${sp.getString('lastName')}',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white),
+              child: SingleChildScrollView(
+                              child: Column(
+                  children: <Widget>[
+                    FutureBuilder(
+                        future: _model.getPicture(uid),
+                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                          Widget retWidget;
+
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            retWidget =
+                                Container(child: CircularProgressIndicator());
+                          }
+                          if (snapshot.connectionState == ConnectionState.done) {
+                            print(snapshot.data);
+                            retWidget = CircleAvatar(
+                              radius: 40,
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+                          return retWidget;
+                        }),
+                    SizedBox(height: 20),
+                    // Profile Text
+                    Center(
+                      child: Text(
+                        '${sp.getString('firstName')} ${sp.getString('lastName')}',
+                        style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
                     ),
-                  ),
-                  // Center(
-                  //   child: Text(
-                  //     snapshot.data['username'],
-                  //     style: TextStyle(color: Colors.white70),
-                  //   ),
-                  // ),
-                  SizedBox(height: 20),
-                  // Location
-                  Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                    child: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.location_on,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                        Text(
-                          '${sp.getString('city')}, ${sp.getString('country')}',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                        ),
-                      ],
+                    // Center(
+                    //   child: Text(
+                    //     snapshot.data['username'],
+                    //     style: TextStyle(color: Colors.white70),
+                    //   ),
+                    // ),
+                    SizedBox(height: 20),
+                    // Location
+                    Padding(
+                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 15,
+                          ),
+                          Text(
+                            '${sp.getString('city')}, ${sp.getString('country')}',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  getScreen(),
-                ],
+                    getScreen(),
+                  ],
+                ),
               ),
             ),
           ),
@@ -193,7 +211,6 @@ class TutorProfileWidget extends StatefulWidget {
 }
 
 class _TutorProfileWidgetState extends State<TutorProfileWidget> {
-  
   Future<List<Map<String, dynamic>>> initAwait() async {
     ratings = await _model.getRating(widget.id, 1);
     print(ratings.toString());
@@ -201,8 +218,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   }
 
   @override
-
-  void initState()  {
+  void initState() {
     super.initState();
     initAwait();
     print(widget.flag);
@@ -211,11 +227,12 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
+        child: SingleChildScrollView(
       child: FutureBuilder(
         future: initAwait(),
-        builder: (context, AsyncSnapshot snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
-            if(snapshot.data.length == 0){
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data.length == 0) {
               return Center(
                 child: Container(
                   height: 100,
@@ -223,10 +240,9 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                   child: Text('You have no reviews.'),
                 ),
               );
-            }else{
+            } else {
               return Column(
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
@@ -242,16 +258,11 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                         ),
                         // Average Star Ratings
                         IconTheme(
-                          data: IconThemeData(
-                            color: Colors.amber,
-                            size: 20
-                          ),
-                          child: StarDisplay(value: ratings)
-                        )
+                            data: IconThemeData(color: Colors.amber, size: 20),
+                            child: StarDisplay(value: ratings))
                       ],
                     ),
                   ),
-
                   ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.all(15),
@@ -264,11 +275,12 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                           child: ListTile(
                             contentPadding: EdgeInsets.all(20),
                             title: IconTheme(
-                              data: IconThemeData(
-                                color: Colors.amber,
-                                size: 20
+                              data:
+                                  IconThemeData(color: Colors.amber, size: 20),
+                              child: StarDisplay(
+                                value: snapshot.data[index]['tutor_rating']
+                                    .toDouble(),
                               ),
-                              child: StarDisplay(value: snapshot.data[index]['tutor_rating'].toDouble(),),
                             ),
                             subtitle: Text(snapshot.data[index]['content']),
                             isThreeLine: true,
@@ -277,18 +289,15 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                       }
                     },
                   )
-
                 ],
               );
             }
-          }else {
-            return Container(
-              child: Center(child: CircularProgressIndicator())
-            );
+          } else {
+            return Container(child: Center(child: CircularProgressIndicator()));
           }
         },
-      )
-    );
+      ),
+    ));
   }
 }
 
@@ -301,22 +310,6 @@ class StudentProfileWidget extends StatefulWidget {
 }
 
 class _StudentProfileWidgetState extends State<StudentProfileWidget> {
-  // getData() async{
-
-  //   print(page);
-  //   final response = await http.get(
-  //     Uri.encodeFull("https://hunacapstone.com//database_files/profile.php?id=${u.id}&page=$page"),
-  //     headers: {
-  //       "Accept": 'application/json',
-  //     }
-  //   );
-  //   if(response.statusCode == 200){
-  //     setState(() {
-  //       data = jsonDecode(response.body);
-  //     });
-  //   }
-  // }
-
   Future<List<Map<String, dynamic>>> initAwait() async {
     ratings = await _model.getRating(widget.id, 1);
     print(ratings.toString());
@@ -324,19 +317,19 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
   }
 
   @override
-
-  void initState()  {
+  void initState() {
     super.initState();
     initAwait();
   }
 
   Widget build(BuildContext context) {
     return Container(
+        child: SingleChildScrollView(
       child: FutureBuilder(
         future: initAwait(),
-        builder: (context, AsyncSnapshot snapshot){
-          if(snapshot.connectionState == ConnectionState.done){
-            if(snapshot.data.length == 0){
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.data.length == 0) {
               return Center(
                 child: Container(
                   height: 100,
@@ -344,10 +337,9 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                   child: Text('You have no reviews.'),
                 ),
               );
-            }else{
+            } else {
               return Column(
                 children: [
-
                   Padding(
                     padding: const EdgeInsets.only(
                         left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
@@ -363,16 +355,11 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                         ),
                         // Average Star Ratings
                         IconTheme(
-                          data: IconThemeData(
-                            color: Colors.amber,
-                            size: 20
-                          ),
-                          child: StarDisplay(value: ratings)
-                        )
+                            data: IconThemeData(color: Colors.amber, size: 20),
+                            child: StarDisplay(value: ratings))
                       ],
                     ),
                   ),
-
                   ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.all(15),
@@ -385,11 +372,12 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                           child: ListTile(
                             contentPadding: EdgeInsets.all(20),
                             title: IconTheme(
-                              data: IconThemeData(
-                                color: Colors.amber,
-                                size: 20
+                              data:
+                                  IconThemeData(color: Colors.amber, size: 20),
+                              child: StarDisplay(
+                                value: snapshot.data[index]['student_rating']
+                                    .toDouble(),
                               ),
-                              child: StarDisplay(value: snapshot.data[index]['student_rating'].toDouble(),),
                             ),
                             subtitle: Text(snapshot.data[index]['content']),
                             isThreeLine: true,
@@ -398,33 +386,26 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                       }
                     },
                   )
-
                 ],
               );
             }
-          }else {
-            return Container(
-              child: Center(child: CircularProgressIndicator())
-            );
+          } else {
+            return Container(child: Center(child: CircularProgressIndicator()));
           }
         },
-      )
-    );
+      ),
+    ));
   }
 }
 
 class StarDisplay extends StatelessWidget {
   final double value;
-  StarDisplay({this.value = 0.0})
-    :assert(value != null);
+  StarDisplay({this.value = 0.0}) : assert(value != null);
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: List.generate(5, (index) {
-         return Icon(
-          index < value ? Icons.star : Icons.star_border
-        );
-      })
-    );
+        children: List.generate(5, (index) {
+      return Icon(index < value ? Icons.star : Icons.star_border);
+    }));
   }
 }

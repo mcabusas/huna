@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:huna/login/login.dart';
@@ -12,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'myProfile_model.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import '../components/profilePicture.dart';
 
 int _selectedIndex = 0;
 int rate;
@@ -20,6 +22,7 @@ TextEditingController currentpasswordController = new TextEditingController();
 int tutorPage;
 enum WidgetMaker { student, tutor }
 SharedPreferences sp;
+MyProfileModel _model = new MyProfileModel();
 
 class MyProfileSettings extends StatefulWidget {
   @override
@@ -31,31 +34,6 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
   WidgetMaker selectedWidget = WidgetMaker.student;
   
   File _productImage;
-
-  Future imageFromGallery() async {
-
-    try{
-      final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
-
-      setState(() {
-        _productImage = image;
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future imageFromCamera() async {
-    try{
-      final File image = await ImagePicker.pickImage(source: ImageSource.camera);
-
-      setState(() {
-        _productImage = image;
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
 
   void _showPicker(context) {
   showModalBottomSheet(
@@ -95,6 +73,33 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
       tid = sp.getString('tid');
       print(sp.getString('country'));
     });
+  }
+
+  Future imageFromGallery() async {
+
+    try{
+      final File image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _productImage = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    //print(_productImage.toString());
+    await _model.uploadPicture(uid, _productImage);
+  }
+
+  Future imageFromCamera() async {
+    try{
+      final File image = await ImagePicker.pickImage(source: ImageSource.camera);
+
+      setState(() {
+        _productImage = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Widget getScreen() {
@@ -197,12 +202,25 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                   },
                   child: Stack(
                     children: [
-                      
-                      CircleAvatar(
-                        radius: 60,
-                        backgroundImage: AssetImage('assets/images/profile.jpg'),
-                      ),
 
+                      FutureBuilder(
+                        future: _model.getPicture(uid),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget retWidget;
+
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            retWidget = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done) {
+                            print(snapshot.data);
+                            retWidget = CircleAvatar(
+                              radius: 40,
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+                          return retWidget;
+                        }
+                      ),
                       Positioned(
                         left: 90,
                         top: 10,
@@ -474,7 +492,6 @@ class TutorProfileSettingsWidget extends StatefulWidget {
 
 class _TutorProfileSettingsWidgetState
     extends State<TutorProfileSettingsWidget> {
-  MyProfileModel _model = new MyProfileModel();
   String uid, tid;
   bool showSpinner = false;
   final _key = new GlobalKey<FormState>();
@@ -644,8 +661,7 @@ class _TutorProfileSettingsWidgetState
                               String newRate;
                               bool retVal;
                               showDialog(
-                                context: context,
-                                child: AlertDialog(
+                                builder: (context) => AlertDialog(
                                   title: Text("Edit Base Price"),
                                   content: Form(
                                     key: _key,
@@ -736,7 +752,7 @@ class _TutorProfileSettingsWidgetState
                                       ),
                                     ),
                                   ],
-                                ),
+                                ), context: context,
                               );
                             },
                           ),

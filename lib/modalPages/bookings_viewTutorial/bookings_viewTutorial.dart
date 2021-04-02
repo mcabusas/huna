@@ -378,8 +378,7 @@ class _TutorState extends State<Tutor> {
                             onPressed: () {
                               // Alert Dialog: Create Pretest
                               showDialog(
-                                context: context,
-                                child: AlertDialog(
+                                builder: (context) => AlertDialog(
                                   title: Text("Send Pretest"),
                                   content: Text(
                                       "Are you sure you want to send the pretest?"),
@@ -411,7 +410,7 @@ class _TutorState extends State<Tutor> {
                                       ),
                                     ),
                                   ],
-                                ),
+                                ), context: context,
                               );
                             },
                             icon: Icon(Icons.send),

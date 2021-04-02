@@ -21,7 +21,7 @@ class _StudentProfileState extends State<StudentProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
@@ -49,8 +49,7 @@ class _StudentProfileState extends State<StudentProfilePage> {
             onPressed: () {
               // Alert Dialog: Report Student
               showDialog(
-                context: context,
-                child: AlertDialog(
+                builder: (context) => AlertDialog(
                   title: Text("Report Student"),
                   content: SingleChildScrollView(
                     padding: EdgeInsets.only(bottom: 0),
@@ -133,7 +132,7 @@ class _StudentProfileState extends State<StudentProfilePage> {
                       ),
                     ),
                   ],
-                ),
+                ), context: context,
               );
             },
           ),

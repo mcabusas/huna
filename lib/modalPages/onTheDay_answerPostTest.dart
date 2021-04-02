@@ -77,12 +77,12 @@ class _AnswerPostTestState extends State<AnswerPostTestPage> {
                 ),
                 // ONLY APPEARS IF ON THE LAST PAGE.
                 RaisedButton.icon(
-                  // onPressed: () {
-                  //   Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(builder: (context) => RateReview()),
-                  //   );
-                  // },
+                  onPressed: () {
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => RateReview()),
+                    // );
+                  },
                   icon: Icon(Icons.check),
                   label: Text('Finish'),
                   color: Colors.lightGreen,
@@ -110,7 +110,7 @@ class _AnswerPostTestState extends State<AnswerPostTestPage> {
                       value: 1,
                       groupValue: selectedRadio,
                       title: Text("Answer 1"),
-                      onChanged: (value) {
+                      onChanged: (int value) {
                         setSelectedRadio(value);
                       },
                       activeColor: Colors.cyan,

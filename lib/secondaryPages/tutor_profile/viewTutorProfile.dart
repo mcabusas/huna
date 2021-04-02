@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/modalPages/chat/messages_chat.dart';
 import 'viewTutorProfile_model.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import '../../components/profilePicture.dart';
 
 var data, majors, languages, topics; 
 
@@ -37,7 +38,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade900,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         elevation: 0,
         actions: <Widget>[
@@ -80,8 +81,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
             onPressed: () {
               // Alert Dialog: Report Tutor
               showDialog(
-                context: context,
-                child: AlertDialog(
+                builder: (context) => AlertDialog(
                   title: Text("Report Tutor"),
                   content: SingleChildScrollView(
                     padding: EdgeInsets.only(bottom: 0),
@@ -164,7 +164,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
                       ),
                     ),
                   ],
-                ),
+                ), context: context,
               );
             },
           ),
@@ -226,10 +226,29 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                   alignment: Alignment.topCenter,
                   child: Column(
                     children: <Widget>[
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+
+                      FutureBuilder(
+                        future: _model.getPicture(widget.tutorData['uid']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget picture;
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            picture = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done) {
+                            picture = CircleAvatar(
+                              radius: 40,
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+
+                          return picture;
+                        }
                       ),
+
+                      // CircleAvatar(
+                      //   radius: 40,
+                      //   backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                      // ),
                       SizedBox(height: 20),
                       // Profile Text
                       Center(

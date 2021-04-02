@@ -1,19 +1,49 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'flutter_storage';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class MyProfileModel {
 
   SharedPreferences sp;
 
-  Future<bool> uploadPicture(String uid, String fileName) async {
+  Future<String> getPicture(String uid) async {
+    String imageUrl = '';
+     await FirebaseFirestore.instance
+    .collection('users')
+    .doc(uid)
+    .get().then((value) => {
+      imageUrl = value.data()['picture']
+    });
+
+    print(imageUrl);
+
+  return imageUrl;
+
+  }
+
+  Future<String> uploadPicture(String uid, File file) async {
     bool retVal = false;
 
-    //FirebaseStorage _storage = FirebaseStorage.instance;
 
+    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+    .ref()
+    .child('images/')
+    .child(uid+'.jpg');
 
+    firebase_storage.UploadTask uploadTask = ref.putFile(file);
+    var url = (await uploadTask.then((value) => {
+      value.ref.getDownloadURL().then((value) async => {
+        await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .update({
+          'picture': value.toString()+".jpg"
+        })
+      })
+    }));
 
-    return retVal;
+    return 'yes';
   }
 
   Stream getReview(String uid, int flag) {

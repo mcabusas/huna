@@ -15,9 +15,9 @@ var jsonData;
 BookingsModel _model = new BookingsModel();
 enum WidgetMaker { student, tutor }
 int _selectedIndex = 0;
-String prefId, tutorId;
+String prefId = '', tutorId = '';
 SharedPreferences sp;
-bool retVal;
+bool retVal = false;
 
 class Bookings extends StatefulWidget {
   // This widget is the root of your application.

@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'dashboard_model.dart';
+import '../components/profilePicture.dart';
 
 
 
@@ -58,7 +59,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       drawer: SideDrawer(),
       //COMMENT
       body: CustomScrollView(
@@ -129,11 +130,12 @@ class _DashboardPageState extends State<DashboardPage> {
                   // Featured Tutors List
                   StreamBuilder(
                     stream: tutorsStream,
-                    builder: (context, snapshot){
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      Widget retVal;
                       if(snapshot.connectionState == ConnectionState.waiting){
-                        return new Center(child: CircularProgressIndicator());
+                        retVal = Center(child: CircularProgressIndicator());
                       }else if(snapshot.connectionState == ConnectionState.active){
-                        return new Container(
+                        retVal = Container(
                           height: 225,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
@@ -155,7 +157,20 @@ class _DashboardPageState extends State<DashboardPage> {
                                     // color: Colors.black,
                                     child: Wrap(
                                       children: <Widget>[
-                                        Image.asset('assets/images/tutor.jpg'),
+                                        FutureBuilder(
+                                          future: dashboardModel.getPicture(snapshot.data.docs[index]['uid']),
+                                          builder: (BuildContext context, AsyncSnapshot snap) {
+                                            Widget picture;
+                                            if (snap.connectionState == ConnectionState.waiting) {
+                                              picture = Container(child: CircularProgressIndicator());
+                                            }
+                                            if(snap.connectionState == ConnectionState.done) {
+                                              picture = ProfilePicture(url: snap.data, width: 200, height: 100);
+                                            }
+                                            
+                                            return picture;
+                                          }
+                                        ),
                                         ListTile(
                                           title: Text('${snapshot.data.docs[index]['firstName']} ${snapshot.data.docs[index]['lastName']}'),
                                           //subtitle: Text(snapshot.data[index]['username']),
@@ -173,6 +188,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           )
                         );
                       }
+                      return retVal;
                     }
                       
                     

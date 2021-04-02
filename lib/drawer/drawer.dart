@@ -11,6 +11,7 @@ import 'package:huna/profile/myProfile.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import 'drawer_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../components/profilePicture.dart';
 
 
 
@@ -48,8 +49,22 @@ class _SideDrawerState extends State<SideDrawer> {
                 UserAccountsDrawerHeader(
                 accountName: Text('${sp.getString('firstName')} ${sp.getString('lastName')}'),
                   //accountEmail: Text(snapshot.data['username']), //Use Username Instead
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/profile.jpg'),
+                  currentAccountPicture: FutureBuilder(
+                    future: drawerModel.getPicture(sp.getString('uid')),
+                    builder: (BuildContext context, AsyncSnapshot snapshot){
+                      Widget retVal;
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        retVal = Container(child: CircularProgressIndicator());
+                      }
+                      if(snapshot.connectionState == ConnectionState.done){
+                        retVal = CircleAvatar(
+                              radius: 40,
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                      }
+
+                      return retVal;
+                    },
                   ),
                   onDetailsPressed: () async{
                     Navigator.push(

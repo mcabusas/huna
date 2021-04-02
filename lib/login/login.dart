@@ -72,7 +72,7 @@ class LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: new Stack(

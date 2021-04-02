@@ -3,9 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:huna/services/auth_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../profile/myProfile_model.dart';
 
 
-class ViewTutorProfileModel {
+class ViewTutorProfileModel  extends MyProfileModel {
 
   AuthServices _authServices = new AuthServices();
   
