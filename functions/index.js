@@ -5,10 +5,5 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.test = functions.https.onCall((data, context) => {
-  let fName = "";
-  if (!data.firstName) {
-    fName = data.firstName;
-  }
-  return fName;
+  return {"firstName": data["firstName"]};
 });
-

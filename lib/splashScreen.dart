@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     loadData();    
-    //_getToken();
     initAwait();
   }
 
@@ -31,25 +30,20 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> test() async{
 
     Map<String, dynamic> data = {
-      'firstName': 'Balot',
-      'lastName': 'test'
+      "firstName": "Balot",
+      "lastName": "test"
     };
 
     HttpsCallable callable = functions.httpsCallable('test');
     try {
       await callable(data).then((value) => {
-        print(value.data)
+        print(value.data['firstName'])
       });
     } catch (e){
       print(e.toString());
     }
   }
 
-  _getToken(){
-    _firebaseMessaging.getToken().then((token) => {
-      print(token)
-    });
-  }
 
   Future<void> loadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

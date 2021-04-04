@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -97,12 +98,6 @@ class AuthServices with ChangeNotifier {
             returnData['rate'] = element.data()['rate'];
             returnData['majors'] = element.data()['majors'];
             returnData['topics'] = element.data()['topics'];
-            // returnData = {
-            //   'tid': element.data()['tid'],
-            //   'tutor_rate': element.data()['rate'],
-            //   'tutor_majors': element.data()['majors'],
-            //   'tutor_topics': element.data()['topics']
-            // };
 
           })
          }
@@ -121,8 +116,7 @@ class AuthServices with ChangeNotifier {
   Future setPref(Map<String, dynamic> data) async {
 
     sp = await SharedPreferences.getInstance();
-    print(data);
-      await sp.setString('firstName', data['firstName']);
+      sp.setString('firstName', data['firstName']);
       sp.setString('lastName', data['lastName']);
       sp.setString('uid', data['uid']);
       sp.setString('tid', data['tid']);
@@ -136,7 +130,6 @@ class AuthServices with ChangeNotifier {
       sp.setString('emergencyContactNumber', data['emergencyContactNumber']);
       sp.setString('emergencyRelation', data['emergencyRelation']);
       sp.setString('zipCode', data['zipCode']);
-      print(sp.getString('rate'));
   }
 
   Future<dynamic> getTutorData() async {
