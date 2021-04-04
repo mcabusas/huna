@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -15,7 +17,38 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     loadData();    
-    
+    //_getToken();
+    initAwait();
+  }
+
+  initAwait() async {
+    await test();
+  }
+
+  final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
+  FirebaseFunctions functions = FirebaseFunctions.instance;
+
+  Future<void> test() async{
+
+    Map<String, dynamic> data = {
+      'firstName': 'Balot',
+      'lastName': 'test'
+    };
+
+    HttpsCallable callable = functions.httpsCallable('test');
+    try {
+      await callable(data).then((value) => {
+        print(value.data)
+      });
+    } catch (e){
+      print(e.toString());
+    }
+  }
+
+  _getToken(){
+    _firebaseMessaging.getToken().then((token) => {
+      print(token)
+    });
   }
 
   Future<void> loadData() async {

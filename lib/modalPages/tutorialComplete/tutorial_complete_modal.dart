@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../profile/myProfile_model.dart';
 
-class TutorialCompleteModal {
+class TutorialCompleteModal extends MyProfileModel{
 
   Stream getStatus(String bookingId){
     return FirebaseFirestore.instance

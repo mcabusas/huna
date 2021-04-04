@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/historyPages/boookingHistory/bookingHistory.dart';
 import 'package:huna/modalPages/test/answertest.dart';
 import 'package:huna/modalPages/bookings_viewTutorial/bookings_viewTutorial.dart';
@@ -7,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:huna/components/buttons.dart' as component;
 import 'bookings_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../modalPages/test/results/results_pretestview.dart';
 import '../modalPages/tutorialInSession/tutorialInSession.dart';
 import '../modalPages/tutorialComplete/tutorial_complete.dart';
 
@@ -188,9 +188,20 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                       children: <Widget>[
                         // Per Booking, PRETEST
                         ExpansionTile(
-                          leading: CircleAvatar(
-                            backgroundImage:
-                                AssetImage('assets/images/opentutorials.jpg'),
+                          leading: FutureBuilder(
+                            future: _model.getPicture(snapshot.data.docs[index]['bookingData']['tutor_userid']),
+                            builder: (BuildContext context, AsyncSnapshot snapshot){
+                              Widget retVal;
+                              if(snapshot.connectionState == ConnectionState.waiting) {
+                                retVal = Container(child: CircularProgressIndicator());
+                              }
+                              if(snapshot.connectionState == ConnectionState.done){
+                                retVal = CircleAvatar(
+                                  child: ProfilePicture(url: snapshot.data, radius: 40,)
+                                );
+                              }
+                              return retVal;
+                            },
                           ),
                           title: Text(
                               '${snapshot.data.docs[index]['bookingData']['tutor_firstName']} ${snapshot.data.docs[index]['bookingData']['tutor_lastName']}'),
@@ -223,25 +234,6 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                       textColor: Colors.white,
                                     )
                                   : Container(height: 0, width: 0),
-                                  // RaisedButton.icon(
-                                  //     onPressed: () {
-                                  //       print(snapshot.data.docs[index]
-                                  //           ['bookingId']);
-
-                                  //       Navigator.push(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) => ResultsPage(
-                                  //                 testData:
-                                  //                     snapshot.data.docs[index],
-                                  //                 flag: 0)),
-                                  //       );
-                                  //     },
-                                  //     icon: Icon(Icons.assignment_late),
-                                  //     label: Text('Completed'),
-                                  //     color: Colors.grey,
-                                  //     textColor: Colors.black,
-                                  //   ),
                           children: <Widget>[
                             // Expanded Contents
                             ListTile(
@@ -475,10 +467,21 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                     shrinkWrap: true,
                     children: [
                       ExpansionTile(
-                        leading: CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/opentutorials.jpg'),
-                        ),
+                        leading: FutureBuilder(
+                        future: _model.getPicture(snapshot.data.docs[index]['bookingData']['student_id']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget retVal;
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            retVal = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done){
+                            retVal = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data, radius: 40,)
+                            );
+                          }
+                          return retVal;
+                        },
+                      ),
                         title: Text(
                             '${snapshot.data.docs[index]['bookingData']['student_firstName']} ${snapshot.data.docs[index]['bookingData']['student_lastName']}'),
                         // subtitle: Text(booking['username'], overflow: TextOverflow.ellipsis),

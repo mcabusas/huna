@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/modalPages/test/bookings_pretest.dart';
 import 'package:huna/modalPages/test/results/results_pretestview.dart';
 import 'package:huna/secondaryPages/viewStudentProfile.dart';
@@ -8,6 +9,8 @@ import 'bookings_viewTutorial_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../test/edit_test/edit_testview.dart';
 import '../tutorialInSession/tutorialInSession.dart';
+
+ViewTutorialModel _model = new ViewTutorialModel();
 
 class ViewTutorialPage extends StatefulWidget {
   final data;
@@ -19,7 +22,6 @@ class ViewTutorialPage extends StatefulWidget {
 }
 
 class _ViewTutorialState extends State<ViewTutorialPage> {
-  ViewTutorialModel _model = new ViewTutorialModel();
   String uid, tutorid;
   SharedPreferences sp;
   Map<String, dynamic> pretestInfo;
@@ -103,10 +105,24 @@ class _StudentState extends State<Student> {
                   width: 75,
                   height: 75,
                   child: GestureDetector(
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                    child: FutureBuilder(
+                      future: _model.getPicture(widget.tutorData['bookingData']['tutor_userid']),
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        Widget retVal;
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          retVal = Container(child: CircularProgressIndicator());
+                        }
+                        if(snapshot.connectionState == ConnectionState.done){
+                          retVal = CircleAvatar(
+                            child: ProfilePicture(url: snapshot.data, radius: 40,)
+                          );
+                        }
+                        return retVal;
+                      },
                     ),
+                    
                     onTap: () {
+                      print(widget.tutorData['bookingData']['tutor_userid']);
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(
@@ -257,8 +273,20 @@ class _TutorState extends State<Tutor> {
                   width: 75,
                   height: 75,
                   child: GestureDetector(
-                    child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                    child: FutureBuilder(
+                      future: _model.getPicture(widget.studentData['bookingData']['student_id']),
+                      builder: (BuildContext context, AsyncSnapshot snapshot){
+                        Widget retVal;
+                        if(snapshot.connectionState == ConnectionState.waiting) {
+                          retVal = Container(child: CircularProgressIndicator());
+                        }
+                        if(snapshot.connectionState == ConnectionState.done){
+                          retVal = CircleAvatar(
+                            child: ProfilePicture(url: snapshot.data, radius: 40,)
+                          );
+                        }
+                        return retVal;
+                      },
                     ),
                     onTap: () {
                       Navigator.push(

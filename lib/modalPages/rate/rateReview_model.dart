@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:huna/profile/myProfile_model.dart';
 
-class RateReviewModel {
+class RateReviewModel extends MyProfileModel {
 
 
   Future<void> addReview(Map<String, dynamic> reviewContent, int flag) async{

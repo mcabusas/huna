@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:huna/bookings/bookings_view.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/modalPages/rate/rateReview_view.dart';
 import 'package:huna/modalPages/test/bookings_pretest.dart';
 import 'package:huna/modalPages/test/results/results_pretestview.dart';
@@ -148,26 +149,6 @@ class _TutorialCompleteState extends State<TutorialComplete> {
                 return retWidget;
               },
             )
-            // widget.data['testData']['posttest_answeredStatus'] == '1'
-            //     ? Padding(
-            //       padding: const EdgeInsets.only(left:30.0, right: 30, top: 15),
-            //       child: SizedBox(
-            //           width: MediaQuery.of(context).size.width,
-            //           child: RaisedButton.icon(
-            //             onPressed: () {
-            //               //print(widget.studentData['testData'].toString());
-            //               Navigator.push(
-            //                 context,
-            //                 MaterialPageRoute(builder: (context) => RateReviewView(flag: widget.flag, data: widget.data)),
-            //               );
-            //             },
-            //             icon: Icon(Icons.assignment),
-            //             label: Text('Rate and Review'),
-            //             color: Colors.purple, // Colors.grey if not yet answered.
-            //             textColor: Colors.white,
-            //           )),
-            //     )
-            //     : Container(height: 0, width: 0)
           ]))),
     );
   }
@@ -194,8 +175,23 @@ class _StudentState extends State<Student> {
               width: 75,
               height: 75,
               child: GestureDetector(
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                child: FutureBuilder(
+                  future: _modal.getPicture(
+                      widget.studentData['bookingData']['tutor_userid']),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    Widget retVal;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      retVal = Container(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      retVal = CircleAvatar(
+                          child: ProfilePicture(
+                        url: snapshot.data,
+                        radius: 40,
+                      ));
+                    }
+                    return retVal;
+                  },
                 ),
                 onTap: () {
                   // Navigator.push(
@@ -369,8 +365,23 @@ class _TutorState extends State<Tutor> {
               width: 75,
               height: 75,
               child: GestureDetector(
-                child: CircleAvatar(
-                  backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                child: FutureBuilder(
+                  future: _modal.getPicture(
+                      widget.tutorData['bookingData']['student_id']),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    Widget retVal;
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      retVal = Container(child: CircularProgressIndicator());
+                    }
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      retVal = CircleAvatar(
+                          child: ProfilePicture(
+                        url: snapshot.data,
+                        radius: 40,
+                      ));
+                    }
+                    return retVal;
+                  },
                 ),
                 onTap: () {
                   Navigator.push(
@@ -485,57 +496,10 @@ class _TutorState extends State<Tutor> {
                             textColor: Colors.white,
                           ),
                         )
-                      : 
-                      retWidget = Container(width: 0, height: 0,);
-                      // Column(
-                      //     children: [
-                      //       SizedBox(
-                      //         width: MediaQuery.of(context).size.width,
-                      //         child: RaisedButton.icon(
-                      //           onPressed: () {
-                      //             print(
-                      //                 widget.tutorData['testData'].toString());
-                      //             Navigator.push(
-                      //               context,
-                      //               MaterialPageRoute(
-                      //                   builder: (context) => ResultsPage(
-                      //                         testData: widget.tutorData,
-                      //                         flag: 0,
-                      //                         stackFlag: 0,
-                      //                       )),
-                      //             );
-                      //           },
-                      //           icon: Icon(Icons.assignment),
-                      //           label: Text('View Pre-test Results'),
-                      //           color: Colors
-                      //               .blue, // Colors.grey if not yet answered.
-                      //           textColor: Colors.white,
-                      //         ),
-                      //       ),
-                      //       SizedBox(
-                      //         width: MediaQuery.of(context).size.width,
-                      //         child: RaisedButton.icon(
-                      //           onPressed: () {
-                      //             print(
-                      //                 widget.tutorData['testData'].toString());
-                      //             Navigator.push(
-                      //               context,
-                      //               MaterialPageRoute(
-                      //                   builder: (context) => ResultsPage(
-                      //                       testData: widget.tutorData,
-                      //                       flag: 1,
-                      //                       stackFlag: 0)),
-                      //             );
-                      //           },
-                      //           icon: Icon(Icons.assignment),
-                      //           label: Text('View Post-test Results'),
-                      //           color: Colors
-                      //               .green, // Colors.grey if not yet answered.
-                      //           textColor: Colors.white,
-                      //         ),
-                      //       )
-                      //     ],
-                      //   );
+                      : retWidget = Container(
+                          width: 0,
+                          height: 0,
+                        );
                 }
                 return retWidget;
               })

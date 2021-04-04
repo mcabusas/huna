@@ -1,7 +1,13 @@
-#Tue Mar 30 15:22:20 SGT 2021
+#Sun Apr 04 18:47:02 SGT 2021
 base.2=C\:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes2.dex
 base.1=C\:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\dex\\debug\\mergeProjectDexDebug\\out\\classes.dex
 base.0=C\:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\dex\\debug\\mergeExtDexDebug\\out\\classes.dex
+renamed.21=classes22.dex
+renamed.20=classes21.dex
+path.21=classes_18.dex
+base.21=C\:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\out\\classes_18.dex
+path.20=classes_17.dex
+base.20=C\:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\dex\\debug\\mergeLibDexDebug\\out\\classes_17.dex
 path.9=classes_14.dex
 path.8=classes_13.dex
 path.7=classes_12.dex

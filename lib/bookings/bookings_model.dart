@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-class BookingsModel {
+import '../profile/myProfile_model.dart';
+class BookingsModel extends MyProfileModel{
 
   Stream getStudentBookings(String uid) {
     return FirebaseFirestore.instance

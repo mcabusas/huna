@@ -42,18 +42,6 @@ class _RateReviewState extends State<RateReviewView> {
         title: Text('Rate & Review'),
       ),
       body: Stack(children: <Widget>[
-        // Container(
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //       image: AssetImage('assets/images/bgk.jpg'),
-        //       colorFilter: ColorFilter.mode(
-        //         Colors.black.withOpacity(0.85),
-        //         BlendMode.darken,
-        //       ),
-        //       fit: BoxFit.fill,
-        //     ),
-        //   ),
-        // ),
         widget.flag == 0 ?
         RateViewStudent(flag: widget.flag, data: widget.data) :
         RateViewTutor(flag: widget.flag, data: widget.data)

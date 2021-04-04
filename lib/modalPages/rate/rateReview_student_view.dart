@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating/flutter_rating.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/modalPages/rate/rateReview_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -48,8 +49,20 @@ class _RateViewStudentState extends State<RateViewStudent> {
                     child: Container(
                       width: 75,
                       height: 75,
-                      child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/tutor.jpg'),
+                      child: FutureBuilder(
+                        future: _model.getPicture(widget.data['bookingData']['tutor_userid']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget retVal;
+                          if(snapshot.connectionState == ConnectionState.waiting) {
+                            retVal = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done){
+                            retVal = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data, radius: 40,)
+                            );
+                          }
+                          return retVal;
+                        },
                       ),
                     ),
                   ),
