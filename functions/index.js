@@ -1,7 +1,10 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { onUpdate } = require("firebase-functions/lib/providers/remoteConfig");
+const { namespace } = require("firebase-functions/lib/providers/firestore");
 admin.initializeApp(functions.config().functions);
+
+var db = admin.database();
 
 
 exports.newBooking = functions.firestore
@@ -39,15 +42,18 @@ exports.bookingStatus = functions.firestore.document('bookings/{id}').onUpdate(a
 
   console.log(after.bookingData['student_id']);
 
-  var user = admin.firestore.document("users/" + after.bookingData['student_id']);
+  const user = admin
+    .firestore()
+    .collection("users")
+    .doc(`${after.bookingData['student_id']}`);
 
-  var userData = await user.get();
-  if (!userData.exists) {
-    console.log('nay');
-  } else {
-    console.log(userData.data());
-  }
-
+  user.get().then(doc => {
+    if(!doc.exists) {
+      console.log('nope');
+    }else{
+      console.log(doc.data()['device_tokens']);
+    }
+  });
   // try {
   //   admin.messaging().sendToDevice(tokens, payload);
   // } catch (e) {
