@@ -17,15 +17,32 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     loadData();    
-    initAwait();
+    //initAwait();
+    _configureFirebaseListener();
   }
 
   initAwait() async {
-    await test();
+    //await test();
   }
 
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FirebaseFunctions functions = FirebaseFunctions.instance;
+
+  _configureFirebaseListener() {
+    _firebaseMessaging.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print('onMessage: $message');
+      },
+
+      onLaunch: (Map<String, dynamic> message) async {
+        print('onLaunch: $message');
+      },
+
+      onResume: (Map<String, dynamic> message) async {
+        print('onResume: $message');
+      }
+    );
+  }
 
   Future<void> test() async{
 

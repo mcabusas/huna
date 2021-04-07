@@ -97,6 +97,9 @@
                 android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
+                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+                android:value="com.google.firebase.components.ComponentRegistrar" />
+            <meta-data
                 android:name="com.google.firebase.components:com.google.firebase.functions.FunctionsRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
@@ -109,16 +112,13 @@
                 android:name="com.google.firebase.components:com.google.firebase.storage.StorageRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
-                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
-                android:value="com.google.firebase.components.ComponentRegistrar" />
-            <meta-data
                 android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
-                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <meta-data
-                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
             <!--
                 This registrar is not defined in the dynamic-module-support sdk itself to allow non-firebase
@@ -130,6 +130,18 @@
         </service>
         <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" >
             <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!--
+             FirebaseMessagingService performs security checks at runtime,
+             but set to not exported to explicitly avoid allowing another app to call it.
+        -->
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:directBootAware="true"
+            android:exported="false" >
+            <intent-filter android:priority="-500" >
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service> <!-- Needs to be explicitly declared on P+ -->
@@ -182,18 +194,6 @@
                 <action android:name="com.google.firebase.auth.api.gms.service.START" />
 
                 <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
-        <!--
-             FirebaseMessagingService performs security checks at runtime,
-             but set to not exported to explicitly avoid allowing another app to call it.
-        -->
-        <service
-            android:name="com.google.firebase.messaging.FirebaseMessagingService"
-            android:directBootAware="true"
-            android:exported="false" >
-            <intent-filter android:priority="-500" >
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
