@@ -13,30 +13,30 @@ class MessagesModel {
     QuerySnapshot chatrooms = await FirebaseFirestore.instance
     .collection('chatrooms')
     .where('users.studentid', isEqualTo: uid)
-    .get();
+      .get();
 
-    for(int i = 0; i< chatrooms.docs.length; i++){
-      String chatroomid = chatrooms.docs[i].id;
+      for(int i = 0; i< chatrooms.docs.length; i++){
+        String chatroomid = chatrooms.docs[i].id;
 
-      DocumentReference chatRoomRef = FirebaseFirestore.instance
-      .collection('chatrooms')
-      .doc(chatroomid);
+        DocumentReference chatRoomRef = FirebaseFirestore.instance
+        .collection('chatrooms')
+        .doc(chatroomid);
 
-      await chatRoomRef.get().then((snapshot){
+        await chatRoomRef.get().then((snapshot){
 
-        retData.add({
-          'firstName': snapshot.data()['users']['tutor_firstName'],
-          'lastName': snapshot.data()['users']['tutor_lastName'],
-          'chatRoomId': snapshot.data()['chatroomid'],
-          'rate': snapshot.data()['users']['tutor_rate'],
-          'tutor_id': snapshot.data()['users']['tutorid'],
-          'tutor_userid': snapshot.data()['users']['tutor_userid']
-          
+          retData.add({
+            'firstName': snapshot.data()['users']['tutor_firstName'],
+            'lastName': snapshot.data()['users']['tutor_lastName'],
+            'chatRoomId': snapshot.data()['chatroomid'],
+            'rate': snapshot.data()['users']['tutor_rate'],
+            'tutor_id': snapshot.data()['users']['tutorid'],
+            'tutor_userid': snapshot.data()['users']['tutor_userid']
+            
+          });
+
+
         });
-
-
-      });
-    }
+      }
     print(retData);
 
     return retData;
