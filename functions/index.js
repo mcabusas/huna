@@ -50,7 +50,7 @@ exports.bookingStatus = functions.firestore.document('bookings/{id}').onUpdate(a
   user.get().then(doc => {
     if(!doc.exists) {
       console.log('nope');
-    }else{
+    }else {
       console.log(doc.data()['device_tokens']);
     }
   });

@@ -6,6 +6,7 @@ import 'package:huna/profile/myProfile.dart';
 import 'login/login.dart';
 import 'package:huna/profile/myProfileSettings.dart';
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
