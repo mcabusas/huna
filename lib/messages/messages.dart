@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/historyPages/boookingHistory/bookingHistory.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/modalPages/chat/messages_chat.dart';
@@ -155,8 +156,21 @@ class _TutorMessagesState extends State<TutorMessages> {
               itemBuilder: (BuildContext context, int index) {
                 return new Card(
                     child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                      leading: FutureBuilder(
+                        future: _model.getPicture(snapshot.data[index]['student_id']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget ret;
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            ret = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done){
+                            ret = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+
+                          return ret;
+                        }
                       ),
                       title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
                       // subtitle: Text(
@@ -232,8 +246,21 @@ class _StudentMessagesState extends State<StudentMessages> {
               itemBuilder: (BuildContext context, int index) {
                 return new Card(
                     child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                      leading: FutureBuilder(
+                        future: _model.getPicture(snapshot.data[index]['tutor_userid']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget ret;
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            ret = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done){
+                            ret = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+
+                          return ret;
+                        }
                       ),
                       title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
                       // subtitle: Text(

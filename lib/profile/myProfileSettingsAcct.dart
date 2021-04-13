@@ -29,11 +29,12 @@ class EmergencyDetails extends StatefulWidget {
 class _EmergencyDetailsState extends State<EmergencyDetails> {
   @override
   Widget build(BuildContext context) {
+
     Map<String, dynamic> data = {
-      'emergencyFirstName': widget.emergencyFirstName,
-      'emergencyLastName': widget.emergencyLastName,
-      'emergencyContactNumber': widget.emergencyContactNumber,
-      'emergencyRelation': widget.emergencyRelation
+      'emergencyFirstName': '',
+      'emergencyLastName': '',
+      'emergencyContactNumber': '',
+      'emergencyRelation': ''
     };
 
     void getDropDownItem() {
@@ -65,10 +66,6 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
             // Account Details Input
 
             new TextFormField(
-              initialValue: data['emergencyFirstName'],
-              onChanged: (val) {
-                data['emergencyFirstName'] = val;
-              },
               validator: (val) {
                 if (val.isEmpty) {
                   return "First name can't be empty";
@@ -76,21 +73,23 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
 
                 return null;
               },
+              onChanged: (val) {
+                data['emergencyFirstName'] = val;
+              },
               decoration: new InputDecoration(
                 labelText: "First Name",
               ),
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['emergencyLastName'],
-              onChanged: (val) {
-                data['emergencyLastName'] = val;
-              },
               validator: (val) {
                 if (val.isEmpty) {
                   return "Last name can't be empty";
                 }
                 return null;
+              },
+              onChanged: (val){
+                data['emergencyLastName'] = val;
               },
               decoration: new InputDecoration(
                 labelText: "Last Name",
@@ -98,15 +97,14 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['emergencyContactNumber'],
-              onChanged: (val) {
-                data['emergencyContactNumber'] = val;
-              },
               validator: (val) {
                 if (val.isEmpty) {
                   return "Contact number can't be empty";
                 }
                 return null;
+              },
+              onChanged: (val){
+                data['emergencyContactNumber'] = val;
               },
               decoration: new InputDecoration(
                 labelText: "Contact Number",
@@ -123,9 +121,7 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                   );
                 }).toList(),
                 onChanged: (String value) {
-                  setState(() {
-                    currentMenuItem = value;
-                  });
+                  currentMenuItem = value;
                 },
                 value: currentMenuItem),
 
@@ -140,10 +136,10 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
                 ),
                 onPressed: () async {
                   getDropDownItem();
-                  print(data['emergencyRelation']);
+                  print(data);
                   if (_formKey.currentState.validate()) {
                     try {
-                      retVal = await _model.editStudentEmergencyContant(
+                      retVal = await _model.editStudentEmergencyContact(
                           widget.uid, data);
                       if (retVal == true) {
                         Fluttertoast.showToast(
@@ -239,7 +235,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             // Account Details Input
 
             new TextFormField(
-              initialValue: data['homeAddress'],
               onChanged: (val) {
                 data['homeAddress'] = val;
               },
@@ -256,7 +251,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['city'],
               onChanged: (val) {
                 data['city'] = val;
               },
@@ -273,7 +267,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['country'],
               //controller: countryController,
               onChanged: (val) {
                 data['country'] = val;
@@ -284,7 +277,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['zipCode'],
               onChanged: (val) {
                 data['zipCode'] = val;
               },
@@ -295,7 +287,12 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               keyboardType: TextInputType.text,
             ),
             new TextFormField(
-              initialValue: data['contactNumber'],
+              validator: (val) {
+                if(val.isEmpty){
+                  return "Contact number can't be empty";
+                }
+                return null;
+              },
               onChanged: (val) {
                 data['contactNumber'] = val;
               },
@@ -349,58 +346,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class AccountDetails extends StatefulWidget {
-  @override
-  _AccountDetailsState createState() => _AccountDetailsState();
-}
-
-class _AccountDetailsState extends State<AccountDetails> {
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Account Details',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          //   new TextFormField(
-          //   controller: emailController,
-          //   decoration: new InputDecoration(
-          //     labelText: "Email",
-          //   ),
-          //   keyboardType: TextInputType.text,
-          // ),
-          new TextFormField(
-            decoration: new InputDecoration(
-              labelText: "New Password",
-            ),
-            keyboardType: TextInputType.text,
-          ),
-          new TextFormField(
-            decoration: new InputDecoration(
-              labelText: "Confirm Password",
-            ),
-            keyboardType: TextInputType.text,
-          ),
-        ],
       ),
     );
   }

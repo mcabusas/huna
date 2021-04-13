@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/login/login.dart';
-// import 'package:huna/modalPages/signup/signup.dart';
+import '../services/auth_services.dart';
 
 void _showDialog(context) {
-
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-       contentPadding: EdgeInsets.only(top: 30),
+        contentPadding: EdgeInsets.only(top: 30),
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -32,9 +32,12 @@ void _showDialog(context) {
               ),
             ),
             onPressed: () {
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 context,
-                new MaterialPageRoute(builder: (context) => LoginPage()),
+                MaterialPageRoute(
+                  builder: (BuildContext context) => LoginPage(),
+                ),
+                (route) => false,
               );
             },
           ),
@@ -44,44 +47,27 @@ void _showDialog(context) {
   );
 }
 
-void main() => runApp(ForgotPassword());
 
-class ForgotPassword extends StatelessWidget {
-  // This widget is the root of your application.
+
+class ForgotPassword extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'HUNA',
-      theme: ThemeData(
-        primaryColor: Colors.grey.shade900,
-        primarySwatch: Colors.blueGrey,
-      ),
-      home: ForgotPasswordPage(),
-    );
-  }
+  State createState() => new ForgotPasswordState();
 }
 
-class ForgotPasswordPage extends StatefulWidget {
+class ForgotPasswordState extends State<ForgotPassword> {
+  AuthServices _services = new AuthServices();
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
   @override
-  _ForgotPasswordState createState() => _ForgotPasswordState();
-}
-
-
-class _ForgotPasswordState extends State<ForgotPasswordPage> {
-  @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
+              Navigator.pop(context);
             }),
-        title: Text('Forgot Password'),
+        title: Text('Reset Password'),
       ),
       body: new Stack(
         fit: StackFit.expand,
@@ -92,7 +78,7 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
             color: Colors.black87,
             colorBlendMode: BlendMode.darken,
           ),
-          SingleChildScrollView(            
+          SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.only(top: 80.0),
               child: Column(
@@ -139,67 +125,98 @@ class _ForgotPasswordState extends State<ForgotPasswordPage> {
                       ),
                       child: Container(
                         padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          children: <Widget>[
-                            new TextFormField(
-                              decoration: new InputDecoration(
-                                labelText: "Username",
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            children: <Widget>[
+                              new TextFormField(
+                                onChanged: (value){
+                                  setState(() {
+                                    email = value;
+                                  });
+                                },
+                                validator: (value) {
+                                  if(value == null) {
+                                    return 'Please enter your email.';
+                                  }
+                                  return null;
+                                },
+                                decoration: new InputDecoration(
+                                  labelText: "Email",
+                                ),
+                                keyboardType: TextInputType.text,
                               ),
-                              keyboardType: TextInputType.text,
-                            ),
-                            new Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                Container(
-                                  child: new Text(
-                                    "A temporary password will be sent to the contact number registered to your username.",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
+                              new Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: <Widget>[
+                                  Container(
+                                    child: new Text(
+                                      "A link will be sent to your email that will allow you to change your password.",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                new SizedBox(
-                                  height: 15.0,
-                                ),
-                                Container(
-                                  width: 400.0,
-                                  child: new Text(
-                                    "Please login and change your password.",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15.0,
+                                  new SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  Container(
+                                    width: 400.0,
+                                    child: new Text(
+                                      "Please change your password and try to login once again.",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                             SizedBox(
-                              height: 80.0,
-                            ),
-                             Row(                               
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                 SizedBox(
-                                   width: MediaQuery.of(context).size.width / 1.18,
-                                   child: MaterialButton(                                 
-                                    color: Colors.cyan,
-                                    textColor: Colors.white,
-                                    child: Text(
-                                      "Send Request",
-                                      style: TextStyle(fontSize: 15.0),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 80.0,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.18,
+                                    child: MaterialButton(
+                                      color: Colors.cyan,
+                                      textColor: Colors.white,
+                                      child: Text(
+                                        "Send",
+                                        style: TextStyle(fontSize: 15.0),
+                                      ),
+                                      onPressed: () async {
+                                        if(_formKey.currentState.validate()){
+                                          print(email);
+                                          bool ret = await _services.forgotPassword(email);
+                                          if(ret){
+                                            _showDialog(context);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                              msg: "There was an error, please verify if you've entered the correct email.",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIos: 1,
+                                              backgroundColor: Colors.blue,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0
+                                          );
+                                          }
+                                        }
+                                      },
                                     ),
-                                    onPressed: () {
-                                      _showDialog(context);
-                                    },
-                                ),
-                                 ),
-                              ],
-                            ),
-                          ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),

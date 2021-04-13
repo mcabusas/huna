@@ -240,12 +240,9 @@ class LoginPageState extends State<LoginPage>
                                         textColor: Colors.white,
                                         fontSize: 16.0
                                       );
-                                      Navigator.push(
-                                        context,
-                                        new MaterialPageRoute(
-                                          builder: (context) => DashboardPage(),
-                                        ),
-                                      );
+
+                                      Navigator.pushReplacement(
+                                      context, MaterialPageRoute(builder: (BuildContext context) => DashboardPage()));
                                     }else if(retVal == false){
                                       print('this isnt working');
                                     }

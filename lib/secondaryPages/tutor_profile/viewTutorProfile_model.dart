@@ -74,6 +74,24 @@ class ViewTutorProfileModel  extends MyProfileModel {
     return tutorData;
   }
 
+  Future<bool> createReport(Map<String, dynamic> data) async {
+    bool retVal = false;
+
+    SharedPreferences sp = await SharedPreferences.getInstance();
+
+    FirebaseFirestore.instance
+    .collection('reports')
+    .add(data)
+    .then((value) => {
+      retVal = true
+    }).catchError((e) {
+      print(e.toString());
+    });
+
+
+    return retVal;
+  }
+
   Future<String> createChatRoom(QueryDocumentSnapshot tutorData) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     print(sp.getString('uid'));
@@ -118,18 +136,21 @@ class ViewTutorProfileModel  extends MyProfileModel {
     }
   }
 
-  Future<bool> addToFavorites(Map<String, dynamic> data) async {
+  Future<bool> addToFavorites(QueryDocumentSnapshot data) async {
 
     bool retVal = false;
 
     User user = await _authServices.getCurrentUser();
-    print(user.uid);
-    data['user_id'] = user.uid;
-    print(data);
 
     await FirebaseFirestore.instance
     .collection('favorites')
-    .add(data).then((value) {
+    .add({
+      'tutor_firstName': data['firstName'],
+      'tutor_lastName': data['lastName'],
+      'tutor_uid': data['uid'],
+      'tutor_tid': data['tid'],
+      'student_uid': user.uid
+    }).then((value) {
       retVal = true;
     });
 

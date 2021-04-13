@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'favorites_model.dart';
@@ -103,11 +104,24 @@ class _FavoritesState extends State<FavoritesPage> {
                 itemBuilder: (BuildContext context, int index) {
                   return new Card(
                     child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                      leading: FutureBuilder(
+                        future: _model.getPicture(snapshot.data.docs[index]['tutor_uid']),
+                        builder: (BuildContext context, AsyncSnapshot snapshot){
+                          Widget ret;
+                          if(snapshot.connectionState == ConnectionState.waiting){
+                            ret = Container(child: CircularProgressIndicator());
+                          }
+                          if(snapshot.connectionState == ConnectionState.done){
+                            ret = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data)
+                            );
+                          }
+
+                          return ret;
+                        }
                       ),
                       title: Text(
-                          '${snapshot.data.docs[index]['firstName']} ${snapshot.data.docs[index]['lastName']}'),
+                          '${snapshot.data.docs[index]['tutor_firstName']} ${snapshot.data.docs[index]['tutor_lastName']}'),
                       // subtitle: Text(
                       //   '${json[index]['username']}',
                       //   overflow: TextOverflow.ellipsis,
@@ -115,7 +129,7 @@ class _FavoritesState extends State<FavoritesPage> {
                       trailing: IconButton(
                           icon: Icon(Icons.favorite, color: Colors.red),
                           onPressed: () {
-                            removeTutor(snapshot.data.docs[index]['firstName'], snapshot.data.docs[index]['lastName'], snapshot.data.docs[index]['tutor_id']);
+                            removeTutor(snapshot.data.docs[index]['tutor_firstName'], snapshot.data.docs[index]['tutor_lastName'], snapshot.data.docs[index]['tutor_uid']);
                           }),
                     ),
                   );

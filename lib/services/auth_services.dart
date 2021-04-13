@@ -1,10 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../profile/myProfile_model.dart';
 
-class AuthServices with ChangeNotifier {
+class AuthServices extends MyProfileModel with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   SharedPreferences sp;
   FirebaseMessaging _firebaseMessaging;
@@ -64,7 +67,8 @@ class AuthServices with ChangeNotifier {
       'emergencyFirstName': '',
       'emergencyLastName': '',
       'emergencyRelation': '',
-      'emergencyContactNumber': ''
+      'emergencyContactNumber': '',
+      'picture': ''
     };
 
     DocumentReference retVal =
@@ -84,9 +88,9 @@ class AuthServices with ChangeNotifier {
       returnData['emergencyContactNumber'] =
           snapshot.data()['emergencyContactNumber'];
       returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
-       List.from(snapshot.data()['device_tokens']).forEach((element){
-          deviceTokens.add(element);
-      });
+      //  List.from(snapshot.data()['device_tokens']).forEach((element){
+      //     deviceTokens.add(element);
+      // });
 
       await FirebaseFirestore.instance
           .collection('tutors')
@@ -107,18 +111,18 @@ class AuthServices with ChangeNotifier {
       setPref(returnData);
     });
 
-    _firebaseMessaging.getToken().then((value) => {
-      print(value),
-      print(deviceTokens),
-      //deviceTokens[deviceTokens.length] = value,
-      // retVal.update({
-      //   'device_tokens': deviceTokens
-      // }).catchError((e) => {
-      //   print('update error: ' + e.toString())
-      // })
-    }).catchError((e) => {
-      print(e.toString())
-    });
+    // _firebaseMessaging.getToken().then((value) => {
+    //   print(value),
+    //   print(deviceTokens),
+    //   //deviceTokens[deviceTokens.length] = value,
+    //   // retVal.update({
+    //   //   'device_tokens': deviceTokens
+    //   // }).catchError((e) => {
+    //   //   print('update error: ' + e.toString())
+    //   // })
+    // }).catchError((e) => {
+    //   print(e.toString())
+    // });
 
     
 
@@ -165,24 +169,45 @@ class AuthServices with ChangeNotifier {
     return retData;
   }
 
-  Future<void> register(Map<String, String> data) async {
+  Future<bool> register(Map<String, dynamic> data, File image) async {
+    bool returnVal = false;
+    bool login;
     try {
       UserCredential retVal = await _auth.createUserWithEmailAndPassword(
           email: data['email'], password: data['password']);
 
       data['uid'] = retVal.user.uid;
       data['tid'] = '';
+      print(data);
 
       FirebaseFirestore.instance
           .collection('users')
           .doc(retVal.user.uid)
           .set(data);
-
-      return;
+      try{
+        await uploadPicture(retVal.user.uid, image);
+      }catch (e){
+        print(e.toString());
+      }
+      returnVal = true;
     } catch (e) {
       print(e.toString());
-      return null;
+      print('error herein auth');
     }
+    return returnVal;
+  }
+
+  Future<bool> forgotPassword(String email) async {
+    bool retVal = false;
+
+    try {
+      await _auth.sendPasswordResetEmail(email: email).then((value) => {
+        retVal = true
+      });
+    }catch (e){
+      print(e.toString());
+    }
+    return retVal;
   }
 
   Future<void> signOut() async {

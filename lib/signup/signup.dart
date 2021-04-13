@@ -1,14 +1,12 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/login/login.dart';
 import 'package:huna/modalPages/verifyAccount.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
-import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../services/auth_services.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main() => runApp(SignUp());
 
@@ -33,29 +31,84 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUpPage> {
-
-  Future<Null> selectedDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: null, initialDate: null, firstDate: null, lastDate: null
-      );
-  }
-
-
   File _image;
   //DateTime _dateTime;
- 
+
   final _formKey = GlobalKey<FormState>();
 
   AuthServices _services = new AuthServices();
 
-  Map<String, String> data = {};
+  Map<String, dynamic> data = {};
+
+  Future<Null> selectedDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: null, initialDate: null, firstDate: null, lastDate: null);
+  }
+
+  Future imageFromGallery() async {
+    try {
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
+
+      setState(() {
+        _image = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    //print(_productImage.toString());
+    print(data);
+  }
+
+  Future imageFromCamera() async {
+    try {
+      final File image =
+          await ImagePicker.pickImage(source: ImageSource.camera);
+
+      setState(() {
+        _image = image;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        imageFromGallery();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      imageFromCamera();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios), 
+            icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.push(
                 context,
@@ -111,7 +164,10 @@ class _SignUpState extends State<SignUpPage> {
                               ),
                               label: Text('Select Photo',
                                   style: TextStyle(color: Colors.white)),
-                              color: Colors.deepPurple.shade400,
+                              color: Colors.deepPurple.shade400, 
+                              onPressed: () { 
+                                _showPicker(context);
+                              },
                             ),
                           ],
                         ),
@@ -119,37 +175,35 @@ class _SignUpState extends State<SignUpPage> {
                       SizedBox(
                         height: 25.0,
                       ),
-
                       new TextFormField(
-                        validator: (val){
+                        validator: (val) {
                           // ignore: unnecessary_statements
-                          if(val.isEmpty){
+                          if (val.isEmpty) {
                             return 'Enter a username';
-                          }else{
+                          } else {
                             return null;
                           }
                         },
-                        onChanged: (val){
+                        onChanged: (val) {
                           setState(() {
                             data['username'] = val;
                           });
                         },
-                        decoration: new InputDecoration(                          
+                        decoration: new InputDecoration(
                           labelText: "Username",
                         ),
                         keyboardType: TextInputType.text,
                       ),
-
                       new TextFormField(
-                        validator: (val){
+                        validator: (val) {
                           // ignore: unnecessary_statements
-                          if(val.isEmpty){
+                          if (val.isEmpty) {
                             return 'Enter an email';
-                          }else{
+                          } else {
                             return null;
                           }
                         },
-                        onChanged: (val){
+                        onChanged: (val) {
                           setState(() {
                             data['email'] = val;
                           });
@@ -159,17 +213,16 @@ class _SignUpState extends State<SignUpPage> {
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
-
                       new TextFormField(
-                        validator: (val){
+                        validator: (val) {
                           // ignore: unnecessary_statements
-                          if(val.isEmpty){
+                          if (val.isEmpty) {
                             return 'Enter a password';
-                          }else{
+                          } else {
                             return null;
                           }
                         },
-                        onChanged: (val){
+                        onChanged: (val) {
                           setState(() {
                             data['password'] = val;
                           });
@@ -180,17 +233,16 @@ class _SignUpState extends State<SignUpPage> {
                         keyboardType: TextInputType.text,
                         obscureText: true,
                       ),
-
                       new TextFormField(
-                        validator: (val){
+                        validator: (val) {
                           // ignore: unnecessary_statements
-                          if(val.isEmpty){
+                          if (val.isEmpty) {
                             return 'Please confirm your password';
-                          }else{
+                          } else {
                             return null;
                           }
                         },
-                        onChanged: (val){
+                        onChanged: (val) {
                           data['confirmPassword'] = val;
                         },
                         decoration: new InputDecoration(
@@ -199,7 +251,6 @@ class _SignUpState extends State<SignUpPage> {
                         keyboardType: TextInputType.text,
                         obscureText: true,
                       ),
-
                       Column(
                         children: <Widget>[
                           Container(
@@ -214,15 +265,15 @@ class _SignUpState extends State<SignUpPage> {
                             ),
                           ),
                           new TextFormField(
-                            validator: (val){
-                          // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                            validator: (val) {
+                              // ignore: unnecessary_statements
+                              if (val.isEmpty) {
                                 return 'Enter your first name';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['firstName'] = val;
                               });
@@ -234,15 +285,15 @@ class _SignUpState extends State<SignUpPage> {
                           ),
 
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your last name';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['lastName'] = val;
                               });
@@ -300,15 +351,15 @@ class _SignUpState extends State<SignUpPage> {
                           // ),
 
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your home address';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['homeAddress'] = val;
                               });
@@ -320,15 +371,15 @@ class _SignUpState extends State<SignUpPage> {
                           ),
 
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your the city where you reside';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['city'] = val;
                               });
@@ -340,15 +391,15 @@ class _SignUpState extends State<SignUpPage> {
                           ),
 
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter the country where you reside';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['country'] = val;
                               });
@@ -360,15 +411,15 @@ class _SignUpState extends State<SignUpPage> {
                           ),
 
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your zip code';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['zipCode'] = val;
                               });
@@ -379,15 +430,15 @@ class _SignUpState extends State<SignUpPage> {
                             keyboardType: TextInputType.text,
                           ),
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your contact number';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['contactNumber'] = val;
                               });
@@ -412,17 +463,16 @@ class _SignUpState extends State<SignUpPage> {
                               ),
                             ),
                           ),
-
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your emergency contact first name';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['emergencyFirstName'] = val;
                               });
@@ -432,17 +482,16 @@ class _SignUpState extends State<SignUpPage> {
                             ),
                             keyboardType: TextInputType.text,
                           ),
-
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your emergency contact last name';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['emergencyLastName'] = val;
                               });
@@ -453,15 +502,15 @@ class _SignUpState extends State<SignUpPage> {
                             keyboardType: TextInputType.text,
                           ),
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your emergency contact number';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['emergencyContactNumber'] = val;
                               });
@@ -472,15 +521,15 @@ class _SignUpState extends State<SignUpPage> {
                             keyboardType: TextInputType.phone,
                           ),
                           new TextFormField(
-                            validator: (val){
+                            validator: (val) {
                               // ignore: unnecessary_statements
-                              if(val.isEmpty){
+                              if (val.isEmpty) {
                                 return 'Enter your emergency contact relation';
-                              }else{
+                              } else {
                                 return null;
                               }
                             },
-                            onChanged: (val){
+                            onChanged: (val) {
                               setState(() {
                                 data['emergencyRelation'] = val;
                               });
@@ -502,15 +551,24 @@ class _SignUpState extends State<SignUpPage> {
                               color: Colors.grey.shade900,
                               textColor: Colors.white,
                               child: new Text(
-                                "Next",
+                                "Submit",
                                 style: TextStyle(fontSize: 15.0),
                               ),
                               onPressed: () async {
-                                if(_formKey.currentState.validate()){
-                                  if(data['password'] == data['confirmPassword']){
-                                    _services.register(data);
+                                if (_formKey.currentState.validate()) {
+                                  if (data['password'] ==
+                                      data['confirmPassword']) {
+                                    bool catcher = await _services.register(data, _image);
+                                    if(catcher){
+                                      print('success');
+                                      bool retVal = await _services.login(data['email'], data['password']);
+                                      if(retVal == true){
+                                        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>DashboardPage()), (route) => false);
+                                      }
+                                    }else {
+                                      print('sike');
+                                    }
                                   }
-
                                 }
                                 /*Navigator.push(
                                   context,

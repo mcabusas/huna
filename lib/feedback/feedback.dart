@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'feedback_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -185,10 +186,20 @@ class _FeedbackState extends State<FeedbackPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
-                        onPressed: () {
+                        onPressed: () async {
                           if(_formKey.currentState.validate() && feedbackContent['rating'] != 0){
                             print(feedbackContent);
-                            _model.insertFeedback(feedbackContent);
+                            await _model.insertFeedback(feedbackContent);
+                            Fluttertoast.showToast(
+                              msg: "Thank you for your feedback!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIos: 1,
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white,
+                              fontSize: 16.0
+                          );
+                          Navigator.pop(context);
 
                           }
                         },

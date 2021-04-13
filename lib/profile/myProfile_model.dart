@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../services/auth_services.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class MyProfileModel {
@@ -22,28 +23,32 @@ class MyProfileModel {
 
   }
 
-  Future<String> uploadPicture(String uid, File file) async {
-    bool retVal = false;
+  Future uploadPicture(String uid, File file) async {
+    print(uid);
 
 
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-    .ref()
-    .child('images/')
-    .child(uid+'.jpg');
+    try{
+      firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
+      .ref()
+      .child('images/')
+      .child(uid+'.jpg');
 
-    firebase_storage.UploadTask uploadTask = ref.putFile(file);
-    var url = (await uploadTask.then((value) => {
-      value.ref.getDownloadURL().then((value) async => {
-        await FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .update({
-          'picture': value.toString()+".jpg"
+      firebase_storage.UploadTask uploadTask = ref.putFile(file);
+      var url = (await uploadTask.then((value) => {
+        value.ref.getDownloadURL().then((value) async => {
+          await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .update({
+            'picture': value.toString()+".jpg"
+          })
         })
-      })
-    }));
-
-    return 'yes';
+      }));
+      
+    }catch (e){
+      print(e.toString());
+      print('error in uppload image');
+    }
   }
 
   Stream getReview(String uid, int flag) {
@@ -124,7 +129,7 @@ class MyProfileModel {
 
   }
 
-  Future<bool> editStudentEmergencyContant(String uid, Map<String, dynamic> data) async {
+  Future<bool> editStudentEmergencyContact(String uid, Map<String, dynamic> data) async {
     bool retVal = false;  
     print(data);
 
@@ -138,19 +143,67 @@ class MyProfileModel {
       'emergencyContactNumber': data['emergencyContactNumber'],
       'emergencyRelation': data['emergencyRelation']
 
-    }).then((value) async => {
-      sp = await SharedPreferences.getInstance(),
-      retVal = true,
-      sp.setString('emergencyFirstName', data['emergencyFirstName']),
-      sp.setString('emergencyLastName', data['emergencyLastName']),
-      sp.setString('emergencyContactNumber', data['emergencyContactNumber']),
-      sp.setString('emergencyRelation', data['emergencyRelation ']),
-
     }).catchError((e) => {
       print(e.toString())
     });
 
     return retVal;
+  }
+
+  Future<bool> updateMajorTags(String tid, List<String> majors) async {
+    print(tid);
+    print(majors);
+
+     bool retVal = false;
+    await FirebaseFirestore.instance
+    .collection('tutors')
+    .doc(tid)
+    .update({
+      'majors': majors
+    }).then((value) => {
+      retVal = true
+    }).catchError((e) => {
+      print(e.toString())
+    });
+
+    return retVal;
+
+  }
+
+  Future<bool> updateLanguageTags(String tid, List<String> languages) async {
+
+    bool retVal = false;
+    await FirebaseFirestore.instance
+    .collection('tutors')
+    .doc(tid)
+    .update({
+      'languages': languages
+    }).then((value) => {
+      retVal = true
+    }).catchError((e) => {
+      print(e.toString())
+    });
+
+    return retVal;
+
+  }
+
+  Future<bool> updateTopicsTags(String tid, List<String> topics) async {
+
+    bool retVal = false;
+    await FirebaseFirestore.instance
+    .collection('tutors')
+    .doc(tid)
+    .update({
+      'topics': topics
+    }).then((value) => {
+      retVal = true
+    }).catchError((e) => {
+      print(e.toString())
+    });
+
+    return retVal;
+
   }
 
   Future<bool> editStudentPersonalDetails(String uid, Map<String, dynamic> data) async {

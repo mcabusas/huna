@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:huna/services/auth_services.dart';
+import '../profile/myProfile_model.dart';
 
-class MessagesModel {
+class MessagesModel extends MyProfileModel {
 
   AuthServices _auth = new AuthServices();
 
@@ -69,8 +70,7 @@ class MessagesModel {
           'lastName': snapshot.data()['users']['student_lastName'],
           'chatRoomId': snapshot.data()['chatroomid'],
           'rate': snapshot.data()['users']['tutor_rate'],
-          'tutor_id': snapshot.data()['users']['tutorid'],
-          'tutor_userid': snapshot.data()['users']['tutor_userid']
+          'student_id': snapshot.data()['users']['studentid'],
           
         });
 

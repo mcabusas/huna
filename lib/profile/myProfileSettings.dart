@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:huna/login/login.dart';
+import 'package:huna/modalPages/login_forgotPassword.dart';
 import 'package:huna/profile/myProfile.dart';
 import 'package:huna/profile/myProfileSettingsTags.dart';
 import 'package:huna/profile/myProfileSettingsAcct.dart';
@@ -198,7 +199,6 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                 GestureDetector(
                   onTap: (){
                     _showPicker(context);
-                    //print('no babe, it was you dealing with your own shit, you were not a bad person, you were a great person to my friends');
                   },
                   child: Stack(
                     children: [
@@ -328,49 +328,6 @@ class _StudentProfileSettingsWidgetState
     initAwait();
   }
 
-  //  updateProfile() async {
-  //   var data = {
-  //     'id': u.id,
-  //     'email': emailController.text,
-  //     'currentPassword': currentpasswordController.text,
-  //     'password': passwordController.text,
-  //     'confirm': confirmPasswordController.text,
-  //     'homeAddress': homeAddressController.text,
-  //     'city': cityController.text,
-  //     'country': countryController.text,
-  //     'zipCode': zipCodeController.text,
-  //     'contactNumber': contactNumberController.text,
-  //     'emergencyFirst': emergencyFirstController.text,
-  //     'emergencyLast': emergencyLastController.text,
-  //     'emergencyNumber': emergencyNumberController.text,
-  //     'emergencyRelation': currentMenuItem,
-  //     'settingsValue': settingsValue.toString(),
-  //     'selectedIndex': _selectedIndex.toString(),
-  //     };
-
-  //     final response = await http.post("https://hunacapstone.com/database_files/updateProfile.php", body: data);
-
-  //     if(response.statusCode == 200){
-  //       setState(() {
-  //         jsonData = jsonDecode(response.body);
-  //       });
-  //       print(jsonData);
-
-  //       if(jsonData['value'] == 1){
-  //         //Navigator.pop(context);
-  //         print(jsonData.toString());
-  //       }else if(jsonData['value'] == 0){
-  //         print('the password is incorrect; please try again');
-  //       }
-  //     }
-  // }
-
-  // void initState(){
-  //   super.initState();
-  //   _selectedIndex = 0;
-  //   print('this is my selectedindex: $_selectedIndex');
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Stack(children: <Widget>[
@@ -396,7 +353,25 @@ class _StudentProfileSettingsWidgetState
                             },
                             title: Text('Account Details'),
                             children: <Widget>[
-                              AccountDetails(),
+                              
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                child: new MaterialButton(
+                                  color: Colors.grey.shade900,
+                                  textColor: Colors.white,
+                                  child: new Text(
+                                    "Change Password",
+                                    style: TextStyle(fontSize: 15.0),
+                                  ),
+                                  onPressed: ()  {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => ForgotPassword()),
+                                    );
+                                    //createAlertDialog(context);
+                                  },
+                                ),
+                              ),
                             ],
                             trailing: IgnorePointer(
                               child: Icon(Icons.edit),
@@ -781,7 +756,7 @@ class _TutorProfileSettingsWidgetState
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TagsPage()),
+                                    builder: (context) => TagsPage(tid: tid)),
                               );
                             },
                           ),

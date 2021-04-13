@@ -1,13 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/profile/myProfileSettings.dart';
-import 'package:http/http.dart' as http;
-import 'package:huna/login/login.dart';
+import 'myProfile_model.dart';
 
 
 
 class TagsPage extends StatefulWidget {
+  final tid;
+  TagsPage({this.tid});
   @override
   _TagsState createState() => _TagsState();
 }
@@ -19,26 +19,6 @@ class _TagsState extends State<TagsPage> {
     tutorPage = 2;
     print(tutorPage);
   }
-
-
-  // Future updateTags() async{
-  
-  //   var data = {
-  //     'majors': majorTiles.toString(),
-  //     'lang': _languageTags.toString(),
-  //     'topics': _topicsTags.toString(),
-  //   };
-
-
-  //   final response = await http.post("https://hunacapstone.com/database_files/profileSettingsTutor.php?id=${u.tutorID}&pageTutor=$tutorPage", body: data);
-  //   if(response.statusCode == 200){
-  //     setState(() {
-  //       jsonData = jsonDecode(response.body);
-  //     });
-  //     print(jsonData);
-  //   }
-    
-  // }
 
 
   // Checkboxes
@@ -59,15 +39,16 @@ class _TagsState extends State<TagsPage> {
   var chk_sci;
   var chk_sprt;
 
-  List<String> majorTiles = List();
+  List<String> majorTiles = [];
 
   // Languages
-  List<String> _languageTags = List();
+  List<String> _languageTags = [];
   String _language;
 
   // Topic
-  List<String> _topicsTags = List();
+  List<String> _topicsTags = [];
   String _topic;
+  MyProfileModel _model = new MyProfileModel();
 
   final TextEditingController _languageController = new TextEditingController();
   final TextEditingController _topicController = new TextEditingController();
@@ -80,7 +61,7 @@ class _TagsState extends State<TagsPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.push(
+            Navigator.pop(
               context,
               MaterialPageRoute(builder: (context) => MyProfileSettings()),
             );
@@ -329,6 +310,31 @@ class _TagsState extends State<TagsPage> {
                   });
                 },
               ),
+              SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton.icon(
+                    onPressed: () async {
+                    if(majorTiles.isNotEmpty) {
+                      bool catcher = await _model.updateMajorTags(widget.tid, majorTiles);
+                      if(catcher) {
+                        Fluttertoast.showToast(
+                          msg: "Majors updated successfully",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      }
+                    }
+                    },
+                    icon: Icon(Icons.save),
+                    label: Text('Save'),
+                    color: Colors.grey.shade900,
+                    textColor: Colors.white,
+                  ),
+                ),
             ],
           ),
           Divider(),
@@ -409,6 +415,32 @@ class _TagsState extends State<TagsPage> {
                         ),
                       )
                       .toList(),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton.icon(
+                    onPressed: () async {
+                    // updateTags();
+                    if(_languageTags.isNotEmpty) {
+                      bool catcher = await _model.updateLanguageTags(widget.tid, _languageTags);
+                      if(catcher) {
+                        Fluttertoast.showToast(
+                          msg: "Languages updated successfully",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      }
+                    }
+                    },
+                    icon: Icon(Icons.save),
+                    label: Text('Save'),
+                    color: Colors.grey.shade900,
+                    textColor: Colors.white,
+                  ),
                 ),
               ],
             ),
@@ -493,22 +525,33 @@ class _TagsState extends State<TagsPage> {
                       )
                       .toList(),
                 ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: RaisedButton.icon(
+                    onPressed: () async {
+                    // updateTags();
+                    if(_topicsTags.isNotEmpty) {
+                      bool catcher = await _model.updateTopicsTags(widget.tid, _topicsTags);
+                      if(catcher) {
+                        Fluttertoast.showToast(
+                          msg: "Topics updated successfully",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIos: 1,
+                          backgroundColor: Colors.blue,
+                          textColor: Colors.white,
+                          fontSize: 16.0
+                      );
+                      }
+                    }
+                    },
+                    icon: Icon(Icons.save),
+                    label: Text('Save'),
+                    color: Colors.grey.shade900,
+                    textColor: Colors.white,
+                  ),
+                ),
               ],
-            ),
-          ),
-
-          SizedBox(height: 20),
-
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: RaisedButton.icon(
-              onPressed: () {
-               // updateTags();
-              },
-              icon: Icon(Icons.save),
-              label: Text('Save'),
-              color: Colors.grey.shade900,
-              textColor: Colors.white,
             ),
           ),
 

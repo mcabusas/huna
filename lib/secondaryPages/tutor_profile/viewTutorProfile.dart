@@ -18,7 +18,8 @@ class TutorProfilePage extends StatefulWidget {
 
 class _TutorProfileState extends State<TutorProfilePage> {
   // Predefined List of Reasons for Reporting
-  int _value = 1;
+  var _value = '1';
+  List<String> reports = ['Inappropriate behavior', 'Profile contains offensive content', 'User send spam messages', 'Fake Profile', 'Deceased Profile', 'Charged an extra fee outside of booking'];
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
   String chatRoomId;
   Map<String,dynamic> tutorData;
@@ -31,7 +32,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
   @override
   void initState(){
     super.initState();
-    print(widget.tutorData['firstName']);
+    print(widget.tutorData);
   }
 
   @override
@@ -49,7 +50,7 @@ class _TutorProfileState extends State<TutorProfilePage> {
             ),
             onPressed: () async {
               try{
-                retVal = await _model.addToFavorites(tutorData);
+                retVal = await _model.addToFavorites(widget.tutorData);
                 if(retVal == true){
                   Fluttertoast.showToast(
                     msg: 'Tutor added to your favorites.',
@@ -58,6 +59,8 @@ class _TutorProfileState extends State<TutorProfilePage> {
                     timeInSecForIos: 1,
                     backgroundColor: Colors.blue,
                     textColor: Colors.white);
+                } else {
+                  print('no true');
                 }
 
               }catch (e) {
@@ -91,55 +94,32 @@ class _TutorProfileState extends State<TutorProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('Select a reason: '),
-                        DropdownButtonFormField(
-                          hint: Text("Select Reason"),
+                        DropdownButton(
                           value: _value,
                           isDense: false,
                           isExpanded: true,
-                          items: <DropdownMenuItem>[
-                            DropdownMenuItem(
-                              child: Text('Inappropriate behavior'),
-                              value: 1,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Profile contains offensive content'),
-                              value: 2,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('User send spam messages'),
-                              value: 3,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Fake Profile'),
-                              value: 4,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Deceased Profile'),
-                              value: 5,
-                            ),
-                            DropdownMenuItem(
-                              child: Text(
-                                  'Charged an extra fee outside of booking'),
-                              value: 6,
-                            ),
-                            DropdownMenuItem(
-                              child: Text('Others'),
-                              value: 7,
-                            ),
-                          ],
+                          items: reports.map((String value)  {
+                            return new DropdownMenuItem(value: value, child: Text(value));
+                          }),
+
+
+                          // <String>['Inappropriate behavior', 'Profile contains offensive content', 'User send spam messages', 'Fake Profile', 'Deceased Profile', 'Charged an extra fee outside of booking'].map<DropdownMenuItem<String>>((String value) {
+                          //   return DropdownMenuItem(value: value, child: Text(value));
+                          // }).toList(),
                           onChanged: (value) {
                             setState(() {
                               _value = value;
+                              print(value);
                             });
                           },
                         ),
                         SizedBox(height: 20.0),
-                        Text('Additional comments: '),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: 'Comments',
-                          ),
-                        ),
+                        // Text('Additional comments: '),
+                        // TextField(
+                        //   decoration: InputDecoration(
+                        //     hintText: 'Comments',
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
