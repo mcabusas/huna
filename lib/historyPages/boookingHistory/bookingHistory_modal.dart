@@ -24,7 +24,7 @@ class HistoryModal extends MyProfileModel {
       await bookingsRef.get().then((value){
         docData.add({
           'uid': value.data()['bookingData']['student_id'],
-          'firstName': value.data()['bookingData']['studnet_firstName'],
+          'firstName': value.data()['bookingData']['student_firstName'],
           'lastName': value.data()['bookingData']['student_lastName'],
           'topic': value.data()['bookingData']['topic'],
           'timeStart': value.data()['bookingData']['timeStart'],

@@ -1,12 +1,13 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../services/auth_services.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import '../services/auth_services.dart';
 
 class MyProfileModel {
 
   SharedPreferences sp;
+
 
   Future<String> getPicture(String uid) async {
     String imageUrl = '';
@@ -118,6 +119,22 @@ class MyProfileModel {
 
   }
 
+  Future<Map<String, List<String>>> getTags(String tid) async {
+    Map<String, dynamic> retData = {};
+    DocumentSnapshot data = await FirebaseFirestore.instance
+    .collection('tutors')
+    .doc(tid)
+    .get();
+    
+    retData = {
+      'languages': data.data()['languages'],
+      'majors': data.data()['majors'],
+      'topics': data.data()['topics']
+    };
+
+    return retData;
+  }
+
   Stream getTutorRateAndTags(String uid){
     return FirebaseFirestore.instance
     .collection('tutors')
@@ -127,6 +144,15 @@ class MyProfileModel {
       print(e.toString())
     });
 
+  }
+
+  Stream getSettingsData(String uid) {
+    return FirebaseFirestore.instance
+    .collection('users')
+    .where('uid', isEqualTo: uid)
+    .snapshots().handleError((e)=>{
+      print(e.toString())
+    });
   }
 
   Future<bool> editStudentEmergencyContact(String uid, Map<String, dynamic> data) async {
@@ -234,7 +260,7 @@ class MyProfileModel {
 
       QuerySnapshot reviews = await FirebaseFirestore.instance
       .collection('reviews')
-      .where('s_uid', isEqualTo: uid)
+      .where('s_uid', isEqualTo: '5ki91DZXHsUTzgPhHI8IPPBzo2C2')
       .get();
 
       for(int i = 0; i < reviews.docs.length; i++){
@@ -294,8 +320,6 @@ class MyProfileModel {
 
     }
     retRating/=ratingsQuery.docs.length;
-
-    print(retRating.toString());
 
     return retRating;
   }

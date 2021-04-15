@@ -7,18 +7,16 @@ import 'myProfile_model.dart';
 
 class TagsPage extends StatefulWidget {
   final tid;
-  TagsPage({this.tid});
+  final majors;
+  final languages;
+  final topics;
+  TagsPage({this.tid, this.topics, this.languages, this.majors});
   @override
   _TagsState createState() => _TagsState();
 }
 
 class _TagsState extends State<TagsPage> {
 
-  void initState(){
-    super.initState();
-    tutorPage = 2;
-    print(tutorPage);
-  }
 
 
   // Checkboxes
@@ -52,6 +50,23 @@ class _TagsState extends State<TagsPage> {
 
   final TextEditingController _languageController = new TextEditingController();
   final TextEditingController _topicController = new TextEditingController();
+
+  void widgetToList() {
+    for(String language in widget.languages){
+      _languageTags.add(language);
+    }
+    for(String topic in widget.topics) {
+      _topicsTags.add(topic);
+    }
+    for(String major in widget.majors){
+      majorTiles.add(major);
+    }
+  }
+
+  void initState(){
+    super.initState();
+    widgetToList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +103,7 @@ class _TagsState extends State<TagsPage> {
               // Checkboxes
               CheckboxListTile(
                 title: Text('Arts'),
-                value: chk_art == 1,
+                value: majorTiles.contains('Arts'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Arts');
@@ -102,7 +117,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Business and Economics'),
-                value: chk_bande == 1,
+                value: majorTiles.contains('Business and Economics'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Business and Economics');
@@ -116,7 +131,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Computer Science'),
-                value: chk_comsci == 1,
+                value: majorTiles.contains('Computer Science'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Computer Science');
@@ -130,7 +145,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Engineering'),
-                value: chk_eng == 1,
+                value:majorTiles.contains('Engineering'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Engineerings');
@@ -144,7 +159,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Health and Sciences & Medicine'),
-                value: chk_healthsci == 1,
+                value: majorTiles.contains('Health and Sciences & Medicine'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Health and Sciences & Medicine');
@@ -158,7 +173,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('History'),
-                value: chk_his == 1,
+                value: majorTiles.contains('History'),
                 onChanged: (bool value) {
                   if(value == true){
                     majorTiles.add('History');
@@ -172,7 +187,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Humanities'),
-                value: chk_humn == 1,
+                value: majorTiles.contains('Humanities'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Humanities');
@@ -186,7 +201,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Languages'),
-                value: chk_lang == 1,
+                value: majorTiles.contains('Languages'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Languages');
@@ -200,7 +215,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Literature'),
-                value: chk_lit == 1,
+                value: majorTiles.contains('Literature'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Literature');
@@ -214,7 +229,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Mathematics'),
-                value: chk_math == 1,
+                value: majorTiles.contains('Mathematics'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Mathematics');
@@ -228,7 +243,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Music'),
-                value: chk_mus == 1,
+                value: majorTiles.contains('Music'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Music');
@@ -242,7 +257,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Philosophy'),
-                value: chk_philo == 1,
+                value: majorTiles.contains('Philosophy'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Philosophy');
@@ -256,7 +271,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Political Science'),
-                value: chk_polsci == 1,
+                value: majorTiles.contains('Political Science'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Political Science');
@@ -270,7 +285,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Religion'),
-                value: chk_reli == 1,
+                value: majorTiles.contains('Religion'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Religion');
@@ -284,7 +299,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Science'),
-                value: chk_sci == 1,
+                value: majorTiles.contains('Science'),
                 onChanged: (bool value) {
                    if(value == true){
                     majorTiles.add('Science');
@@ -298,7 +313,7 @@ class _TagsState extends State<TagsPage> {
               ),
               CheckboxListTile(
                 title: Text('Sports'),
-                value: chk_sprt == 1,
+                value: majorTiles.contains('Science'),
                 onChanged: (bool value) {
                   if(value == true){
                     majorTiles.add('Sports');

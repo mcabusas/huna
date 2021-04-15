@@ -23,7 +23,6 @@ class TutorialComplete extends StatefulWidget {
 }
 
 class _TutorialCompleteState extends State<TutorialComplete> {
-  //ViewTutorialModel _model = new ViewTutorialModel();
 
   Map<String, int> retVal;
 

@@ -1,27 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'myProfile_model.dart';
 
-String currentMenuItem = "Parent";
+String currentMenuItem = "";
 int settingsValue;
 final _formKey = GlobalKey<FormState>();
 MyProfileModel _model = new MyProfileModel();
 bool retVal;
 
 class EmergencyDetails extends StatefulWidget {
-  final emergencyFirstName;
-  final emergencyLastName;
-  final emergencyContactNumber;
-  final emergencyRelation;
   final uid;
 
-  EmergencyDetails(
-      {this.emergencyFirstName,
-      this.emergencyContactNumber,
-      this.emergencyLastName,
-      this.emergencyRelation,
-      this.uid});
+  EmergencyDetails({this.uid});
   @override
   _EmergencyDetailsState createState() => _EmergencyDetailsState();
 }
@@ -43,310 +35,313 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
       });
     }
 
-    return Form(
-      key: _formKey,
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'In Case of Emergency',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            // Account Details Input
+    return StreamBuilder(
+      stream: _model.getSettingsData(widget.uid),
+      builder: ( context, snapshot) {
+        Widget form = Container(height: 0, width: 0);
+        if(snapshot.connectionState == ConnectionState.waiting) {
+          print('waiting...');
+          form = CircularProgressIndicator();
+        }
+        if(snapshot.connectionState == ConnectionState.active) {
+          data = {
+            'emergencyFirstName': snapshot.data.docs[0]['emergencyFirstName'],
+            'emergencyLastName': snapshot.data.docs[0]['emergencyLastName'],
+            'emergencyContactNumber': snapshot.data.docs[0]['emergencyContactNumber'],
+          };
+          form = Form(
+            key: _formKey,
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  // Account Details Input
 
-            new TextFormField(
-              validator: (val) {
-                if (val.isEmpty) {
-                  return "First name can't be empty";
-                }
-
-                return null;
-              },
-              onChanged: (val) {
-                data['emergencyFirstName'] = val;
-              },
-              decoration: new InputDecoration(
-                labelText: "First Name",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              validator: (val) {
-                if (val.isEmpty) {
-                  return "Last name can't be empty";
-                }
-                return null;
-              },
-              onChanged: (val){
-                data['emergencyLastName'] = val;
-              },
-              decoration: new InputDecoration(
-                labelText: "Last Name",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              validator: (val) {
-                if (val.isEmpty) {
-                  return "Contact number can't be empty";
-                }
-                return null;
-              },
-              onChanged: (val){
-                data['emergencyContactNumber'] = val;
-              },
-              decoration: new InputDecoration(
-                labelText: "Contact Number",
-              ),
-              keyboardType: TextInputType.number,
-            ),
-            DropdownButton<String>(
-                hint: Text('Relation'),
-                items: ['Parent', 'Sibling', 'Guardian']
-                    .map((String dropDownStringItem) {
-                  return DropdownMenuItem<String>(
-                    value: dropDownStringItem,
-                    child: (Text(dropDownStringItem)),
-                  );
-                }).toList(),
-                onChanged: (String value) {
-                  currentMenuItem = value;
-                },
-                value: currentMenuItem),
-
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: new MaterialButton(
-                color: Colors.grey.shade900,
-                textColor: Colors.white,
-                child: new Text(
-                  "Save",
-                  style: TextStyle(fontSize: 15.0),
-                ),
-                onPressed: () async {
-                  getDropDownItem();
-                  print(data);
-                  if (_formKey.currentState.validate()) {
-                    try {
-                      retVal = await _model.editStudentEmergencyContact(
-                          widget.uid, data);
-                      if (retVal == true) {
-                        Fluttertoast.showToast(
-                            msg: "Emergency Details was updated successfully",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIos: 1,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['emergencyFirstName'],
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "First name can't be empty";
                       }
-                    } catch (e) {
-                      print(e.toString());
-                      Fluttertoast.showToast(
-                          msg: "Error updating data",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  }
 
-                  //createAlertDialog(context);
-                },
+                      return null;
+                    },
+                    onChanged: (val) {
+                      data['emergencyFirstName'] = val;
+                    },
+                    decoration: new InputDecoration(
+                      labelText: "First Name",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['emergencyLastName'],
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "Last name can't be empty";
+                      }
+                      return null;
+                    },
+                    onChanged: (val){
+                      data['emergencyLastName'] = val;
+                    },
+                    decoration: new InputDecoration(
+                      labelText: "Last Name",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['emergencyContactNumber'],
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "Contact number can't be empty";
+                      }
+                      return null;
+                    },
+                    onChanged: (val){
+                      data['emergencyContactNumber'] = val;
+                    },
+                    decoration: new InputDecoration(
+                      labelText: "Contact Number",
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                  DropdownButton<String>(
+                      value: currentMenuItem,
+                      hint: Text('Relation'),
+                      items: ['Parent', 'Sibling', 'Guardian']
+                          .map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: (Text(dropDownStringItem)),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          currentMenuItem = value;
+                        });
+                        print(currentMenuItem);
+                      },),
+
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: new MaterialButton(
+                      color: Colors.grey.shade900,
+                      textColor: Colors.white,
+                      child: new Text(
+                        "Save",
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      onPressed: () async {
+                        getDropDownItem();
+                        if (_formKey.currentState.validate()) {
+                          try {
+                            retVal = await _model.editStudentEmergencyContact(
+                                widget.uid, data);
+                            if (retVal == true) {
+                              Fluttertoast.showToast(
+                                  msg: "Emergency Details was updated successfully",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIos: 1,
+                                  backgroundColor: Colors.blue,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          } catch (e) {
+                            print(e.toString());
+                            Fluttertoast.showToast(
+                                msg: "Error updating data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        }
+
+                        //createAlertDialog(context);
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        }
+        if(snapshot.connectionState == ConnectionState.done) {
+          //print(snapshot.data.docs[0]['emergencyFirstName']);
+        }
+        
+        return form;
+      },
     );
   }
 }
 
 class PersonalDetails extends StatefulWidget {
-  final homeAddress;
-  final city;
-  final country;
-  final zipCode;
-  final contactNumber;
   final uid;
 
-  PersonalDetails(
-      {this.homeAddress,
-      this.city,
-      this.country,
-      this.zipCode,
-      this.contactNumber,
-      this.uid});
+  PersonalDetails({this.uid});
   @override
   _PersonalDetailsState createState() => _PersonalDetailsState();
 }
 
 class _PersonalDetailsState extends State<PersonalDetails> {
-  // Future createAlertDialog(BuildContext context){
-  //   return showDialog(context: context, builder: (context){
-  //     return AlertDialog(
-  //       title: Text('Type your current password for confirmation'),
-  //       content: TextFormField(
-  //         //controller: currentpasswordController,
-  //       ),
-  //       actions: <Widget>[
-  //         MaterialButton(
-  //           color: Colors.grey.shade900,
-  //           textColor: Colors.white,
-  //           onPressed: (){
-  //             //updateProfile();
-  //           },
-  //           child: Text('Submit'),
-  //           )
-  //       ],
-  //     );
-  //   });
-
-  // }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, dynamic> data = {
-      'homeAddress': widget.homeAddress,
-      'city': widget.city,
-      'country': widget.country,
-      'zipCode': widget.zipCode,
-      'contactNumber': widget.contactNumber,
-    };
 
-    return Form(
-      key: _formKey,
-      child: Container(
-        child: Column(
-          children: <Widget>[
-            // Account Details Input
+    return StreamBuilder(
+      stream: _model.getSettingsData(widget.uid),
+      builder: ( context, snapshot) {
+        Widget form = Container(height: 0, width: 0);
+        if(snapshot.connectionState == ConnectionState.waiting) {
+          print('waiting...');
+          form = CircularProgressIndicator();
+        }
+        if(snapshot.connectionState == ConnectionState.active) {
+          Map<String, dynamic> data = {
+            'homeAddress': snapshot.data.docs[0]['homeAddress'],
+            'city': snapshot.data.docs[0]['city'],
+            'country': snapshot.data.docs[0]['country'],
+            'zipCode': snapshot.data.docs[0]['zipCode'],
+            'contactNumber': snapshot.data.docs[0]['contactNumber'],
+          };
+          form = Form(
+            key: _formKey,
+            child: Container(
+              child: Column(
+                children: <Widget>[
+                  // Account Details Input
 
-            new TextFormField(
-              onChanged: (val) {
-                data['homeAddress'] = val;
-              },
-              validator: (val) {
-                if (val.isEmpty) {
-                  return "Home Address can't be empty";
-                }
-                return null;
-              },
-              //controller: homeAddressController,
-              decoration: new InputDecoration(
-                labelText: "Home Address (Billing Address)",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              onChanged: (val) {
-                data['city'] = val;
-              },
-              validator: (val) {
-                if (val.isEmpty) {
-                  return "City can't be empty";
-                }
-                return null;
-              },
-              //controller: cityController,
-              decoration: new InputDecoration(
-                labelText: "City",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              //controller: countryController,
-              onChanged: (val) {
-                data['country'] = val;
-              },
-              decoration: new InputDecoration(
-                labelText: "Country",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              onChanged: (val) {
-                data['zipCode'] = val;
-              },
-              //controller: zipCodeController,
-              decoration: new InputDecoration(
-                labelText: "Zip Code",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-            new TextFormField(
-              validator: (val) {
-                if(val.isEmpty){
-                  return "Contact number can't be empty";
-                }
-                return null;
-              },
-              onChanged: (val) {
-                data['contactNumber'] = val;
-              },
-              //controller: contactNumberController,
-              decoration: new InputDecoration(
-                labelText: "Contact Number",
-              ),
-              keyboardType: TextInputType.text,
-            ),
-
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: new MaterialButton(
-                color: Colors.grey.shade900,
-                textColor: Colors.white,
-                child: new Text(
-                  "Save",
-                  style: TextStyle(fontSize: 15.0),
-                ),
-                onPressed: () async {
-                  if (_formKey.currentState.validate()) {
-                    try {
-                      retVal = await _model.editStudentPersonalDetails(
-                          widget.uid, data);
-                      if (retVal == true) {
-                        Fluttertoast.showToast(
-                            msg: "Personal Details was updated successfully",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIos: 1,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white,
-                            fontSize: 16.0);
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['homeAddress'],
+                    onChanged: (val) {
+                      data['homeAddress'] = val;
+                    },
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "Home Address can't be empty";
                       }
-                    } catch (e) {
-                      print(e.toString());
-                      Fluttertoast.showToast(
-                          msg: "Error updating data",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0);
-                    }
-                  }
+                      return null;
+                    },
+                    //controller: homeAddressController,
+                    decoration: new InputDecoration(
+                      labelText: "Home Address (Billing Address)",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['city'],
+                    onChanged: (val) {
+                      data['city'] = val;
+                    },
+                    validator: (val) {
+                      if (val.isEmpty) {
+                        return "City can't be empty";
+                      }
+                      return null;
+                    },
+                    //controller: cityController,
+                    decoration: new InputDecoration(
+                      labelText: "City",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['country'],
+                    //controller: countryController,
+                    onChanged: (val) {
+                      data['country'] = val;
+                    },
+                    decoration: new InputDecoration(
+                      labelText: "Country",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['zipCode'],
+                    onChanged: (val) {
+                      data['zipCode'] = val;
+                    },
+                    //controller: zipCodeController,
+                    decoration: new InputDecoration(
+                      labelText: "Zip Code",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
+                  new TextFormField(
+                    initialValue: snapshot.data.docs[0]['contactNumber'],
+                    validator: (val) {
+                      if(val.isEmpty){
+                        return "Contact number can't be empty";
+                      }
+                      return null;
+                    },
+                    onChanged: (val) {
+                      data['contactNumber'] = val;
+                    },
+                    //controller: contactNumberController,
+                    decoration: new InputDecoration(
+                      labelText: "Contact Number",
+                    ),
+                    keyboardType: TextInputType.text,
+                  ),
 
-                  //createAlertDialog(context);
-                },
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: new MaterialButton(
+                      color: Colors.grey.shade900,
+                      textColor: Colors.white,
+                      child: new Text(
+                        "Save",
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          try {
+                            retVal = await _model.editStudentPersonalDetails(
+                                widget.uid, data);
+                            if (retVal == true) {
+                              Fluttertoast.showToast(
+                                  msg: "Personal Details was updated successfully",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIos: 1,
+                                  backgroundColor: Colors.blue,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
+                          } catch (e) {
+                            print(e.toString());
+                            Fluttertoast.showToast(
+                                msg: "Error updating data",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        }
+
+                        //createAlertDialog(context);
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          );
+        }
+        if(snapshot.connectionState == ConnectionState.done) {
+          //print(snapshot.data.docs[0]['emergencyFirstName']);
+        }
+        
+        return form;
+      },
     );
+    
   }
 }

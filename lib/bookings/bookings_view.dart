@@ -154,6 +154,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                         )),
             );
           }else if (snapshot.hasData) {
+            
             retWidget = ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.all(15.0),
@@ -179,6 +180,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                       ),
                   );
                 } else {
+                  print(snapshot.data);
                   var parsedDate = DateTime.parse(
                       snapshot.data.docs[index]['bookingData']['date']);
                   return new Card(

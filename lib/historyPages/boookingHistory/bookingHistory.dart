@@ -136,9 +136,7 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
               retWidget = Container(width: 0, height: 0);
             }
             if (snapshot.data['docData'].length > 0) {
-              retWidget = //Text(snapshot.data['docData'][0]['firstName']);
-              
-              ListView.builder(
+              retWidget = ListView.builder(
                 shrinkWrap: true,
                 padding: EdgeInsets.all(15),
                 itemCount: snapshot == null ? 0 : snapshot.data['docData'].length,
@@ -249,76 +247,87 @@ class _TutorHistoryModeState extends State<TutorHistoryMode> {
               retWidget = Container(width: 0, height: 0);
             }
             if (snapshot.data['docData'].length > 0) {
-              retWidget = 
-              ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(15),
-                itemCount: snapshot == null ? 0 : snapshot.data['docData'].length,
-                itemBuilder: (BuildContext context, int index) {
-                  var parsedDate = DateTime.parse(snapshot.data['docData'][index]['date']);
-                  return new Card(
-                    child: ListView(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                      children: <Widget>[
-                        // Per Booking, PRETEST
-                        ExpansionTile(
-                          leading: FutureBuilder(
-                            future: _modal.getPicture(snapshot.data['docData'][index]['uid']),
-                            builder: (BuildContext context, AsyncSnapshot snapshot){
-                              Widget retVal;
-                              if(snapshot.connectionState == ConnectionState.waiting) {
-                                retVal = Container(child: CircularProgressIndicator());
-                              }
-                              if(snapshot.connectionState == ConnectionState.done){
-                                retVal = CircleAvatar(
-                                  child: ProfilePicture(url: snapshot.data, radius: 40,)
-                                );
-                              }
-                              return retVal;
-                            },
-                          ),
-                          title: Text(
-                              '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
-                          
+              retWidget = Column(
+                children: [
+                  ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.all(15),
+                    itemCount: snapshot == null ? 0 : snapshot.data['docData'].length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var parsedDate = DateTime.parse(snapshot.data['docData'][index]['date']);
+                      return new Card(
+                        child: ListView(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
                           children: <Widget>[
-                            // Expanded Contents
-                            ListTile(
-                              leading: Icon(Icons.import_contacts),
+                            // Per Booking, PRETEST
+                            ExpansionTile(
+                              leading: FutureBuilder(
+                                future: _modal.getPicture(snapshot.data['docData'][index]['uid']),
+                                builder: (BuildContext context, AsyncSnapshot snapshot){
+                                  Widget retVal;
+                                  if(snapshot.connectionState == ConnectionState.waiting) {
+                                    retVal = Container(child: CircularProgressIndicator());
+                                  }
+                                  if(snapshot.connectionState == ConnectionState.done){
+                                    retVal = CircleAvatar(
+                                      child: ProfilePicture(url: snapshot.data, radius: 40,)
+                                    );
+                                  }
+                                  return retVal;
+                                },
+                              ),
                               title: Text(
-                                  '${snapshot.data['docData'][index]['topic']}'),
-                              dense: true,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.place),
-                              title: Text(
-                                  '${snapshot.data['docData'][index]['location']}'),
-                              dense: true,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.event),
-                              title:
-                                  Text(DateFormat.yMMMEd().format(parsedDate)),
-                              dense: true,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.access_time),
-                              title: Text(
-                                  '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
-                              dense: true,
-                            ),
-                            ListTile(
-                              leading: Icon(Icons.attach_money),
-                              title: Text('${snapshot.data['docData'][index]['rate']}.00'),
-                              dense: true,
+                                  '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
+                              
+                              children: <Widget>[
+                                // Expanded Contents
+                                ListTile(
+                                  leading: Icon(Icons.import_contacts),
+                                  title: Text(
+                                      '${snapshot.data['docData'][index]['topic']}'),
+                                  dense: true,
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.place),
+                                  title: Text(
+                                      '${snapshot.data['docData'][index]['location']}'),
+                                  dense: true,
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.event),
+                                  title:
+                                      Text(DateFormat.yMMMEd().format(parsedDate)),
+                                  dense: true,
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.access_time),
+                                  title: Text(
+                                      '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
+                                  dense: true,
+                                ),
+                                ListTile(
+                                  leading: Icon(Icons.attach_money),
+                                  title: Text('${snapshot.data['docData'][index]['rate']}.00'),
+                                  dense: true,
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      );
+                    },
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      padding: EdgeInsets.all(15.0),
+                      child: Text(snapshot.data['total'].toString())
+                    )
+                  )
+                ],
               );
+              
             }
           }
           if (snapshot.connectionState == ConnectionState.waiting) {

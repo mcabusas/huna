@@ -9,7 +9,6 @@ import '../components/profilePicture.dart';
 
 int _selectedIndex = 0;
 enum WidgetMaker { student, tutor }
-//final tabs = [StudentProfileWidget(), TutorProfileWidget()];
 final children = <Widget>[];
 var data;
 MyProfileModel _model = new MyProfileModel();
@@ -21,7 +20,7 @@ class MyProfile extends StatefulWidget {
 
 class _MyProfileState extends State<MyProfile> {
   SharedPreferences sp;
-  String uid, tid;
+  String uid, tid, firstName, lastName;
   AuthServices _auth = new AuthServices();
   WidgetMaker selectedWidget = WidgetMaker.student;
 
@@ -32,8 +31,8 @@ class _MyProfileState extends State<MyProfile> {
     setState(() {
       uid = sp.getString('uid');
       tid = sp.getString('tid');
-      print(sp.getString('tid') + 'this is tid');
-      userData = (_auth.userProfile(uid));
+      firstName = sp.getString('firstName');
+      lastName = sp.getString('lastName');
     });
   }
 
@@ -57,42 +56,41 @@ class _MyProfileState extends State<MyProfile> {
   }
 
   Widget bottomNavBar() {
-    if (tid == null) {
+    if (tid == '') {
       return null;
-    } else {
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4,
-        clipBehavior: Clip.antiAlias,
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('Student'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_cafe),
-              title: Text('Tutor'),
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-              if (index == 0) {
-                setState(() {
-                  selectedWidget = WidgetMaker.student;
-                });
-              } else if (index == 1) {
-                setState(() {
-                  selectedWidget = WidgetMaker.tutor;
-                });
-              }
-            });
-          },
-        ),
-      );
     }
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4,
+      clipBehavior: Clip.antiAlias,
+      child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('Student'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_cafe),
+            title: Text('Tutor'),
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            if (index == 0) {
+              setState(() {
+                selectedWidget = WidgetMaker.student;
+              });
+            } else if (index == 1) {
+              setState(() {
+                selectedWidget = WidgetMaker.tutor;
+              });
+            }
+          });
+        },
+      ),
+    );
   }
 
   @override
@@ -132,7 +130,7 @@ class _MyProfileState extends State<MyProfile> {
             child: Align(
               alignment: Alignment.topCenter,
               child: SingleChildScrollView(
-                              child: Column(
+                child: Column(
                   children: <Widget>[
                     FutureBuilder(
                         future: _model.getPicture(uid),
@@ -145,7 +143,6 @@ class _MyProfileState extends State<MyProfile> {
                                 Container(child: CircularProgressIndicator());
                           }
                           if (snapshot.connectionState == ConnectionState.done) {
-                            print(snapshot.data);
                             retWidget = CircleAvatar(
                               radius: 40,
                               child: ProfilePicture(url: snapshot.data)
@@ -157,7 +154,7 @@ class _MyProfileState extends State<MyProfile> {
                     // Profile Text
                     Center(
                       child: Text(
-                        '${sp.getString('firstName')} ${sp.getString('lastName')}',
+                        '$firstName $lastName',
                         style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -172,22 +169,7 @@ class _MyProfileState extends State<MyProfile> {
                     // ),
                     SizedBox(height: 20),
                     // Location
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.location_on,
-                            color: Colors.white,
-                            size: 15,
-                          ),
-                          Text(
-                            '${sp.getString('city')}, ${sp.getString('country')}',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
-                        ],
-                      ),
-                    ),
+                    
                     getScreen(),
                   ],
                 ),
@@ -213,7 +195,6 @@ class TutorProfileWidget extends StatefulWidget {
 class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   Future<List<Map<String, dynamic>>> initAwait() async {
     ratings = await _model.getRating(widget.id, 1);
-    print(ratings.toString());
     return await _model.getTutorReviews(widget.id);
   }
 
@@ -221,7 +202,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   void initState() {
     super.initState();
     initAwait();
-    print(widget.flag);
+    print('tutor screen');
   }
 
   @override
@@ -235,9 +216,8 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
             if (snapshot.data.length == 0) {
               return Center(
                 child: Container(
-                  height: 100,
-                  width: 100,
-                  child: Text('You have no reviews.'),
+                  height: 0,
+                  width: 0,
                 ),
               );
             } else {
@@ -312,7 +292,6 @@ class StudentProfileWidget extends StatefulWidget {
 class _StudentProfileWidgetState extends State<StudentProfileWidget> {
   Future<List<Map<String, dynamic>>> initAwait() async {
     ratings = await _model.getRating(widget.id, 1);
-    print(ratings.toString());
     return await _model.getStudentReviews(widget.id);
   }
 
@@ -320,29 +299,26 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
   void initState() {
     super.initState();
     initAwait();
+    print('student screen');
   }
 
   Widget build(BuildContext context) {
     return Container(
-        child: SingleChildScrollView(
+      child: SingleChildScrollView(
       child: FutureBuilder(
         future: initAwait(),
         builder: (context, AsyncSnapshot snapshot) {
+          Widget retval;
+          if (snapshot.connectionState == ConnectionState.waiting){
+            retval = Container(child: Center(child: CircularProgressIndicator()));
+          }
           if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data.length == 0) {
-              return Center(
-                child: Container(
-                  height: 100,
-                  width: 100,
-                  child: Text('You have no reviews.'),
-                ),
-              );
-            } else {
-              return Column(
+            print(snapshot.data.length);
+              retval = Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
+                        left: 30.0, top: 60.0, right: 25.0, bottom: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -353,6 +329,7 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        
                         // Average Star Ratings
                         IconTheme(
                             data: IconThemeData(color: Colors.amber, size: 20),
@@ -365,33 +342,40 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                     padding: EdgeInsets.all(15),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
+                      
                       if (snapshot.data.length == 0) {
-                        return new Container();
-                      } else {
-                        return new Card(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(20),
-                            title: IconTheme(
-                              data:
-                                  IconThemeData(color: Colors.amber, size: 20),
-                              child: StarDisplay(
-                                value: snapshot.data[index]['student_rating']
-                                    .toDouble(),
-                              ),
-                            ),
-                            subtitle: Text(snapshot.data[index]['content']),
-                            isThreeLine: true,
+                        return Center(
+                          child: Container(
+                            height: 100,
+                            width: 100,
+                            child: Text('You have no reviews.'),
                           ),
                         );
+                      } else {
+                        print('ok');
+                        // return Card(
+                        //   child: ListTile(
+                        //     contentPadding: EdgeInsets.all(20),
+                        //     title: IconTheme(
+                        //       data:
+                        //           IconThemeData(color: Colors.amber, size: 20),
+                        //       child: StarDisplay(
+                        //         value: snapshot.data[index]['student_rating']
+                        //             .toDouble(),
+                        //       ),
+                        //     ),
+                        //     subtitle: Text(snapshot.data[index]['content']),
+                        //     isThreeLine: true,
+                        //   ),
+                        // );
                       }
                     },
                   )
                 ],
               );
-            }
-          } else {
-            return Container(child: Center(child: CircularProgressIndicator()));
-          }
+            
+          } 
+          return retval;
         },
       ),
     ));

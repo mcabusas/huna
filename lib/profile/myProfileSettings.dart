@@ -72,7 +72,6 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
     setState(() {
       uid = sp.getString('uid');
       tid = sp.getString('tid');
-      print(sp.getString('country'));
     });
   }
 
@@ -116,42 +115,41 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
   }
 
   Widget bottomNavBar() {
-    if (tid == null) {
+    if (tid == '') {
       return null;
-    } else {
-      return BottomAppBar(
-        shape: CircularNotchedRectangle(),
-        notchMargin: 4,
-        clipBehavior: Clip.antiAlias,
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              title: Text('Student'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_cafe),
-              title: Text('Tutor'),
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-              if (index == 0) {
-                setState(() {
-                  selectedWidget = WidgetMaker.student;
-                });
-              } else if (index == 1) {
-                setState(() {
-                  selectedWidget = WidgetMaker.tutor;
-                });
-              }
-            });
-          },
-        ),
-      );
     }
+    return BottomAppBar(
+      shape: CircularNotchedRectangle(),
+      notchMargin: 4,
+      clipBehavior: Clip.antiAlias,
+      child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.school),
+            title: Text('Student'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.local_cafe),
+            title: Text('Tutor'),
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            _selectedIndex = index;
+            if (index == 0) {
+              setState(() {
+                selectedWidget = WidgetMaker.student;
+              });
+            } else if (index == 1) {
+              setState(() {
+                selectedWidget = WidgetMaker.tutor;
+              });
+            }
+          });
+        },
+      ),
+    );
   }
 
   @override
@@ -212,7 +210,6 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                             retWidget = Container(child: CircularProgressIndicator());
                           }
                           if(snapshot.connectionState == ConnectionState.done) {
-                            print(snapshot.data);
                             retWidget = CircleAvatar(
                               radius: 40,
                               child: ProfilePicture(url: snapshot.data)
@@ -287,14 +284,14 @@ class StudentProfileSettingsWidget extends StatefulWidget {
       _StudentProfileSettingsWidgetState();
 }
 
-class _StudentProfileSettingsWidgetState
-    extends State<StudentProfileSettingsWidget> {
+class _StudentProfileSettingsWidgetState extends State<StudentProfileSettingsWidget> {
+  
+  String uid;
+  
   void initAwait() async {
     sp = await SharedPreferences.getInstance();
     setState(() {
-      // uid = sp.getString('uid');
-      // tid = sp.getString('tid');
-      print(sp.getString('country'));
+       uid = sp.getString('uid');
     });
   }
 
@@ -389,12 +386,7 @@ class _StudentProfileSettingsWidgetState
                             title: Text('Personal Details'),
                             children: <Widget>[
                               PersonalDetails(
-                                  homeAddress: sp.getString('homeAddress'),
-                                  city: sp.getString('city'),
-                                  country: sp.getString('country'),
-                                  zipCode: sp.getString('zipCode'),
-                                  contactNumber: sp.getString('contactNumber'),
-                                  uid: sp.getString('uid')),
+                                  uid: uid),
                             ],
                             trailing: IgnorePointer(
                               child: Icon(Icons.edit),
@@ -412,16 +404,7 @@ class _StudentProfileSettingsWidgetState
                             },
                             title: Text('In Case of Emergency'),
                             children: <Widget>[
-                              EmergencyDetails(
-                                  emergencyFirstName:
-                                      sp.getString('emergencyFirstName'),
-                                  emergencyLastName:
-                                      sp.getString('emergencyLastName'),
-                                  emergencyRelation:
-                                      sp.getString('emergencyRelation'),
-                                  emergencyContactNumber:
-                                      sp.getString('emergencyContactNumber'),
-                                  uid: sp.getString('uid'))
+                              EmergencyDetails(uid: uid)
                             ],
                             trailing: IgnorePointer(
                               child: Icon(Icons.edit),
@@ -491,6 +474,7 @@ class _TutorProfileSettingsWidgetState
   Widget build(BuildContext context) {
     Widget tagsWidget;
     Widget rateWidget;
+    var tutorData;
 
     return StreamBuilder(
       stream: _model.getTutorRateAndTags(uid),
@@ -501,7 +485,7 @@ class _TutorProfileSettingsWidgetState
         }
 
         if (snapshot.hasData) {
-          var tutorData = snapshot.data.docs[0];
+          tutorData = snapshot.data.docs[0];
           print(tutorData['majors']);
 
           rateWidget = Padding(
@@ -556,11 +540,11 @@ class _TutorProfileSettingsWidgetState
                         GridView.builder(
                           shrinkWrap: true,
                           padding: EdgeInsets.all(15),
-                          itemCount: languages == null ? 0 : languages.length,
+                          itemCount: tutorData['languages'].length,
                           itemBuilder: (BuildContext context, int index) {
                             return new Chip(
                               label: Text(
-                                languages[index],
+                                tutorData['languages'][index],
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -756,7 +740,12 @@ class _TutorProfileSettingsWidgetState
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TagsPage(tid: tid)),
+                                    builder: (context) => TagsPage(
+                                      tid: tid, 
+                                      majors: tutorData['majors'],
+                                      languages: tutorData['languages'],
+                                      topics: tutorData['topics'],
+                                    )),
                               );
                             },
                           ),

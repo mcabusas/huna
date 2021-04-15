@@ -4,9 +4,9 @@ import 'package:huna/modalPages/chat/messages_chat.dart';
 import 'viewTutorProfile_model.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 import '../../components/profilePicture.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-var data, majors, languages, topics; 
-
+var data, majors, languages, topics;
 
 class TutorProfilePage extends StatefulWidget {
   final dynamic tutorData;
@@ -19,20 +19,33 @@ class TutorProfilePage extends StatefulWidget {
 class _TutorProfileState extends State<TutorProfilePage> {
   // Predefined List of Reasons for Reporting
   var _value = '1';
-  List<String> reports = ['Inappropriate behavior', 'Profile contains offensive content', 'User send spam messages', 'Fake Profile', 'Deceased Profile', 'Charged an extra fee outside of booking'];
+  List<String> reports = [
+    'Inappropriate behavior',
+    'Profile contains offensive content',
+    'User send spam messages',
+    'Fake Profile',
+    'Deceased Profile',
+    'Charged an extra fee outside of booking'
+  ];
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
-  String chatRoomId;
-  Map<String,dynamic> tutorData;
+  String chatRoomId, userId = '';
+  Map<String, dynamic> tutorData;
   bool retVal = false;
   bool showSpinner = false;
   Map<String, dynamic> data;
+  SharedPreferences sp;
 
-
+  Future<void> initAwait() async {
+    sp = await SharedPreferences.getInstance();
+    setState(() {
+      userId = sp.getString('uid');
+    });
+  }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    print(widget.tutorData);
+    initAwait();
   }
 
   @override
@@ -43,39 +56,67 @@ class _TutorProfileState extends State<TutorProfilePage> {
       appBar: AppBar(
         elevation: 0,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.favorite,
-              color: Colors.red.shade800,
-            ),
-            onPressed: () async {
-              try{
-                retVal = await _model.addToFavorites(widget.tutorData);
-                if(retVal == true){
-                  Fluttertoast.showToast(
-                    msg: 'Tutor added to your favorites.',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIos: 1,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white);
-                } else {
-                  print('no true');
+          StreamBuilder(
+              stream: _model.checkFavorite(widget.tutorData['tid'], userId),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                Widget btn;
+                if(snapshot.connectionState == ConnectionState.waiting){
+                  btn = Container(height: 0,width: 0,);
                 }
+                if(snapshot.connectionState != ConnectionState.waiting){
+                  if (snapshot.data.docs.length == 0){
+                    btn = IconButton(
+                      icon: Icon(Icons.favorite, color: Colors.white),
+                      onPressed: () async {
+                        try {
+                          retVal = await _model.addToFavorites(widget.tutorData);
+                          if (retVal == true) {
+                            Fluttertoast.showToast(
+                                msg: 'Tutor added to your favorites.',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white);
+                          } else {
+                            print('no true');
+                          }
+                        } catch (e) {
+                          print(e.toString());
+                        }
+                      },
+                    );
+                  } 
+                  if (snapshot.data.docs.length  ==  1) {
+                    btn = IconButton(
+                      icon: Icon(Icons.favorite, color: Colors.red.shade800),
+                      onPressed: () async {
+                        Fluttertoast.showToast(
+                            msg: 'Tutor is already part of your favorites.',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white);
+                      },
+                    );
+                  }
 
-              }catch (e) {
-                print(e.toString());
-              }
-            },
-          ),
+                }
+                return btn;
+              }),
           IconButton(
             icon: Icon(Icons.forum),
             onPressed: () async {
               print(widget.tutorData['tid']);
-              chatRoomId =  await _model.createChatRoom(widget.tutorData);
+              chatRoomId = await _model.createChatRoom(widget.tutorData);
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatPage(tutorData: widget.tutorData, chatRoomId: chatRoomId, page: 1)),
+                MaterialPageRoute(
+                    builder: (context) => ChatPage(
+                        tutorData: widget.tutorData,
+                        chatRoomId: chatRoomId,
+                        page: 1)),
               );
             },
           ),
@@ -98,10 +139,10 @@ class _TutorProfileState extends State<TutorProfilePage> {
                           value: _value,
                           isDense: false,
                           isExpanded: true,
-                          items: reports.map((String value)  {
-                            return new DropdownMenuItem(value: value, child: Text(value));
+                          items: reports.map((String value) {
+                            return new DropdownMenuItem(
+                                value: value, child: Text(value));
                           }),
-
 
                           // <String>['Inappropriate behavior', 'Profile contains offensive content', 'User send spam messages', 'Fake Profile', 'Deceased Profile', 'Charged an extra fee outside of booking'].map<DropdownMenuItem<String>>((String value) {
                           //   return DropdownMenuItem(value: value, child: Text(value));
@@ -144,7 +185,8 @@ class _TutorProfileState extends State<TutorProfilePage> {
                       ),
                     ),
                   ],
-                ), context: context,
+                ),
+                context: context,
               );
             },
           ),
@@ -158,319 +200,347 @@ class _TutorProfileState extends State<TutorProfilePage> {
 class TutorProfileWidget extends StatefulWidget {
   final tutorData;
 
-  const TutorProfileWidget({Key key, this.tutorData}); 
+  const TutorProfileWidget({Key key, this.tutorData});
 
   @override
   _TutorProfileWidgetState createState() => _TutorProfileWidgetState();
 }
 
 class _TutorProfileWidgetState extends State<TutorProfileWidget> {
-
   bool retVal;
   bool showSpinner = false;
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
 
   Future<Map<String, dynamic>> initAwait() async {
-    return await _model.getTutorData(widget.tutorData['uid'], widget.tutorData['tid']);
+    return await _model.getTutorData(
+        widget.tutorData['uid'], widget.tutorData['tid']);
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     Widget retWidget;
     return FutureBuilder(
-      future: initAwait(),
-      builder: (BuildContext context, AsyncSnapshot snapshot){
-        if(snapshot.connectionState == ConnectionState.waiting){
-          retWidget =  Container(child: Center(child: CircularProgressIndicator()));
-        } 
-        if (snapshot.connectionState == ConnectionState.done){
-          retWidget =  Stack(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 180),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(35),
-                    topRight: Radius.circular(35),
+        future: initAwait(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            retWidget =
+                Container(child: Center(child: CircularProgressIndicator()));
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            retWidget = Stack(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(top: 180),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      topRight: Radius.circular(35),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.only(),
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Column(
-                    children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Column(
+                      children: <Widget>[
+                        FutureBuilder(
+                            future: _model.getPicture(widget.tutorData['uid']),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              Widget picture;
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                picture = Container(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                picture = CircleAvatar(
+                                    radius: 40,
+                                    child: ProfilePicture(url: snapshot.data));
+                              }
 
-                      FutureBuilder(
-                        future: _model.getPicture(widget.tutorData['uid']),
-                        builder: (BuildContext context, AsyncSnapshot snapshot){
-                          Widget picture;
-                          if(snapshot.connectionState == ConnectionState.waiting) {
-                            picture = Container(child: CircularProgressIndicator());
-                          }
-                          if(snapshot.connectionState == ConnectionState.done) {
-                            picture = CircleAvatar(
-                              radius: 40,
-                              child: ProfilePicture(url: snapshot.data)
-                            );
-                          }
+                              return picture;
+                            }),
 
-                          return picture;
-                        }
-                      ),
-
-                      // CircleAvatar(
-                      //   radius: 40,
-                      //   backgroundImage: AssetImage('assets/images/tutor2.jpg'),
-                      // ),
-                      SizedBox(height: 20),
-                      // Profile Text
-                      Center(
-                        child: Text(
-                          '${widget.tutorData['firstName']} ${widget.tutorData['lastName']}',
-                          //"${tutorInfo['user_firstName']} ${data[0]['user_lastName']}",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                        // CircleAvatar(
+                        //   radius: 40,
+                        //   backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                        // ),
+                        SizedBox(height: 20),
+                        // Profile Text
+                        Center(
+                          child: Text(
+                            '${widget.tutorData['firstName']} ${widget.tutorData['lastName']}',
+                            //"${tutorInfo['user_firstName']} ${data[0]['user_lastName']}",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                         ),
-                      ),
-                      // Center(
-                      //   child: Text(
-                      //     'usename',
-                      //     //'@${data[0]['username']}',
-                      //     style: TextStyle(color: Colors.white70),
-                      //   ),
-                      // ),
-                      SizedBox(height: 20),
-                      // Location
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                        child: Row(
+                        // Center(
+                        //   child: Text(
+                        //     'usename',
+                        //     //'@${data[0]['username']}',
+                        //     style: TextStyle(color: Colors.white70),
+                        //   ),
+                        // ),
+                        SizedBox(height: 20),
+                        // Location
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 25.0, right: 25.0),
+                          child: Row(
+                            children: <Widget>[
+                              Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                                size: 15,
+                              ),
+                              Text(
+                                '${snapshot.data['city']}, ${snapshot.data['country']}',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // White Body Contents
+                      ],
+                    ),
+                  ),
+                ),
+                Column(
+                  children: <Widget>[
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 40),
+                        padding: EdgeInsets.only(top: 150),
+                        child: ListView(
                           children: <Widget>[
-                            Icon(
-                              Icons.location_on,
-                              color: Colors.white,
-                              size: 15,
-                            ),
-                            Text(
-                              '${snapshot.data['city']}, ${snapshot.data['country']}',
-                              style: TextStyle(color: Colors.white, fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ),
-                      // White Body Contents
-                    ],
-                  ),
-                ),
-              ),
-              Column(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: EdgeInsets.only(top: 40),
-                      padding: EdgeInsets.only(top: 150),
-                      child: ListView(
-                        children: <Widget>[
-                          // RATINGS
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, top: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  'Average Rating: ${snapshot.data['rating']}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                            // RATINGS
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    'Average Rating: ${snapshot.data['rating']}',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                                IconTheme(
-                                  data: IconThemeData(
-                                    color: Colors.amber,
-                                    size: 20
-                                  ),
-                                  child: StarDisplay(value: snapshot.data['rating'])
-                                )
-                              ],
-                            ),
-                          ),
-
-                          // BASE PRICE
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, top: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                // Base Price
-                                Text(
-                                  'Base Price',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          // BASE PRICE CARD
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, top: 10.0, bottom: 10.0),
-                            child: Card(
-                              child: ListTile(
-                                contentPadding: EdgeInsets.all(20),
-                                title: Text(
-                                  "P ${widget.tutorData['rate']}.00",
-                                  //"P ${data[0]['rate']}.00",
-                                  style: TextStyle(fontSize: 30),
-                                ),
-                                subtitle: Text("Per Hour"),
+                                  IconTheme(
+                                      data: IconThemeData(
+                                          color: Colors.amber, size: 20),
+                                      child: StarDisplay(
+                                          value: snapshot.data['rating']))
+                                ],
                               ),
                             ),
-                          ),
-                          // CHIPS LABEL
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, top: 10.0, bottom: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                //Topics, etc.
-                                Text(
-                                  'Topics, Skills and Languages',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+
+                            // BASE PRICE
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25.0, right: 25.0, top: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  // Base Price
+                                  Text(
+                                    'Base Price',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          // CARD OF CHIPS
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 25.0, right: 25.0, bottom: 10.0),
-                            child: Card(
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  child: Wrap(
-                                    spacing: 5.0,
-                                    children: <Widget>[
-                                      GridView.builder(
+                            // BASE PRICE CARD
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25.0,
+                                  right: 25.0,
+                                  top: 10.0,
+                                  bottom: 10.0),
+                              child: Card(
+                                child: ListTile(
+                                  contentPadding: EdgeInsets.all(20),
+                                  title: Text(
+                                    "P ${widget.tutorData['rate']}.00",
+                                    //"P ${data[0]['rate']}.00",
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                  subtitle: Text("Per Hour"),
+                                ),
+                              ),
+                            ),
+                            // CHIPS LABEL
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25.0,
+                                  right: 25.0,
+                                  top: 10.0,
+                                  bottom: 10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  //Topics, etc.
+                                  Text(
+                                    'Topics, Skills and Languages',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            // CARD OF CHIPS
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25.0, right: 25.0, bottom: 10.0),
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: Wrap(
+                                      spacing: 5.0,
+                                      children: <Widget>[
+                                        GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot.data['majors'].length == null ? 0 : snapshot.data['majors'].length,
-                                          itemBuilder: (BuildContext context, int index) {
+                                          itemCount: snapshot
+                                                      .data['majors'].length ==
+                                                  null
+                                              ? 0
+                                              : snapshot.data['majors'].length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return new Chip(
                                               label: Text(
                                                 snapshot.data['majors'][index],
                                                 //majors[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              backgroundColor: Colors.deepPurple.shade300,
-                                              
-                                          );
-                                          }, 
-                                          gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
+                                              backgroundColor:
+                                                  Colors.deepPurple.shade300,
+                                            );
+                                          },
+                                          gridDelegate:
+                                              new SliverGridDelegateWithMaxCrossAxisExtent(
                                             maxCrossAxisExtent: 200.0,
                                             mainAxisSpacing: 10.0,
                                             crossAxisSpacing: 10.0,
                                             childAspectRatio: 4.0,
                                           ),
                                         ),
-
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot.data['languages'].length == null ? 0 : snapshot.data['languages'].length,
-                                          itemBuilder: (BuildContext context, int index) {
+                                          itemCount: snapshot.data['languages']
+                                                      .length ==
+                                                  null
+                                              ? 0
+                                              : snapshot
+                                                  .data['languages'].length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return new Chip(
                                               label: Text(
-                                                snapshot.data['languages'][index],
+                                                snapshot.data['languages']
+                                                    [index],
                                                 //languages[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              backgroundColor: Colors.cyan.shade300,
-                                              
-                                          );
-                                          }, 
-                                          gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
+                                              backgroundColor:
+                                                  Colors.cyan.shade300,
+                                            );
+                                          },
+                                          gridDelegate:
+                                              new SliverGridDelegateWithMaxCrossAxisExtent(
                                             maxCrossAxisExtent: 200.0,
                                             mainAxisSpacing: 10.0,
                                             crossAxisSpacing: 10.0,
                                             childAspectRatio: 4.0,
                                           ),
                                         ),
-
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot.data['topics'].length == null ? 0 : snapshot.data['topics'].length,
-                                          itemBuilder: (BuildContext context, int index) {
+                                          itemCount: snapshot
+                                                      .data['topics'].length ==
+                                                  null
+                                              ? 0
+                                              : snapshot.data['topics'].length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return new Chip(
                                               label: Text(
                                                 snapshot.data['topics'][index],
                                                 style: TextStyle(
                                                     color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              backgroundColor: Colors.blue.shade300,
-                                              
-                                          );
-                                          }, 
-                                          gridDelegate: new SliverGridDelegateWithMaxCrossAxisExtent(
+                                              backgroundColor:
+                                                  Colors.blue.shade300,
+                                            );
+                                          },
+                                          gridDelegate:
+                                              new SliverGridDelegateWithMaxCrossAxisExtent(
                                             maxCrossAxisExtent: 200.0,
                                             mainAxisSpacing: 10.0,
                                             crossAxisSpacing: 10.0,
                                             childAspectRatio: 4.0,
                                           ),
                                         ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        }
-        return retWidget;
-      }
-    );
+                  ],
+                ),
+              ],
+            );
+          }
+          return retWidget;
+        });
   }
 }
 
 class StarDisplay extends StatelessWidget {
   final double value;
-  StarDisplay({this.value = 0.0})
-    :assert(value != null);
+  StarDisplay({this.value = 0.0}) : assert(value != null);
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: List.generate(5, (index) {
-         return Icon(
-          index < value ? Icons.star : Icons.star_border
-        );
-      })
-    );
+        children: List.generate(5, (index) {
+      return Icon(index < value ? Icons.star : Icons.star_border);
+    }));
   }
 }

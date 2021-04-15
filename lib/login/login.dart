@@ -252,7 +252,7 @@ class LoginPageState extends State<LoginPage>
                                         showSpinner = false;
                                       });
                                       Fluttertoast.showToast(
-                                        msg: "Verify your email/password",
+                                        msg: "Incorrect email and/or password",
                                         toastLength: Toast.LENGTH_SHORT,
                                         gravity: ToastGravity.BOTTOM,
                                         timeInSecForIos: 1,
