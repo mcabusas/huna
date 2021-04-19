@@ -41,6 +41,7 @@ class _MyProfileState extends State<MyProfile> {
     // TODO: implement initState
     super.initState();
     initAwait();
+    _selectedIndex = 0;
   }
 
   Widget getScreen() {
@@ -225,7 +226,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 25.0, top: 30.0, right: 25.0, bottom: 10.0),
+                        left: 25.0, top: 60.0, right: 25.0, bottom: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -342,9 +343,10 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                     padding: EdgeInsets.all(15),
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
+                      Widget retVal;
                       
                       if (snapshot.data.length == 0) {
-                        return Center(
+                        retVal =  Center(
                           child: Container(
                             height: 100,
                             width: 100,
@@ -353,22 +355,23 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                         );
                       } else {
                         print('ok');
-                        // return Card(
-                        //   child: ListTile(
-                        //     contentPadding: EdgeInsets.all(20),
-                        //     title: IconTheme(
-                        //       data:
-                        //           IconThemeData(color: Colors.amber, size: 20),
-                        //       child: StarDisplay(
-                        //         value: snapshot.data[index]['student_rating']
-                        //             .toDouble(),
-                        //       ),
-                        //     ),
-                        //     subtitle: Text(snapshot.data[index]['content']),
-                        //     isThreeLine: true,
-                        //   ),
-                        // );
+                        retVal = Card(
+                          child: ListTile(
+                            contentPadding: EdgeInsets.all(20),
+                            title: IconTheme(
+                              data:
+                                  IconThemeData(color: Colors.amber, size: 20),
+                              child: StarDisplay(
+                                value: snapshot.data[index]['student_rating']
+                                    .toDouble(),
+                              ),
+                            ),
+                            subtitle: Text(snapshot.data[index]['content']),
+                            isThreeLine: true,
+                          ),
+                        );
                       }
+                      return retVal;
                     },
                   )
                 ],

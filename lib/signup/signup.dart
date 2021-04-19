@@ -560,13 +560,18 @@ class _SignUpState extends State<SignUpPage> {
                                     if (data['password'] ==
                                         data['confirmPassword']) {
                                       bool catcher = await _services.register(data, _image);
+
                                       if(catcher){
+
                                         print('success');
                                         bool retVal = await _services.login(data['email'], data['password']);
+
                                         if(retVal == true){
+
                                           setState(() {
                                             progress = true;
                                           });
+                                          
                                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>DashboardPage()), (route) => false);
                                         }
                                       }else {

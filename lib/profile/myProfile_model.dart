@@ -260,7 +260,7 @@ class MyProfileModel {
 
       QuerySnapshot reviews = await FirebaseFirestore.instance
       .collection('reviews')
-      .where('s_uid', isEqualTo: '5ki91DZXHsUTzgPhHI8IPPBzo2C2')
+      .where('s_uid', isEqualTo: uid)
       .get();
 
       for(int i = 0; i < reviews.docs.length; i++){

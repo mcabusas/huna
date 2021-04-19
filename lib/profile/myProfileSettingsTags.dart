@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/profile/myProfileSettings.dart';
 import 'myProfile_model.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 
@@ -50,6 +51,9 @@ class _TagsState extends State<TagsPage> {
 
   final TextEditingController _languageController = new TextEditingController();
   final TextEditingController _topicController = new TextEditingController();
+
+  final _languageFormKey = GlobalKey<FormState>();
+  final _topicFormKey = GlobalKey<FormState>();
 
   void widgetToList() {
     for(String language in widget.languages){
@@ -373,15 +377,24 @@ class _TagsState extends State<TagsPage> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
             child: Column(
               children: <Widget>[
-                TextField(
-                  controller: _languageController,
-                  decoration: InputDecoration(
-                    hintText: 'Language',
+                Form(
+                  key: _languageFormKey,
+                  child: TextFormField(
+                    validator :(val){
+                      if(val.isEmpty && _language == " "){
+                        return 'Enter a Language';
+                      }
+                      return null;
+                    },
+                    controller: _languageController,
+                    decoration: InputDecoration(
+                      hintText: 'Language',
+                    ),
+                    maxLength: 20,
+                    onChanged: (language) {
+                      _language = language;
+                    },
                   ),
-                  maxLength: 20,
-                  onChanged: (language) {
-                    _language = language;
-                  },
                 ),
                 SizedBox(height: 10.0),
                 Row(
@@ -396,10 +409,13 @@ class _TagsState extends State<TagsPage> {
                           style: TextStyle(color: Colors.white)),
                       color: Colors.lightGreen,
                       onPressed: () {
-                        setState(() {
-                          _languageTags.add(_language);
-                          _languageController.clear();
-                        });
+                        if(_languageFormKey.currentState.validate() && _language != " "){
+                          setState(() {
+                            _languageTags.add(_language);
+                            _languageController.clear();
+                          });
+
+                        }
                       },
                     ),
                   ],
@@ -482,15 +498,24 @@ class _TagsState extends State<TagsPage> {
             padding: const EdgeInsets.only(top: 10.0, bottom: 20.0),
             child: Column(
               children: <Widget>[
-                TextField(
-                  controller: _topicController,
-                  decoration: InputDecoration(
-                    hintText: 'Topic',
+                Form(
+                  key: _topicFormKey,
+                  child: TextFormField(
+                    validator: (val){
+                      if(val.isEmpty || '${_topic[0]}' == " "){
+                        return "Enter a Topic of Expertise";
+                      }
+                      return null;
+                    },
+                    controller: _topicController,
+                    decoration: InputDecoration(
+                      hintText: 'Topic',
+                    ),
+                    maxLength: 20,
+                    onChanged: (topic) {
+                      _topic = topic;
+                    },
                   ),
-                  maxLength: 20,
-                  onChanged: (topic) {
-                    _topic = topic;
-                  },
                 ),
                 SizedBox(height: 10.0),
                 Row(
@@ -505,10 +530,12 @@ class _TagsState extends State<TagsPage> {
                           style: TextStyle(color: Colors.white)),
                       color: Colors.lightGreen,
                       onPressed: () {
-                        setState(() {
-                          _topicsTags.add(_topic);
-                          _topicController.clear();
-                        });
+                        if(_topicFormKey.currentState.validate()) {
+                          setState(() {
+                            _topicsTags.add(_topic);
+                            _topicController.clear();
+                          });
+                        }
                       },
                     ),
                   ],

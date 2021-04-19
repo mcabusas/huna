@@ -73,6 +73,7 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
       uid = sp.getString('uid');
       tid = sp.getString('tid');
     });
+    _selectedIndex = 0;
   }
 
   Future imageFromGallery() async {

@@ -14,7 +14,7 @@ class MessagesModel extends MyProfileModel {
     QuerySnapshot chatrooms = await FirebaseFirestore.instance
     .collection('chatrooms')
     .where('users.studentid', isEqualTo: uid)
-      .get();
+    .get();
 
       for(int i = 0; i< chatrooms.docs.length; i++){
         String chatroomid = chatrooms.docs[i].id;
