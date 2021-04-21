@@ -160,12 +160,14 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
               padding: EdgeInsets.all(15.0),
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
+
+               
                 //return new  Text(snapshot.data.docs[index]['bookingData']['student_firstName'].toString());
                 //var booking = snapshot.data.docs[index]['bookingData'];
 
-                if (snapshot.data.docs[index]['bookingData']
+                if ((snapshot.data.docs[index]['bookingData']
                         ['booking_status'] ==
-                    'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == 1) {
+                    'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == '1') || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Cancelled') {
                   return Center(
                     child: Align(
                         alignment: Alignment.center,
@@ -179,7 +181,8 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                   )),
                       ),
                   );
-                } else {
+                } 
+                if((snapshot.data.docs[index]['bookingData']['booking_status'] != 'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] != '1') || snapshot.data.docs[index]['bookingData']['booking_status'] != 'Cancelled') {
                   print(snapshot.data);
                   var parsedDate = DateTime.parse(
                       snapshot.data.docs[index]['bookingData']['date']);
@@ -347,6 +350,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                         const EdgeInsets.fromLTRB(0, 0, 0, 10),
                                     child: RaisedButton.icon(
                                       onPressed: () {
+                                        _model.updateBookingStatus(snapshot.data.docs[index]['bookingId'], 0);
                                         //setStatusBooking(jsonData[index]['booking_id'], 0);
                                       },
                                       icon: Icon(Icons.cancel),

@@ -4,24 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'myProfile_model.dart';
 
-String currentMenuItem = "";
+String currentMenuItem = "Parent";
 int settingsValue;
 final _formKey = GlobalKey<FormState>();
 MyProfileModel _model = new MyProfileModel();
 bool retVal;
 
-class EmergencyDetails extends StatefulWidget {
+class EmergencyDetails extends StatelessWidget {
   final uid;
-
   EmergencyDetails({this.uid});
   @override
-  _EmergencyDetailsState createState() => _EmergencyDetailsState();
-}
-
-class _EmergencyDetailsState extends State<EmergencyDetails> {
-  @override
   Widget build(BuildContext context) {
-
     Map<String, dynamic> data = {
       'emergencyFirstName': '',
       'emergencyLastName': '',
@@ -29,153 +22,164 @@ class _EmergencyDetailsState extends State<EmergencyDetails> {
       'emergencyRelation': ''
     };
 
-    void getDropDownItem() {
-      setState(() {
-        data['emergencyRelation'] = currentMenuItem;
-      });
-    }
+    // void getDropDownItem() {
+    //   setState(() {
+    //     data['emergencyRelation'] = currentMenuItem;
+    //     print(data['emergencyRelation']);
+    //   });
+    // }
 
-    return StreamBuilder(
-      stream: _model.getSettingsData(widget.uid),
-      builder: ( context, snapshot) {
-        Widget form = Container(height: 0, width: 0);
-        if(snapshot.connectionState == ConnectionState.waiting) {
-          print('waiting...');
-          form = CircularProgressIndicator();
-        }
-        if(snapshot.connectionState == ConnectionState.active) {
-          data = {
-            'emergencyFirstName': snapshot.data.docs[0]['emergencyFirstName'],
-            'emergencyLastName': snapshot.data.docs[0]['emergencyLastName'],
-            'emergencyContactNumber': snapshot.data.docs[0]['emergencyContactNumber'],
-          };
-          form = Form(
-            key: _formKey,
-            child: Container(
-              child: Column(
-                children: <Widget>[
-                  // Account Details Input
+    return Column(
+      children: [
+        StreamBuilder(
+          stream: _model.getSettingsData(uid),
+          builder: (context, snapshot) {
+            Widget form = Container(height: 0, width: 0);
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              print('waiting...');
+              form = CircularProgressIndicator();
+            }
+            if (snapshot.connectionState == ConnectionState.active) {
+              data = {
+                'emergencyFirstName': snapshot.data.docs[0]
+                    ['emergencyFirstName'],
+                'emergencyLastName': snapshot.data.docs[0]['emergencyLastName'],
+                'emergencyContactNumber': snapshot.data.docs[0]
+                    ['emergencyContactNumber'],
+              };
+              form = Form(
+                key: _formKey,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      // Account Details Input
 
-                  new TextFormField(
-                    initialValue: snapshot.data.docs[0]['emergencyFirstName'],
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "First name can't be empty";
-                      }
-
-                      return null;
-                    },
-                    onChanged: (val) {
-                      data['emergencyFirstName'] = val;
-                    },
-                    decoration: new InputDecoration(
-                      labelText: "First Name",
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  new TextFormField(
-                    initialValue: snapshot.data.docs[0]['emergencyLastName'],
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Last name can't be empty";
-                      }
-                      return null;
-                    },
-                    onChanged: (val){
-                      data['emergencyLastName'] = val;
-                    },
-                    decoration: new InputDecoration(
-                      labelText: "Last Name",
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  new TextFormField(
-                    initialValue: snapshot.data.docs[0]['emergencyContactNumber'],
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Contact number can't be empty";
-                      }
-                      return null;
-                    },
-                    onChanged: (val){
-                      data['emergencyContactNumber'] = val;
-                    },
-                    decoration: new InputDecoration(
-                      labelText: "Contact Number",
-                    ),
-                    keyboardType: TextInputType.number,
-                  ),
-                  DropdownButton<String>(
-                      value: currentMenuItem,
-                      hint: Text('Relation'),
-                      items: ['Parent', 'Sibling', 'Guardian']
-                          .map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: (Text(dropDownStringItem)),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          currentMenuItem = value;
-                        });
-                        print(currentMenuItem);
-                      },),
-
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: new MaterialButton(
-                      color: Colors.grey.shade900,
-                      textColor: Colors.white,
-                      child: new Text(
-                        "Save",
-                        style: TextStyle(fontSize: 15.0),
-                      ),
-                      onPressed: () async {
-                        getDropDownItem();
-                        if (_formKey.currentState.validate()) {
-                          try {
-                            retVal = await _model.editStudentEmergencyContact(
-                                widget.uid, data);
-                            if (retVal == true) {
-                              Fluttertoast.showToast(
-                                  msg: "Emergency Details was updated successfully",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIos: 1,
-                                  backgroundColor: Colors.blue,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                            }
-                          } catch (e) {
-                            print(e.toString());
-                            Fluttertoast.showToast(
-                                msg: "Error updating data",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIos: 1,
-                                backgroundColor: Colors.blue,
-                                textColor: Colors.white,
-                                fontSize: 16.0);
+                      new TextFormField(
+                        initialValue: snapshot.data.docs[0]
+                            ['emergencyFirstName'],
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "First name can't be empty";
                           }
-                        }
 
-                        //createAlertDialog(context);
-                      },
-                    ),
+                          return null;
+                        },
+                        onChanged: (val) {
+                          data['emergencyFirstName'] = val;
+                        },
+                        decoration: new InputDecoration(
+                          labelText: "First Name",
+                        ),
+                        keyboardType: TextInputType.text,
+                      ),
+                      new TextFormField(
+                        initialValue: snapshot.data.docs[0]
+                            ['emergencyLastName'],
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Last name can't be empty";
+                          }
+                          return null;
+                        },
+                        onChanged: (val) {
+                          data['emergencyLastName'] = val;
+                        },
+                        decoration: new InputDecoration(
+                          labelText: "Last Name",
+                        ),
+                        keyboardType: TextInputType.text,
+                      ),
+                      new TextFormField(
+                        initialValue: snapshot.data.docs[0]
+                            ['emergencyContactNumber'],
+                        validator: (val) {
+                          if (val.isEmpty) {
+                            return "Contact number can't be empty";
+                          }
+                          return null;
+                        },
+                        onChanged: (val) {
+                          data['emergencyContactNumber'] = val;
+                        },
+                        decoration: new InputDecoration(
+                          labelText: "Contact Number",
+                        ),
+                        keyboardType: TextInputType.number,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              );
+            }
+            if (snapshot.connectionState == ConnectionState.done) {
+              //print(snapshot.data.docs[0]['emergencyFirstName']);
+            }
+
+            return form;
+          },
+        ),
+        DropdownButton<String>(
+          value: 'Parent',
+          hint: Text(currentMenuItem.toString()),
+          items: <String>['Parent', 'Sibling', 'Guardian'].map((String value) {
+            return new DropdownMenuItem<String>(
+              value: value,
+              child: new Text(value),
+            );
+          }).toList(),
+          onChanged: (value) {
+            currentMenuItem = value;
+            print(currentMenuItem);
+            // setState(() {
+            //   currentMenuItem = value;
+            // });
+          },
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: new MaterialButton(
+            color: Colors.grey.shade900,
+            textColor: Colors.white,
+            child: new Text(
+              "Save",
+              style: TextStyle(fontSize: 15.0),
             ),
-          );
-        }
-        if(snapshot.connectionState == ConnectionState.done) {
-          //print(snapshot.data.docs[0]['emergencyFirstName']);
-        }
-        
-        return form;
-      },
+            onPressed: () async {
+              //getDropDownItem();
+              if (_formKey.currentState.validate()) {
+                try {
+                  retVal = await _model.editStudentEmergencyContact(
+                      uid, data);
+                  if (retVal == true) {
+                    Fluttertoast.showToast(
+                        msg: "Emergency Details was updated successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                } catch (e) {
+                  print(e.toString());
+                  Fluttertoast.showToast(
+                      msg: "Error updating data",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+              }
+
+              //createAlertDialog(context);
+            },
+          ),
+        ),
+      ],
     );
+  
   }
 }
 
@@ -188,19 +192,17 @@ class PersonalDetails extends StatefulWidget {
 }
 
 class _PersonalDetailsState extends State<PersonalDetails> {
-
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder(
       stream: _model.getSettingsData(widget.uid),
-      builder: ( context, snapshot) {
+      builder: (context, snapshot) {
         Widget form = Container(height: 0, width: 0);
-        if(snapshot.connectionState == ConnectionState.waiting) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           print('waiting...');
           form = CircularProgressIndicator();
         }
-        if(snapshot.connectionState == ConnectionState.active) {
+        if (snapshot.connectionState == ConnectionState.active) {
           Map<String, dynamic> data = {
             'homeAddress': snapshot.data.docs[0]['homeAddress'],
             'city': snapshot.data.docs[0]['city'],
@@ -274,7 +276,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                   new TextFormField(
                     initialValue: snapshot.data.docs[0]['contactNumber'],
                     validator: (val) {
-                      if(val.isEmpty){
+                      if (val.isEmpty) {
                         return "Contact number can't be empty";
                       }
                       return null;
@@ -305,7 +307,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                                 widget.uid, data);
                             if (retVal == true) {
                               Fluttertoast.showToast(
-                                  msg: "Personal Details was updated successfully",
+                                  msg:
+                                      "Personal Details was updated successfully",
                                   toastLength: Toast.LENGTH_SHORT,
                                   gravity: ToastGravity.BOTTOM,
                                   timeInSecForIos: 1,
@@ -335,13 +338,12 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             ),
           );
         }
-        if(snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.done) {
           //print(snapshot.data.docs[0]['emergencyFirstName']);
         }
-        
+
         return form;
       },
     );
-    
   }
 }

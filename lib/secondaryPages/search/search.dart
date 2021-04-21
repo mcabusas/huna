@@ -36,91 +36,93 @@ class _SearchState extends State<SearchPage> {
             }),
         title: Text('Search for Tutors'),
       ),
-      body: Padding(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: Column(
-          children: <Widget>[
-            Container(
-              child: TextField(
-                decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search for Tutors',
-                ),
-                onSubmitted: (value) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SearchPage()),
-                  );
-                },
-                textInputAction: TextInputAction.go,
-              ),
-            ),
-            Container(
-              child: Column(
-                children: <Widget>[
-                  DropdownButtonFormField(
-                    value: _value,
-                    items: <DropdownMenuItem>[
-                      DropdownMenuItem(
-                        child: Text('Ratings : Highest to Lowest'),
-                        value: 1,
-                      ),
-                      DropdownMenuItem(
-                        child: Text('Ratings : Lowest to Highest'),
-                        value: 2,
-                      ),
-                    ],
-                    onChanged: (value) {
-                      setState(() {
-                        _value = value;
-                      });
-                    },
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+          child: Column(
+            children: <Widget>[
+              Container(
+                child: TextField(
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'Search for Tutors',
                   ),
-                ],
-              ),
-            ),
-            SizedBox(height: 20),
-            Container(
-              height: 480,
-              child: ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(15),
-                itemCount: data == null ? 0 : data.length,
-                itemBuilder: (BuildContext context, int index) {
-                    return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: AssetImage('assets/images/tutor2.jpg'),
-                      ),
-                      title: Text('${data[index]['user_firstName']} ${data[index]['user_lastName']}'),
-                      subtitle: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Icon(Icons.star,
-                              size: 12.0, color: Colors.amber.shade400),
-                          Icon(Icons.star,
-                              size: 12.0, color: Colors.amber.shade400),
-                          Icon(Icons.star,
-                              size: 12.0, color: Colors.amber.shade400),
-                          Icon(Icons.star,
-                              size: 12.0, color: Colors.amber.shade400),
-                          Icon(Icons.star, size: 12.0),
-                        ],
-                      ),
-                      trailing: Icon(
-                        Icons.favorite,
-                        color: Colors.red.shade800,
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => TutorProfilePage()),
-                        );
-                      },
+                  onSubmitted: (value) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SearchPage()),
                     );
-                },
-              )
-            ),
-          ],
+                  },
+                  textInputAction: TextInputAction.go,
+                ),
+              ),
+              Container(
+                child: Column(
+                  children: <Widget>[
+                    DropdownButtonFormField(
+                      value: _value,
+                      items: <DropdownMenuItem>[
+                        DropdownMenuItem(
+                          child: Text('Ratings : Highest to Lowest'),
+                          value: 1,
+                        ),
+                        DropdownMenuItem(
+                          child: Text('Ratings : Lowest to Highest'),
+                          value: 2,
+                        ),
+                      ],
+                      onChanged: (value) {
+                        setState(() {
+                          _value = value;
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                height: 480,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(15),
+                  itemCount: data == null ? 0 : data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                      return ListTile(
+                        leading: CircleAvatar(
+                          backgroundImage: AssetImage('assets/images/tutor2.jpg'),
+                        ),
+                        title: Text('${data[index]['user_firstName']} ${data[index]['user_lastName']}'),
+                        subtitle: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Icon(Icons.star,
+                                size: 12.0, color: Colors.amber.shade400),
+                            Icon(Icons.star,
+                                size: 12.0, color: Colors.amber.shade400),
+                            Icon(Icons.star,
+                                size: 12.0, color: Colors.amber.shade400),
+                            Icon(Icons.star,
+                                size: 12.0, color: Colors.amber.shade400),
+                            Icon(Icons.star, size: 12.0),
+                          ],
+                        ),
+                        trailing: Icon(
+                          Icons.favorite,
+                          color: Colors.red.shade800,
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => TutorProfilePage()),
+                          );
+                        },
+                      );
+                  },
+                )
+              ),
+            ],
+          ),
         ),
       ),
     );
