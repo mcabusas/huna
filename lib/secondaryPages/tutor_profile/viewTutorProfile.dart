@@ -18,34 +18,41 @@ class TutorProfilePage extends StatefulWidget {
 
 class _TutorProfileState extends State<TutorProfilePage> {
   // Predefined List of Reasons for Reporting
-  var _value = '1';
-  List<String> reports = [
-    'Inappropriate behavior',
-    'Profile contains offensive content',
-    'User send spam messages',
-    'Fake Profile',
-    'Deceased Profile',
-    'Charged an extra fee outside of booking'
-  ];
+  String _value = 'Inappripiate behavior';
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
   String chatRoomId, userId = '';
   Map<String, dynamic> tutorData;
   bool retVal = false;
   bool showSpinner = false;
-  Map<String, dynamic> data;
+  bool favoriteChecker = false;
   SharedPreferences sp;
+  TextEditingController controller = new TextEditingController();
+  Color favoriteIconColor = Colors.white;
 
   Future<void> initAwait() async {
     sp = await SharedPreferences.getInstance();
     setState(() {
       userId = sp.getString('uid');
+      data = {
+        'reason': _value,
+        'comment': '',
+        'uid': userId,
+        'tid': widget.tutorData['tid']
+      };
     });
+    favoriteChecker = await _model.checkFavorite(widget.tutorData['tid'], userId);
+    if(favoriteChecker == true) {
+      setState(() {
+        favoriteIconColor = Colors.red;
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
     initAwait();
+    
   }
 
   @override
@@ -56,55 +63,38 @@ class _TutorProfileState extends State<TutorProfilePage> {
       appBar: AppBar(
         elevation: 0,
         actions: <Widget>[
-          StreamBuilder(
-              stream: _model.checkFavorite(widget.tutorData['tid'], userId),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                Widget btn;
-                if(snapshot.connectionState == ConnectionState.waiting){
-                  btn = Container(height: 0,width: 0,);
-                }
-                if(snapshot.connectionState != ConnectionState.waiting){
-                  if (snapshot.data.docs.length == 0){
-                    btn = IconButton(
-                      icon: Icon(Icons.favorite, color: Colors.white),
-                      onPressed: () async {
-                        try {
-                          retVal = await _model.addToFavorites(widget.tutorData);
-                          if (retVal == true) {
-                            Fluttertoast.showToast(
-                                msg: 'Tutor added to your favorites.',
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIos: 1,
-                                backgroundColor: Colors.blue,
-                                textColor: Colors.white);
-                          } else {
-                            print('no true');
-                          }
-                        } catch (e) {
-                          print(e.toString());
-                        }
-                      },
-                    );
-                  } 
-                  if (snapshot.data.docs.length  ==  1) {
-                    btn = IconButton(
-                      icon: Icon(Icons.favorite, color: Colors.red.shade800),
-                      onPressed: () async {
-                        Fluttertoast.showToast(
-                            msg: 'Tutor is already part of your favorites.',
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            timeInSecForIos: 1,
-                            backgroundColor: Colors.blue,
-                            textColor: Colors.white);
-                      },
-                    );
-                  }
+          IconButton(
+            icon: Icon(Icons.favorite, color: favoriteIconColor),
+            onPressed: () async {
+              try {
+                retVal = await _model.addToFavorites(widget.tutorData);
+                if (retVal == true) {
+                  Fluttertoast.showToast(
+                    msg: 'Tutor added to your favorites.',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIos: 1,
+                    backgroundColor: Colors.blue,
+                    textColor: Colors.white
+                  );
+                  setState(() {
+                    favoriteIconColor = Colors.red;
+                  });
 
+                } else {
+                  Fluttertoast.showToast(
+                      msg: 'Tutor is already part of your favorites',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white);
                 }
-                return btn;
-              }),
+              } catch (e) {
+                print(e.toString());
+              }
+            },
+          ),
           IconButton(
             icon: Icon(Icons.forum),
             onPressed: () async {
@@ -123,9 +113,9 @@ class _TutorProfileState extends State<TutorProfilePage> {
           IconButton(
             icon: Icon(Icons.error),
             onPressed: () {
-              // Alert Dialog: Report Tutor
               showDialog(
-                builder: (context) => AlertDialog(
+                context: context,
+                child: AlertDialog(
                   title: Text("Report Tutor"),
                   content: SingleChildScrollView(
                     padding: EdgeInsets.only(bottom: 0),
@@ -135,32 +125,39 @@ class _TutorProfileState extends State<TutorProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text('Select a reason: '),
-                        DropdownButton(
-                          value: _value,
+                        DropdownButtonFormField<String>(
+                          value: 'Inappropriate behavior',
                           isDense: false,
                           isExpanded: true,
-                          items: reports.map((String value) {
-                            return new DropdownMenuItem(
-                                value: value, child: Text(value));
-                          }),
-
-                          // <String>['Inappropriate behavior', 'Profile contains offensive content', 'User send spam messages', 'Fake Profile', 'Deceased Profile', 'Charged an extra fee outside of booking'].map<DropdownMenuItem<String>>((String value) {
-                          //   return DropdownMenuItem(value: value, child: Text(value));
-                          // }).toList(),
+                          //hint: Text(_value.toString()),
+                          items: <String>[
+                            'Inappropriate behavior',
+                            'Profile contains offensive content',
+                            'User send spam messages',
+                            'Fake Profile',
+                            'Deceased Profile',
+                            'Charged an extra fee outside of booking',
+                            'Others'
+                          ].map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: new Text(value),
+                            );
+                          }).toList(),
                           onChanged: (value) {
-                            setState(() {
-                              _value = value;
-                              print(value);
-                            });
+                            _value = value;
+                            print(_value);
+                            data['reason'] = _value;
                           },
                         ),
                         SizedBox(height: 20.0),
-                        // Text('Additional comments: '),
-                        // TextField(
-                        //   decoration: InputDecoration(
-                        //     hintText: 'Comments',
-                        //   ),
-                        // ),
+                        Text('Additional comments: '),
+                        TextField(
+                          controller: controller,
+                          decoration: InputDecoration(
+                            hintText: 'Comments',
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -176,8 +173,38 @@ class _TutorProfileState extends State<TutorProfilePage> {
                       ),
                     ),
                     FlatButton(
-                      onPressed: () {
-                        // Update Base Price
+                      onPressed: () async {
+                        if (controller.text.isNotEmpty) {
+                          setState(() {
+                            data['comment'] = controller.text;
+                          });
+                        }
+                        try {
+                          bool catcher = await _model.createReport(data);
+                          if (catcher == true) {
+                            Fluttertoast.showToast(
+                                msg: "Tutor has been reported, thank you.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.blue,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                                Navigator.of(context, rootNavigator: true).pop(
+                              'dialog');
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Error reporting tutor, please try again.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          }
+                        } catch (e) {
+                          print(e.toString());
+                        }
                       },
                       child: Text(
                         "Save",
@@ -186,7 +213,6 @@ class _TutorProfileState extends State<TutorProfilePage> {
                     ),
                   ],
                 ),
-                context: context,
               );
             },
           ),

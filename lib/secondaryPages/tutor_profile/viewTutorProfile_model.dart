@@ -65,10 +65,9 @@ class ViewTutorProfileModel extends MyProfileModel {
 
   Future<bool> createReport(Map<String, dynamic> data) async {
     bool retVal = false;
+    
 
-    SharedPreferences sp = await SharedPreferences.getInstance();
-
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('reports')
         .add(data)
         .then((value) => {retVal = true})
@@ -79,7 +78,7 @@ class ViewTutorProfileModel extends MyProfileModel {
     return retVal;
   }
 
-  Future<String> createChatRoom(QueryDocumentSnapshot tutorData) async {
+  Future<String> createChatRoom(var tutorData) async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     print(sp.getString('uid'));
 
@@ -117,7 +116,7 @@ class ViewTutorProfileModel extends MyProfileModel {
     }
   }
 
-  Future<bool> addToFavorites(QueryDocumentSnapshot data) async {
+  Future<bool> addToFavorites(var data) async {
     bool retVal = false;
 
     User user = await _authServices.getCurrentUser();
@@ -143,13 +142,21 @@ class ViewTutorProfileModel extends MyProfileModel {
     return retVal;
   }
 
-  Stream checkFavorite(String tid, String uid)  {
-    print(uid + 'checker');
-    return FirebaseFirestore.instance
+  Future<bool> checkFavorite(String tid, String uid)  async {
+    bool retVal = false;
+    
+     QuerySnapshot query = await FirebaseFirestore.instance
         .collection('favorites')
         .where('tutor_tid', isEqualTo: tid)
         .where('student_uid', isEqualTo: uid)
-        .snapshots()
-        .handleError((e) => {print(e.toString())});
+        .get()
+        .catchError((e) => {print(e.toString())});
+
+      if(query.docs.isNotEmpty){
+        retVal = true;
+      }
+
+      return retVal;
+        
   }
 }

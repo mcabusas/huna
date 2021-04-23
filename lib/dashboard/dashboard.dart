@@ -21,7 +21,7 @@ class DashboardPage extends StatefulWidget {
   _DashboardPageState createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> {
+class _DashboardPageState extends State<DashboardPage> with SingleTickerProviderStateMixin{
 
   var data, tutorID, tutorInfo;
 
@@ -31,29 +31,15 @@ class _DashboardPageState extends State<DashboardPage> {
   List<Map<String, dynamic>> retVal;
   SharedPreferences sp;
 
-  // Future List<Map<String, dynamic>>> initAwait() async {
-  //   Future List<<Map<String, dynamic>>> retVal = dashboardModel.getTutors();
-  //   return retVal;
-  // }
-
-  // Future<List<Map<String, dynamic>>> initAwait() async{
-    
-  //   return await dashboardModel.getTutors();
-  // }
-
- Stream tutorsStream;
-
- Future initAwait() async {
+ Future<List<Map<String, dynamic>>> initAwait() async {
    SharedPreferences sp = await SharedPreferences.getInstance();
-   print(sp.getString('tid'));
+   return await dashboardModel.getTutors();
  }
   
 
   @override
   void initState() {
     super.initState();
-    tutorsStream = dashboardModel.getTutors();
-    initAwait();
   }
 
   @override
@@ -87,31 +73,61 @@ class _DashboardPageState extends State<DashboardPage> {
                       topLeft: Radius.circular(30),
                       topRight: Radius.circular(30))),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // Search Bar
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                          child: TextField(
-                            decoration: InputDecoration(
-                              prefixIcon: Icon(Icons.search),
-                              hintText: 'Search for Tutors',
-                            ),
-                            onSubmitted: (value) {
-                              Navigator.push(
+                  Padding(
+                    padding: const EdgeInsets.only(left: 15.0, top: 10),
+                    child: Container(
+                      
+                      width: 200,
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SearchPage(searchValue: value)),
+                                    builder: (context) => SearchPage()),
                               );
-                            },
-                            textInputAction: TextInputAction.go,
-                          ),
+                        },
+                        child: Row(
+                          children: [
+                            Icon(Icons.search, color: Colors.black),
+                            SizedBox(width: 10),
+                            Text(
+                              'Search for Tutors', 
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600
+                              ),
+                              )
+                          ],
                         ),
                       ),
-                    ],
+                    ),
                   ),
+                  // Row(
+                  //   children: <Widget>[
+                  //     Expanded(
+                  //       child: Padding(
+                  //         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  //         child: TextField(
+                  //           decoration: InputDecoration(
+                  //             prefixIcon: Icon(Icons.search),
+                  //             hintText: 'Search for Tutors',
+                  //           ),
+                  //          onSubmitted: (value) {
+                  //             Navigator.push(
+                  //               cont0xt,                  //               MaterialPageRoute(
+                  //                   builder: (context) => SearchPage(searchValue: value)),
+                  //             );
+                  //           },
+                  //           textInputAction: TextInputAction.go,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
                   // Featured Tutors Label
                   Row(
                     children: <Widget>[
@@ -128,27 +144,28 @@ class _DashboardPageState extends State<DashboardPage> {
                     ],
                   ),
                   // Featured Tutors List
-                  StreamBuilder(
-                    stream: tutorsStream,
+                  FutureBuilder(
+                    future: initAwait(),
                     builder: (BuildContext context, AsyncSnapshot snapshot){
-                      Widget retVal;
-                      if(snapshot.connectionState == ConnectionState.waiting){
-                        retVal = Center(child: CircularProgressIndicator());
-                      }else if(snapshot.connectionState == ConnectionState.active){
-                        retVal = Container(
+                      Widget retVal = Container(child: Center(child: CircularProgressIndicator()));
+
+                      if(snapshot.hasData){
+                        
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          retVal = Container(
                           height: 225,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
                             padding: EdgeInsets.all(15),
-                            itemCount: snapshot == null ? 0 : snapshot.data.docs.length,
+                            itemCount: snapshot == null ? 0 : snapshot.data.length,
                             itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: (){
-                                   print(snapshot.data.docs[index]['majors']);
+                                   print(snapshot.data[index]['majors']);
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data.docs[index])),
+                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data[index])),
                                   );
                                 },
                                   child: Container(
@@ -158,7 +175,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                     child: Wrap(
                                       children: <Widget>[
                                         FutureBuilder(
-                                          future: dashboardModel.getPicture(snapshot.data.docs[index]['uid']),
+                                          future: dashboardModel.getPicture(snapshot.data[index]['uid']),
                                           builder: (BuildContext context, AsyncSnapshot snap) {
                                             Widget picture;
                                             if (snap.connectionState == ConnectionState.waiting) {
@@ -172,7 +189,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                           }
                                         ),
                                         ListTile(
-                                          title: Text('${snapshot.data.docs[index]['firstName']} ${snapshot.data.docs[index]['lastName']}'),
+                                          title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
                                           //subtitle: Text(snapshot.data[index]['username']),
                                         ),
                                         // Visibility(
@@ -187,7 +204,12 @@ class _DashboardPageState extends State<DashboardPage> {
                             },
                           )
                         );
+
+                        } 
+
+
                       }
+                      
                       return retVal;
                     }
                       
