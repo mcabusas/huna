@@ -19,9 +19,7 @@ class _PretestState extends State<PretestPage> {
   String question, answer1, answer2, answer3, answer4, studentsAnswer = '';
 
   uploadPretestData() async{
-    if(_key.currentState.validate()){
-      
-      setState(() {
+    setState(() {
         isLoading = true;
       });
 
@@ -42,7 +40,6 @@ class _PretestState extends State<PretestPage> {
         })
         
       });
-    }
   }
 
 
@@ -242,56 +239,17 @@ class _PretestState extends State<PretestPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
+                      
                       RawMaterialButton(
                         onPressed: () {
-                          setState(() {
-                            if(currentQuestion != 1){
-                              currentQuestion--;
-                            }
-                          });
-                        },
-                        child: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 15.0,
-                        ),
-                        shape: CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Colors.deepPurple,
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                      RawMaterialButton(
-                        onPressed: null,
-                        // child: Text(
-                        //   currentQuestion.toString() + ' / '+ widget.totalQuestions,
-                        //   style: TextStyle(
-                        //       fontWeight: FontWeight.bold, fontSize: 20),
-                        // ), // CURRENT PAGE NUMBER
-                        shape: CircleBorder(),
-                        elevation: 0,
-                        // fillColor: Colors.deepPurple.shade300,
-                        padding: const EdgeInsets.all(15.0),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          uploadPretestData();
-                          setState(() {
-                            // if(currentQuestion != questions.length){
-                            //   questionObject = {
-                            //     'question ' + currentQuestion.toString(): questionContent.text,
-                            //     'option1': firstChoice.text,
-                            //     'option2': secondChoice.text,
-                            //     'correctRadio':  correctRadio.toString(),
-                            //   };
-                            //   questions[currentQuestion-1] = questionObject;
-                            //   questionObject = {};
-                            //   questionContent.clear();
-                            //   firstChoice.clear();
-                            //   secondChoice.clear();
-                            //   correctRadio = 0;
-                            //   currentQuestion++;
-                            // }
-                          });
+                          if(_key.currentState.validate()) {
+                            uploadPretestData();
+                            setState(() {
+                              currentQuestion++;
+                            });
+
+                          }
+                          
                         },
                         child: Icon(
                           Icons.arrow_forward_ios,
@@ -306,6 +264,12 @@ class _PretestState extends State<PretestPage> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
+                Container(
+                  child: Text("NOTE: If you've made a mistake after submitting the question, you will still be able to edit your question after you've finished on the previous page.",
+                    style: TextStyle(color: Colors.red, fontSize: 20)
+                  )
+                )
               ],
             ),
           ),

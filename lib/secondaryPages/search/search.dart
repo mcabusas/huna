@@ -44,48 +44,8 @@ class _SearchState extends State<SearchPage> {
           child: Column(
             children: <Widget>[
               Container(
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Search for Tutors',
-                  ),
-                  onSubmitted: (value) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SearchPage()),
-                    );
-                  },
-                  textInputAction: TextInputAction.go,
-                ),
-              ),
-              Container(
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: [
-                        Text('Ratings: ', style: TextStyle(fontSize: 18)),
-                        Expanded(
-                          child:DropdownButtonFormField(
-                            value: _rateValue,
-                            items: <DropdownMenuItem>[
-                              DropdownMenuItem(
-                                child: Text('Highest to Lowest'),
-                                value: 1,
-                              ),
-                              DropdownMenuItem(
-                                child: Text('Lowest to Highest'),
-                                value: 2,
-                              ),
-                            ],
-                            onChanged: (value) {
-                              setState(() {
-                                _rateValue = value;
-                              });
-                            },
-                          ),
-                        )
-                      ],
-                    ),
                     Row(
                       children: [
                         Text('Majors: ', style: TextStyle(fontSize: 18)), 
@@ -168,7 +128,10 @@ class _SearchState extends State<SearchPage> {
                         ),
                       ],
                     ),
-                    RaisedButton(
+                    RaisedButton.icon(
+                      icon: Icon(Icons.search, color: Colors.white),
+                      label: Text('Search', style: TextStyle(color: Colors.white)),
+                      color: Colors.blue,
                       onPressed: ()  async {
                         setState(()  {
                           tutorResuts = Container(
@@ -211,24 +174,8 @@ class _SearchState extends State<SearchPage> {
                                                   }
                                                 ),
                                                 title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
-                                                subtitle: Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    Icon(Icons.star,
-                                                        size: 12.0, color: Colors.amber.shade400),
-                                                    Icon(Icons.star,
-                                                        size: 12.0, color: Colors.amber.shade400),
-                                                    Icon(Icons.star,
-                                                        size: 12.0, color: Colors.amber.shade400),
-                                                    Icon(Icons.star,
-                                                        size: 12.0, color: Colors.amber.shade400),
-                                                    Icon(Icons.star, size: 12.0),
-                                                  ],
-                                                ),
-                                                trailing: Icon(
-                                                  Icons.favorite,
-                                                  color: Colors.red.shade800,
-                                                ),
+                                                subtitle: Text('P ' + snapshot.data[index]['rate'] + '.00'),
+                                                
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,

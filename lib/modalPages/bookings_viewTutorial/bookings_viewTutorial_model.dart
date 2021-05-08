@@ -34,15 +34,20 @@ class ViewTutorialModel extends MyProfileModel {
     });
   }
 
-  Future<void> updateSentStatus(String bookingId) async {
+  Future<bool> updateSentStatus(String bookingId) async {
+    bool retVal = false;
     await FirebaseFirestore.instance
     .collection('bookings')
     .doc(bookingId)
     .update({
       'testData.test_sentStatus': '1'
+    }).then((value) => {
+      retVal = true
     }).catchError((e) => {
       print(e.toString())
     });
+
+    return retVal;
   }
 
   Future<void> beginTutorial(String bookingId) async {

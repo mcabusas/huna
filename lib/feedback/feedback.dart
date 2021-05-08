@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -187,6 +186,17 @@ class _FeedbackState extends State<FeedbackPage> {
                       width: MediaQuery.of(context).size.width,
                       child: RaisedButton.icon(
                         onPressed: () async {
+                          if(feedbackContent['rating'] == 0){
+                            Fluttertoast.showToast(
+                                msg: "This is Center Short Toast",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          }
                           if(_formKey.currentState.validate() && feedbackContent['rating'] != 0){
                             print(feedbackContent);
                             await _model.insertFeedback(feedbackContent);

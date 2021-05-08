@@ -1,62 +1,52 @@
 const functions = require("firebase-functions");
-const admin = require("firebase-admin");
-const { onUpdate } = require("firebase-functions/lib/providers/remoteConfig");
-const { namespace } = require("firebase-functions/lib/providers/firestore");
-admin.initializeApp(functions.config().functions);
+const braintree = require("braintree");
+const gateway = new braintree.BraintreeGateway({
+  environment: braintree.Environment.Sandbox,
+  merchantId: "w5n3q86xk87fw8cc",
+  publicKey: "xf7mqyq3nygnhxzx",
+  privateKey: "b3425a03f75660e8ee956316390f0acf"
+});
 
-var db = admin.database();
+// // Create and Deploy Your First Cloud Functions
+// // https://firebase.google.com/docs/functions/write-firebase-functions
+//
+// exports.helloWorld = functions.https.onRequest((request, response) => {
+//   functions.logger.info("Hello logs!", {structuredData: true});
+//   response.send("Hello from Firebase!");
+// // });
+// var braintree = require('braintree');
 
 
-exports.newBooking = functions.firestore
-  .document('bookings/{id}')
-  .onCreate(async () => {
-    var tokens = [
-      'cDeUVmLuSxu5CykMuvbmSy:APA91bGgSfMXcgFSC4aTQP4EfnZwzwD1MjK-bAvGqjrAtuOGGv0TaxvLqvc-fU7mmRnM2NUZyx46M1Y_41ywZ32u4yl0rTvFiybwQI4ady9SXTLCqihAp1TO6rf9A_SkdmPHfNGnMzSG'
-    ];
+// var gateway = new braintree.BraintreeGateway({
+//   environment: braintree.Environment.Sandbox,
+//   merchantId: "w5n3q86xk87fw8cc",
+//   publicKey: "xf7mqyq3nygnhxzx",
+//   privateKey: "b3425a03f75660e8ee956316390f0acf"
+// });
 
-    var payload = {
-      notification: { title: 'Booking!', body: 'Booking was Accepted', sound: 'default' },
-      data: { click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'test' }
-    };
 
-    try {
-      admin.messaging().sendToDevice(tokens, payload);
-      console.log("no error");
-    } catch (e) {
-      console.log("ERROR!");
+
+exports.paypalPayment = functions.https.onRequest(async (req, res) => {
+  console.log('THIS IS DOPE');
+  // const nonce = "fake-nonce"
+  // const deviceData = req.body.device_data;
+
+  gateway.transaction.sale({
+    amount: '5.00',
+    paymentMethodNonce: 'nonce-from-the-client',
+    options: {
+      submitForSettlement: true
     }
-  })
-
-exports.bookingStatus = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
-
-  const after = update.after.data();
-  // var tokens = [
-  //   'cDeUVmLuSxu5CykMuvbmSy:APA91bGgSfMXcgFSC4aTQP4EfnZwzwD1MjK-bAvGqjrAtuOGGv0TaxvLqvc-fU7mmRnM2NUZyx46M1Y_41ywZ32u4yl0rTvFiybwQI4ady9SXTLCqihAp1TO6rf9A_SkdmPHfNGnMzSG'
-  // ];
-  var tokens = [];
-
-  payload = {
-    notification: { title: 'Booking Request updated!', body: "Tutor: " + after.bookingData['tutor_firstName'] + " " + after.bookingData['tutor_lastName'] + " has " + after.bookingData['booking_status'] + " your request", sound: "default" },
-    data: { click_action: 'FLUTTER NOTIFICATION_CLICK', message: 'Tap to Proceed!' }
-  };
-
-  console.log(after.bookingData['student_id']);
-
-  const user = admin
-    .firestore()
-    .collection("users")
-    .doc(`${after.bookingData['student_id']}`);
-
-  user.get().then(doc => {
-    if(!doc.exists) {
-      console.log('nope');
-    }else {
-      console.log(doc.data()['device_tokens']);
+  }, function (err, result) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+  
+    if (result.success) {
+      console.log('Transaction ID: ' + result.transaction.id);
+    } else {
+      console.error(result.message);
     }
   });
-  // try {
-  //   admin.messaging().sendToDevice(tokens, payload);
-  // } catch (e) {
-  //   console.log('error');
-  // }
-})
+});

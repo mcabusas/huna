@@ -30,4 +30,4 @@ class TrailingButton extends StatelessWidget {
   }
 }
 
-TrailingButton pretestBtn, acceptBtn, cancelBtn;
+TrailingButton pretestBtn, acceptBtn, cancelBtn, declineBtn;

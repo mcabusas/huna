@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:huna/components/profilePicture.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
 import 'favorites_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,6 +25,7 @@ class _FavoritesState extends State<FavoritesPage> {
     setState(() {
       uid = sp.getString('uid');
     });
+    print(uid);
   }
 
   @override
@@ -40,8 +42,7 @@ class _FavoritesState extends State<FavoritesPage> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Remove Favorite Tutor'),
-            content: Text(
-                'Are you sure you want to remove ${fname} ${lname}?'),
+            content: Text('Are you sure you want to remove ${fname} ${lname}?'),
             elevation: 24.0,
             actions: <Widget>[
               FlatButton(
@@ -78,62 +79,86 @@ class _FavoritesState extends State<FavoritesPage> {
         });
   }
 
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Favorite Tutors'),
         ),
         drawer: SideDrawer(),
-        body: StreamBuilder(
-          stream: _model.getFavorites(sp.getString('uid')),
+        body: FutureBuilder(
+          future: _model.getFavorites(uid),
           builder: (context, snapshot) {
             Widget retWidget;
-            if (!snapshot.hasData) {
-              retWidget = Center(
+            if(snapshot.connectionState == ConnectionState.done) {
+              print(snapshot.data.length.toString());
+              if(snapshot.data.length == 0) {
+                retWidget = Center(
                   child: Container(
-                child: Text('You have no favorite tutors.'),
-                height: 100,
-                width: 250,
-              ));
-            } else if (snapshot.hasData) {
-              retWidget = ListView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.all(15),
-                itemCount: snapshot.data.docs.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return new Card(
-                    child: ListTile(
-                      leading: FutureBuilder(
-                        future: _model.getPicture(snapshot.data.docs[index]['tutor_uid']),
-                        builder: (BuildContext context, AsyncSnapshot snapshot){
-                          Widget ret;
-                          if(snapshot.connectionState == ConnectionState.waiting){
-                            ret = Container(child: CircularProgressIndicator());
-                          }
-                          if(snapshot.connectionState == ConnectionState.done){
-                            ret = CircleAvatar(
-                              child: ProfilePicture(url: snapshot.data)
-                            );
-                          }
+                    height: 0,
+                    width: 0,
+                ));
+              }
+              if(snapshot.data.length !=0 ) {
+                retWidget = ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(15),
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return GestureDetector(
+                      
+                      onTap: () {
+                        print(snapshot.data[index]);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TutorProfilePage(
+                                  tutorData: snapshot.data[index])),
+                        );
+                      },
+                      child: new Card(
+                        child: ListTile(
+                          leading: FutureBuilder(
+                              future: _model.getPicture(
+                                  snapshot.data[index]['uid']),
+                              builder:
+                                  (BuildContext context, AsyncSnapshot snapshot) {
+                                Widget ret;
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  ret = Container(
+                                      child: CircularProgressIndicator());
+                                }
+                                if (snapshot.connectionState ==
+                                    ConnectionState.done) {
+                                  ret = ClipOval(
+                                      child: SizedBox(child: ProfilePicture(url: snapshot.data, width: 45, height: 45)));
+                                }
 
-                          return ret;
-                        }
+                                return ret;
+                              }),
+                          title: Text(
+                              '${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
+                          // subtitle: Text(
+                          //   '${json[index]['username']}',
+                          //   overflow: TextOverflow.ellipsis,
+                          // ),
+                          trailing: IconButton(
+                              icon: Icon(Icons.favorite, color: Colors.red),
+                              onPressed: () {
+                                removeTutor(
+                                    snapshot.data[index]['firstName'],
+                                    snapshot.data[index]['lastName'],
+                                    snapshot.data[index]['uid']);
+                              }),
+                        ),
                       ),
-                      title: Text(
-                          '${snapshot.data.docs[index]['tutor_firstName']} ${snapshot.data.docs[index]['tutor_lastName']}'),
-                      // subtitle: Text(
-                      //   '${json[index]['username']}',
-                      //   overflow: TextOverflow.ellipsis,
-                      // ),
-                      trailing: IconButton(
-                          icon: Icon(Icons.favorite, color: Colors.red),
-                          onPressed: () {
-                            removeTutor(snapshot.data.docs[index]['tutor_firstName'], snapshot.data.docs[index]['tutor_lastName'], snapshot.data.docs[index]['tutor_uid']);
-                          }),
-                    ),
-                  );
-                },
+                    );
+                  },
+                );
+              }
+            } else{
+              retWidget = Container(
+                child: Center(child: CircularProgressIndicator())
               );
             }
             return retWidget;

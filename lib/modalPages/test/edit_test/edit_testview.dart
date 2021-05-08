@@ -36,10 +36,7 @@ class _EditPageState extends State<EditPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Bookings()),
-              // );
+              Navigator.pop(context);
             }),
         title: Text('Edit Pre-test/Post-test'),
       ),
@@ -48,10 +45,7 @@ class _EditPageState extends State<EditPage> {
         backgroundColor: Colors.blue,
         onPressed: (){
           print(widget.pretestId);
-          Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Bookings()),
-              );
+          Navigator.pop(context);
         },
       ),
       body: SingleChildScrollView(

@@ -79,49 +79,50 @@ class _ChatState extends State<ChatPage> {
             //   }),
         ],
       ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              //Container(width: 0, height: 0),
-              StreamBuilder(
-                stream: conversationMessages,
-                builder: (context, snapshot){
-                  if(snapshot.data == null){
-                    return Center(child:Text('Start Chatting...'));
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(15.0),
-                    itemCount: snapshot.data.docs.length,
-                    itemBuilder: (context, index){
-                      DocumentSnapshot message = snapshot.data.docs[index];
-                      if(message['sentBy'] == sp.getString('uid')){
-                        bubble = ChatBubble(
-                          message: message['message'],
-                          messageSide: Alignment.centerRight,
-                          textSide: TextAlign.end,
-                          bubbleColor: Colors.deepPurple,
-                          textColor: Colors.white,
-                        );
-                      }else {
-                        bubble = ChatBubble(
-                          message: message['message'],
-                          messageSide: Alignment.centerLeft,
-                          textSide: TextAlign.start,
-                          bubbleColor: Colors.white,
-                          textColor: Colors.black,
-                        );
-                      }
-                      return bubble;
+      body: Stack(
+        children: [
+
+
+          StreamBuilder(
+              stream: conversationMessages,
+              builder: (context, snapshot){
+                if(snapshot.data == null){
+                  return Center(child:Text('Start Chatting...'));
+                }
+                return ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.all(15.0),
+                  //physics: NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index){
+                    DocumentSnapshot message = snapshot.data.docs[index];
+                    if(message['sentBy'] == sp.getString('uid')){
+                      bubble = ChatBubble(
+                        message: message['message'],
+                        messageSide: Alignment.bottomRight,
+                        textSide: TextAlign.end,
+                        bubbleColor: Colors.deepPurple,
+                        textColor: Colors.white,
+                      );
+                    }else {
+                      bubble = ChatBubble(
+                        message: message['message'],
+                        messageSide: Alignment.bottomLeft,
+                        textSide: TextAlign.start,
+                        bubbleColor: Colors.white,
+                        textColor: Colors.black,
+                      );
                     }
-                    
-                  );
-                },
-              ),
-              Container(
+                    return bubble;
+                  }
+                  
+                );
+              },
+            ),
+
+          Align(
+              alignment: Alignment.bottomLeft,
+              child: Container(
                 color: Colors.white,
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(15, 5, 15, 5),
@@ -155,9 +156,9 @@ class _ChatState extends State<ChatPage> {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+
+        ],
       ),
     );
   }

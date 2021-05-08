@@ -15,7 +15,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Include required permissions for Google Maps API to run. -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
@@ -25,17 +25,40 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Required by older versions of Google Play services to create IID tokens -->
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:appComponentFactory="androidx.core.app.CoreComponentFactory"
         android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="huna"
+        android:supportsRtl="true"
         android:usesCleartextTraffic="true" >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM" />
 
+        <activity
+            android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="com.exmaple.huna.braintree" />
+            </intent-filter>
+        </activity>
         <activity
             android:name="com.example.huna.MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -127,6 +150,12 @@
                 android:name="com.google.firebase.components:com.google.firebase.dynamicloading.DynamicLoadingRegistrar"
                 android:value="com.google.firebase.components.ComponentRegistrar" />
         </service>
+
+        <activity
+            android:name="com.example.flutter_braintree.FlutterBraintreeCustom"
+            android:theme="@style/bt_transparent_activity" >
+        </activity>
+
         <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -143,7 +172,17 @@
             <intent-filter android:priority="-500" >
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service> <!-- Needs to be explicitly declared on P+ -->
+        </service>
+
+        <activity
+            android:name="com.braintreepayments.api.dropin.DropInActivity"
+            android:theme="@style/bt_drop_in_activity_theme" />
+        <activity
+            android:name="com.braintreepayments.api.dropin.AddCardActivity"
+            android:theme="@style/bt_add_card_activity_theme" />
+        <activity
+            android:name="com.braintreepayments.api.dropin.VaultManagerActivity"
+            android:theme="@style/bt_vault_manager_activity_theme" /> <!-- Needs to be explicitly declared on P+ -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -221,6 +260,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <service android:name="com.braintreepayments.api.internal.AnalyticsIntentService" />
+
+        <activity android:name="com.braintreepayments.api.ThreeDSecureActivity" />
+
         <service
             android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
             android:exported="false" >
@@ -237,6 +280,24 @@
         <receiver
             android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
             android:exported="false" />
+
+        <activity
+            android:name="com.braintreepayments.api.GooglePaymentActivity"
+            android:theme="@style/bt_transparent_activity" />
+
+        <provider
+            android:name="com.cardinalcommerce.shared.cs.utils.CCInitProvider"
+            android:authorities="com.exmaple.huna.CCInitProvider"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
+            android:name="com.cardinalcommerce.shared.cs.userinterfaces.ChallengeHTMLView"
+            android:theme="@style/CardinalSDKTheme.ActionBar" />
+        <activity
+            android:name="com.cardinalcommerce.shared.cs.userinterfaces.ChallengeNativeView"
+            android:theme="@style/CardinalSDKTheme.ActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
     </application>
 
 </manifest>

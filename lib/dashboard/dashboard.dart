@@ -1,12 +1,8 @@
-import 'dart:convert';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:huna/login/login.dart';
 import 'package:huna/secondaryPages/search/search.dart';
 import 'package:huna/services/auth_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'dashboard_model.dart';
@@ -40,6 +36,7 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
+    
   }
 
   @override

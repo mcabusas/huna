@@ -7,11 +7,11 @@ class HistoryModal extends MyProfileModel {
     List<Map<String, dynamic>> docData = [];
     double totalIncome = 0.0;
     Map<String, dynamic> retData = {};
+    var rate;
 
     QuerySnapshot bookings = await FirebaseFirestore.instance
     .collection('bookings')
     .where('bookingData.tutor_userid', isEqualTo: uid)
-    .where('bookingData.booking_status', isEqualTo: 'Finished')
     .get();
 
     for(int i = 0; i < bookings.docs.length; i++){
@@ -32,10 +32,17 @@ class HistoryModal extends MyProfileModel {
           'location': value.data()['bookingData']['location'],
           'date': value.data()['bookingData']['date'],
           'rate': value.data()['bookingData']['rate'],
+          'status': value.data()['bookingData']['booking_status']
 
         });
 
-        totalIncome += double.parse(value.data()['bookingData']['rate']);
+        if(value.data()['bookingData']['booking_status'] == 'Declined' || value.data()['bookingData']['booking_status'] == 'Cancelled') {
+          rate = 0;
+        } else{
+          rate = double.parse(value.data()['bookingData']['rate']);
+        }
+
+        totalIncome += rate;
 
       });
       
@@ -57,11 +64,11 @@ class HistoryModal extends MyProfileModel {
     List<Map<String, dynamic>> docData = [];
     double totalIncome = 0.0;
     Map<String, dynamic> retData = {};
+    var rate;
 
     QuerySnapshot bookings = await FirebaseFirestore.instance
     .collection('bookings')
     .where('bookingData.student_id', isEqualTo: uid)
-    .where('bookingData.booking_status', isEqualTo: 'Finished')
     .get();
 
     for(int i = 0; i < bookings.docs.length; i++){
@@ -82,10 +89,16 @@ class HistoryModal extends MyProfileModel {
           'location': value.data()['bookingData']['location'],
           'date': value.data()['bookingData']['date'],
           'rate': value.data()['bookingData']['rate'],
+          'status': value.data()['bookingData']['booking_status']
 
         });
+        if(value.data()['bookingData']['booking_status'] == 'Declined' || value.data()['bookingData']['booking_status'] == 'Cancelled') {
+          rate = 0;
+        } else{
+          rate = double.parse(value.data()['bookingData']['rate']);
+        }
 
-        totalIncome += double.parse(value.data()['bookingData']['rate']);
+        totalIncome += rate;
 
       });
       

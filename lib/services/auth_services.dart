@@ -20,7 +20,7 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
   }
 
   Future<User> getCurrentUser() async {
-    User user = await (_auth.currentUser);
+    User user = (_auth.currentUser);
     return user;
   }
 
@@ -30,28 +30,18 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
+    bool retVal = false;
     final User user = (await _auth.signInWithEmailAndPassword(
             email: email, password: password))
         .user;
 
     notifyListeners();
-
-    if (user != null) {
-      userProfile(user.uid);
-
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Map<String, dynamic> userProfile(String uid) {
-    //sp = await SharedPreferences.getInstance();
-    _firebaseMessaging = new FirebaseMessaging();
+     _firebaseMessaging = new FirebaseMessaging();
 
     List deviceTokens = [];
 
     Map<String, dynamic> returnData = {
+      'account_type': '',
       'firstName': '',
       'lastName': '',
       'uid': '',
@@ -71,44 +61,47 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
       'picture': ''
     };
 
-    DocumentReference retVal =
-        FirebaseFirestore.instance.collection('users').doc(uid);
+    DocumentReference retValDoc =
+         FirebaseFirestore.instance.collection('users').doc(user.uid);
 
-    retVal.get().then((snapshot) async {
-      returnData['firstName'] = snapshot.data()['firstName'];
-      returnData['lastName'] = snapshot.data()['lastName'];
-      returnData['uid'] = snapshot.data()['uid'];
-      returnData['city'] = snapshot.data()['city'];
-      returnData['country'] = snapshot.data()['country'];
-      returnData['homeAddress'] = snapshot.data()['homeAddress'];
-      returnData['zipCode'] = snapshot.data()['zipCode'];
-      returnData['contactNumber'] = snapshot.data()['contactNumber'];
-      returnData['emergencyFirstName'] = snapshot.data()['emergencyFirstName'];
-      returnData['emergencyLastName'] = snapshot.data()['emergencyLastName'];
-      returnData['emergencyContactNumber'] =
-          snapshot.data()['emergencyContactNumber'];
-      returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
-      //  List.from(snapshot.data()['device_tokens']).forEach((element){
-      //     deviceTokens.add(element);
-      // });
+    retValDoc.get().then((snapshot) async {
+        returnData['account_type'] = snapshot.data()['account_type'];
+        returnData['firstName'] = snapshot.data()['firstName'];
+        returnData['lastName'] = snapshot.data()['lastName'];
+        returnData['uid'] = snapshot.data()['uid'];
+        returnData['city'] = snapshot.data()['city'];
+        returnData['country'] = snapshot.data()['country'];
+        returnData['homeAddress'] = snapshot.data()['homeAddress'];
+        returnData['zipCode'] = snapshot.data()['zipCode'];
+        returnData['contactNumber'] = snapshot.data()['contactNumber'];
+        returnData['emergencyFirstName'] = snapshot.data()['emergencyFirstName'];
+        returnData['emergencyLastName'] = snapshot.data()['emergencyLastName'];
+        returnData['emergencyContactNumber'] =
+            snapshot.data()['emergencyContactNumber'];
+        returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
+        //  List.from(snapshot.data()['device_tokens']).forEach((element){
+        //     deviceTokens.add(element);
+        // });
 
-      await FirebaseFirestore.instance
-          .collection('tutors')
-          .where('uid', isEqualTo: returnData['uid'])
-          .get()
-          .then((value) => {
-                if (value.docs.length != 0)
-                  {
-                    value.docs.forEach((element) {
-                      returnData['tid'] = element.data()['tid'];
-                      returnData['rate'] = element.data()['rate'];
-                      returnData['majors'] = element.data()['majors'];
-                      returnData['topics'] = element.data()['topics'];
-                    })
-                  }
-              });
+        await FirebaseFirestore.instance
+            .collection('tutors')
+            .where('uid', isEqualTo: returnData['uid'])
+            .get()
+            .then((value) => {
+                  if (value.docs.length != 0)
+                    {
+                      value.docs.forEach((element) {
+                        returnData['tid'] = element.data()['tid'];
+                        returnData['rate'] = element.data()['rate'];
+                        returnData['majors'] = element.data()['majors'];
+                        returnData['topics'] = element.data()['topics'];
+                      })
+                    }
+                });
 
-      setPref(returnData);
+        setPref(returnData);
+      
+      
     });
 
     // _firebaseMessaging.getToken().then((value) => {
@@ -124,11 +117,11 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
     //   print(e.toString())
     // });
 
-    
 
-
-    print(returnData);
-    return returnData;
+    if (user != null) {
+      retVal = true;
+    }
+    return retVal;
   }
 
   Future setPref(Map<String, dynamic> data) async {
@@ -138,15 +131,15 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
     sp.setString('uid', data['uid']);
     sp.setString('tid', data['tid']);
     sp.setString('rate', data['rate']);
-    sp.setString('country', data['country']);
-    sp.setString('city', data['city']);
-    sp.setString('homeAddress', data['homeAddress']);
-    sp.setString('emergencyFirstName', data['emergencyFirstName']);
-    sp.setString('emergencyLastName', data['emergencyLastName']);
-    sp.setString('contactNumber', data['contactNumber']);
-    sp.setString('emergencyContactNumber', data['emergencyContactNumber']);
-    sp.setString('emergencyRelation', data['emergencyRelation']);
-    sp.setString('zipCode', data['zipCode']);
+    sp.setString('account_type', data['account_type']);
+    // sp.setString('city', data['city']);
+    // sp.setString('homeAddress', data['homeAddress']);
+    // sp.setString('emergencyFirstName', data['emergencyFirstName']);
+    // sp.setString('emergencyLastName', data['emergencyLastName']);
+    // sp.setString('contactNumber', data['contactNumber']);
+    // sp.setString('emergencyContactNumber', data['emergencyContactNumber']);
+    // sp.setString('emergencyRelation', data['emergencyRelation']);
+    // sp.setString('zipCode', data['zipCode']);
   }
 
   Future<dynamic> getTutorData() async {
@@ -169,15 +162,16 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
     return retData;
   }
 
-  Future<bool> register(Map<String, dynamic> data, File image) async {
-    bool returnVal = false;
-    bool login;
+  Future<int> register(Map<String, dynamic> data, File image) async {
+    int returnVal;
     try {
       UserCredential retVal = await _auth.createUserWithEmailAndPassword(
           email: data['email'], password: data['password']);
 
       data['uid'] = retVal.user.uid;
       data['tid'] = '';
+      data['account_type'] = 'Active';
+      data['user_type'] = 'Student';
       print(data);
 
       FirebaseFirestore.instance
@@ -189,8 +183,12 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
       }catch (e){
         print(e.toString());
       }
-      returnVal = true;
-    } catch (e) {
+      returnVal = 0;
+    }on FirebaseAuthException catch (e) {
+        if(e.code ==  'email-already-in-use'){
+          returnVal = 2;
+        }
+        print(e.code);
       print(e.toString());
       print('error herein auth');
     }
@@ -212,8 +210,8 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
 
   Future<void> signOut() async {
     sp = await SharedPreferences.getInstance();
-    await _auth.signOut();
     await sp.clear().catchError((e) => {print(e.toString())});
+    await _auth.signOut();
     notifyListeners();
   }
 }

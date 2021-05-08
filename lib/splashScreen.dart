@@ -20,11 +20,6 @@ class _SplashScreenState extends State<SplashScreen> {
     //initAwait();
     _configureFirebaseListener();
   }
-
-  initAwait() async {
-    //await test();
-  }
-
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FirebaseFunctions functions = FirebaseFunctions.instance;
 
@@ -42,23 +37,6 @@ class _SplashScreenState extends State<SplashScreen> {
         print('onResume: $message');
       }
     );
-  }
-
-  Future<void> test() async{
-
-    Map<String, dynamic> data = {
-      "firstName": "Balot",
-      "lastName": "test"
-    };
-
-    HttpsCallable callable = functions.httpsCallable('test');
-    try {
-      await callable(data).then((value) => {
-        print(value.data['firstName'])
-      });
-    } catch (e){
-      print(e.toString());
-    }
   }
 
 
@@ -117,19 +95,11 @@ class _SplashScreenState extends State<SplashScreen> {
                       SizedBox(
                         height: 50.0,
                       ),
-                      new FlutterLogo(
-                        size: 150,
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 15.0),
-                        child: new Text(
-                          "HUNA",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40.0,
-                            letterSpacing: 2.5,
-                          ),
-                        ),
+                      new Container(
+                        child: Image(
+                          image: AssetImage('assets/images/huna.png'),
+                          fit: BoxFit.cover
+                        )
                       ),
                     ],
                   ),

@@ -16,5 +16,17 @@ class TutorialInSessionModal {
     });
   }
 
+  Future<void> reportSos(String bookingId) async {
+    await FirebaseFirestore.instance
+    .collection('bookings')
+    .doc(bookingId)
+    .update({
+      'bookingData.booking_status': 'Cancelled',
+      'sos': 'active'
+    }).catchError((e){
+      print('error in model');
+    });
+  }
+
 
 }

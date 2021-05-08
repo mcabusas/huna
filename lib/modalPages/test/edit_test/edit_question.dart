@@ -39,14 +39,12 @@ class _EditQuestionState extends State<EditQuestion> {
                 // ONLY APPEARS IF ON THE LAST PAGE.
                 RaisedButton.icon(
                   onPressed: () async {
-                    _modal.updateQuestion(widget.questionData).then((value) => {
-                      Navigator.pop(context)
-                    });
-                    //insertPretest();
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(builder: (context) => Bookings()),
-                    // );
+                    if(_key.currentState.validate()){
+                      _modal.updateQuestion(widget.questionData).then((value) => {
+                        Navigator.pop(context)
+                      });
+
+                    }
                   },
                   icon: Icon(Icons.check),
                   label: Text('Finish'),

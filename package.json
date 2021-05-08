@@ -1,0 +1,28 @@
+{
+  "name": "huna",
+  "version": "1.0.0",
+  "description": "Huna, is a mobile application where students can learn and earn extra income by booking tutorial sessions with other certified tutors and becoming a tutor themselves.",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "dependencies": {
+    "braintree": "^3.3.0",
+    "firebase-admin": "^9.7.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebasgoz/huna.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sebasgoz/huna/issues"
+  },
+  "homepage": "https://github.com/sebasgoz/huna#readme"
+}

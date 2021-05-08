@@ -202,6 +202,8 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                   child: Stack(
                     children: [
 
+                      
+
                       FutureBuilder(
                         future: _model.getPicture(uid),
                         builder: (BuildContext context, AsyncSnapshot snapshot){
@@ -211,23 +213,24 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                             retWidget = Container(child: CircularProgressIndicator());
                           }
                           if(snapshot.connectionState == ConnectionState.done) {
-                            retWidget = CircleAvatar(
-                              radius: 40,
-                              child: ProfilePicture(url: snapshot.data)
+                            retWidget = ClipOval(
+                              child: ProfilePicture(url: snapshot.data, width: 100, height: 100),
                             );
                           }
                           return retWidget;
                         }
                       ),
+
                       Positioned(
-                        left: 90,
+                        left: 80,
                         top: 10,
                         child: Icon(
                           Icons.edit,
-                          color: Colors.white,
+                          color: Colors.green,
                           size: 20
                         ),
                       ),
+                      
 
                     ],
                   ),
@@ -249,24 +252,7 @@ class _MyProfileSettingsState extends State<MyProfileSettings> {
                 //     style: TextStyle(color: Colors.white70),
                 //   ),
                 // ),
-                SizedBox(height: 20),
-                // Location
-                Padding(
-                  padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                  child: Row(
-                    children: <Widget>[
-                      Icon(
-                        Icons.location_on,
-                        color: Colors.white,
-                        size: 15,
-                      ),
-                      Text(
-                        "${sp.getString('city')}, ${sp.getString('country')}",
-                        style: TextStyle(color: Colors.white, fontSize: 12),
-                      ),
-                    ],
-                  ),
-                ),
+                
                 // White Body Contents
               ],
             ),

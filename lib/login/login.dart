@@ -6,6 +6,7 @@ import '../components/constants.dart';
 import '../dashboard/dashboard.dart';
 import '../services/auth_services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -87,8 +88,13 @@ class LoginPageState extends State<LoginPage>
             new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                new FlutterLogo(
-                  size: _iconAnimation.value * 100,
+                new Container(
+                  width: 125,
+                  height: 125,
+                  child: Image(
+                    image: AssetImage("assets/images/logo.png"),
+                    fit: BoxFit.cover
+                  )
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 15.0),
@@ -224,9 +230,12 @@ class LoginPageState extends State<LoginPage>
                                    });
 
                                    try{
+                                     String accountType = '';
 
                                     retVal =  await _services.login(_email, _password);
+                                    
                                     if(retVal == true){
+                                      print('true');
                                       setState(() {
                                         showSpinner = false;
                                       });
@@ -243,8 +252,19 @@ class LoginPageState extends State<LoginPage>
 
                                       Navigator.pushReplacement(
                                       context, MaterialPageRoute(builder: (BuildContext context) => DashboardPage()));
-                                    }else if(retVal == false){
-                                      print('this isnt working');
+                                    }else if(retVal == true && accountType != 'Active') {
+                                      setState(() {
+                                        showSpinner = false;
+                                      });
+                                      Fluttertoast.showToast(
+                                        msg: "Incorrect email and/or password",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIos: 1,
+                                        backgroundColor: Colors.blue,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0
+                                      );
                                     }
 
                                    }catch (e){

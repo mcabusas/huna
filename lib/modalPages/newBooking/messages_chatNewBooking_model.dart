@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:random_string/random_string.dart';
+import '../../profile/myProfile_model.dart';
 import 'dart:math' as Random;
 
 
-class MessagesNewBookingModel {
+class MessagesNewBookingModel extends MyProfileModel {
 
    SharedPreferences sp;
 
@@ -19,9 +20,10 @@ class MessagesNewBookingModel {
     .collection('bookings')
     .doc(bookingId)
     .set({
-
+      'payment_status': false,
       'bookingId': bookingId,
       'bookingData': bookingData,
+      'sos': 'inactive',
       'testData': testData,
       
 

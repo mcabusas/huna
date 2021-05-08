@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import 'package:huna/login/login.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:async';
 import '../services/auth_services.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+
 void main() => runApp(SignUp());
 
 class SignUp extends StatelessWidget {
@@ -109,10 +111,7 @@ class _SignUpState extends State<SignUpPage> {
         leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => LoginPage()),
-              );
+              Navigator.pop(context);
             }),
         title: Text('Sign Up'),
       ),
@@ -154,7 +153,8 @@ class _SignUpState extends State<SignUpPage> {
                           height: 15.0,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                          padding:
+                              const EdgeInsets.only(left: 25.0, right: 25.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -165,8 +165,8 @@ class _SignUpState extends State<SignUpPage> {
                                 ),
                                 label: Text('Select Photo',
                                     style: TextStyle(color: Colors.white)),
-                                color: Colors.deepPurple.shade400, 
-                                onPressed: () { 
+                                color: Colors.deepPurple.shade400,
+                                onPressed: () {
                                   _showPicker(context);
                                 },
                               ),
@@ -395,26 +395,6 @@ class _SignUpState extends State<SignUpPage> {
                               validator: (val) {
                                 // ignore: unnecessary_statements
                                 if (val.isEmpty) {
-                                  return 'Enter the country where you reside';
-                                } else {
-                                  return null;
-                                }
-                              },
-                              onChanged: (val) {
-                                setState(() {
-                                  data['country'] = val;
-                                });
-                              },
-                              decoration: new InputDecoration(
-                                labelText: "Country",
-                              ),
-                              keyboardType: TextInputType.text,
-                            ),
-
-                            new TextFormField(
-                              validator: (val) {
-                                // ignore: unnecessary_statements
-                                if (val.isEmpty) {
                                   return 'Enter your zip code';
                                 } else {
                                   return null;
@@ -556,27 +536,59 @@ class _SignUpState extends State<SignUpPage> {
                                   style: TextStyle(fontSize: 15.0),
                                 ),
                                 onPressed: () async {
+
                                   if (_formKey.currentState.validate()) {
-                                    if (data['password'] ==
-                                        data['confirmPassword']) {
-                                      bool catcher = await _services.register(data, _image);
+                                    if (data['password'] ==data['confirmPassword'] && _image != null) {
+                                      setState(() {
+                                          progress = true;
+                                        });
+                                      int catcher = await _services.register(data, _image);
 
-                                      if(catcher){
-
+                                      if (catcher == 0) {
                                         print('success');
                                         bool retVal = await _services.login(data['email'], data['password']);
 
-                                        if(retVal == true){
+                                        print(retVal.toString());
 
-                                          setState(() {
-                                            progress = true;
-                                          });
-                                          
-                                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>DashboardPage()), (route) => false);
+                                        if (retVal == true) {
+                                           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>DashboardPage()), (route) => false);
                                         }
-                                      }else {
-                                        print('sike');
+                                      } else if (catcher == 2){
+                                        Fluttertoast.showToast(
+                                          msg:
+                                              "The email address is already in use by another account.",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIos: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                        setState(() {
+                                          progress = false;
+                                        });
                                       }
+                                    }
+                                    if (_image == null) {
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Please select a profile picture before submitting your registration form.",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIos: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
+                                    }
+                                    if(data['password'] != data['confirmPassword']){
+                                      Fluttertoast.showToast(
+                                          msg:
+                                              "Password and confirm password don't match, please try again.",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIos: 1,
+                                          backgroundColor: Colors.red,
+                                          textColor: Colors.white,
+                                          fontSize: 16.0);
                                     }
                                   }
                                   /*Navigator.push(

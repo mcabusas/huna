@@ -54,6 +54,13 @@ class BookingsModel extends MyProfileModel{
           'bookingData.booking_status': 'Cancelled'
         }
       );
+    } else if(flag == 2) {
+      FirebaseFirestore.instance
+      .collection('bookings')
+      .doc(id)
+      .update({
+        'bookingData.booking_status': 'Declined'
+      });
     }
   }
 

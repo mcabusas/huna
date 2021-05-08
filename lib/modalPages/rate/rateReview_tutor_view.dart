@@ -57,9 +57,9 @@ class _RateViewTutorState extends State<RateViewTutor> {
                           retVal = Container(child: CircularProgressIndicator());
                         }
                         if(snapshot.connectionState == ConnectionState.done){
-                          retVal = CircleAvatar(
-                            child: ProfilePicture(url: snapshot.data, radius: 40,)
-                          );
+                          retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                         }
                         return retVal;
                       },
@@ -119,33 +119,44 @@ class _RateViewTutorState extends State<RateViewTutor> {
                         width: MediaQuery.of(context).size.width,
                         child: RaisedButton.icon(
                           onPressed: () async {
-                            setState(() {
-                              reviewContent['bookingId'] = widget.data['bookingId'];
-                              reviewContent['s_uid'] = widget.data['bookingData']['student_id'];
-                              reviewContent['t_uid'] = widget.data['bookingData']['tutor_userid'];
-                            });
-                            print(reviewContent);
-                            print(widget.flag);
-                            _model.addReview(reviewContent, widget.flag).catchError((e)=>{
-                              print(e.toString())
-                            });
+                            if(_formKey.currentState.validate()) {
+                              if(reviewContent['rating'] == 0){
+                                Fluttertoast.showToast(
+                                  msg: "Please select a rating.",
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIos: 1,
+                                  backgroundColor: Colors.blue,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0
+                              );
+                              } else {
+                                setState(() {
+                                  reviewContent['bookingId'] = widget.data['bookingId'];
+                                  reviewContent['s_uid'] = widget.data['bookingData']['student_id'];
+                                  reviewContent['t_uid'] = widget.data['bookingData']['tutor_userid'];
+                                });
+                                print(reviewContent);
+                                print(widget.flag);
+                                _model.addReview(reviewContent, widget.flag).catchError((e)=>{
+                                  print(e.toString())
+                                });
 
-                            Fluttertoast.showToast(
-                                msg: "Thank you!",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                timeInSecForIos: 1,
-                                backgroundColor: Colors.blue,
-                                textColor: Colors.white,
-                                fontSize: 16.0
-                            );
-                            Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                            DashboardPage()), (Route<dynamic> route) => false);
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) => DashboardPage()),
-                            // );
+                                Fluttertoast.showToast(
+                                    msg: "Thank you!",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                DashboardPage()), (Route<dynamic> route) => false);
+                              }
+                            }
+                            
+                            
                           },
                           icon: Icon(Icons.send),
                           label: Text('Finish'),

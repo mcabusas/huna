@@ -16,6 +16,9 @@ class MyProfileModel {
     .doc(uid)
     .get().then((value) => {
       imageUrl = value.data()['picture']
+    }).catchError((e) =>{
+      print(e.toString()),
+      print('this is not working')
     });
 
     print(imageUrl);
@@ -157,7 +160,6 @@ class MyProfileModel {
 
   Future<bool> editStudentEmergencyContact(String uid, Map<String, dynamic> data) async {
     bool retVal = false;  
-    print(data);
 
     await FirebaseFirestore.instance
     .collection('users')
@@ -169,6 +171,8 @@ class MyProfileModel {
       'emergencyContactNumber': data['emergencyContactNumber'],
       'emergencyRelation': data['emergencyRelation']
 
+    }).then((value) => {
+      retVal = true
     }).catchError((e) => {
       print(e.toString())
     });

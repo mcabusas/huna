@@ -1,4 +1,5 @@
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:huna/components/profilePicture.dart';
 import 'package:huna/dashboard/dashboard.dart';
 import '../map.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:huna/bookings/bookings_view.dart';
 import 'messages_chatNewBooking_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import '../paytutorial/paytutorial.dart';
 
 MessagesNewBookingModel _model = new MessagesNewBookingModel();
 SharedPreferences sp;
@@ -25,6 +27,7 @@ class _NewBookingState extends State<NewBooking> {
   DateTime _dateTime;
   TimeOfDay _timeStart;
   TimeOfDay _timeEnd;
+  String location = '';
   String formattedTimeOfStart;
   String formattedTimeOfEnd;
   Map retVal;
@@ -48,7 +51,8 @@ class _NewBookingState extends State<NewBooking> {
     'numberOfStudents': '',
     'locationId': '',
     'booking_status': 'Pending',
-    'rate': ''
+    'rate': '',
+    'total': ''
   };
 
   Map<String, dynamic> testData = {
@@ -61,8 +65,14 @@ class _NewBookingState extends State<NewBooking> {
   _location(BuildContext context) async {
     retVal = await Navigator.push(
         context, new MaterialPageRoute(builder: (context) => new MapSample()));
-    bookingData['locationId'] = retVal['placeId'];
-    bookingData['location'] = retVal['description'];
+    updateLocation(retVal);
+    
+  }
+  void updateLocation(var _location) {
+    setState(() {
+      bookingData['locationId'] = _location['placeId'];
+      bookingData['location'] = _location['description'];
+    });
   }
 
   Future initAwait() async {
@@ -115,10 +125,21 @@ class _NewBookingState extends State<NewBooking> {
                           Container(
                             width: 75,
                             height: 75,
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/tutor2.jpg'),
-                            ),
+                            child: FutureBuilder(
+                                future: _model.getPicture(studentid),
+                                builder:  (BuildContext context, AsyncSnapshot snap) {
+                                  Widget picture;
+                                  if (snap.connectionState ==ConnectionState.waiting) {
+                                    picture = Container(child: CircularProgressIndicator());
+                                  }
+                                  if (snap.connectionState ==ConnectionState.done) {
+                                    picture = ClipOval(
+                                  child: ProfilePicture(url: snap.data, width: 45, height: 45)
+                                );
+                                  }
+
+                                  return picture;
+                                }),
                           ),
                           SizedBox(height: 20),
                           Text(
@@ -135,10 +156,22 @@ class _NewBookingState extends State<NewBooking> {
                           Container(
                             width: 75,
                             height: 75,
-                            child: CircleAvatar(
-                              backgroundImage:
-                                  AssetImage('assets/images/profile.jpg'),
-                            ),
+                             child: 
+                            FutureBuilder(
+                                future: _model.getPicture(widget.tutorInfo['tutor_userid']),
+                                builder:  (BuildContext context, AsyncSnapshot snap) {
+                                  Widget picture;
+                                  if (snap.connectionState ==ConnectionState.waiting) {
+                                    picture = Container(child: CircularProgressIndicator());
+                                  }
+                                  if (snap.connectionState == ConnectionState.done) {
+                                    picture = ClipOval(
+                                  child: ProfilePicture(url: snap.data, width: 45, height: 45)
+                                );
+                                  }
+
+                                  return picture;
+                                }),
                           ),
                           SizedBox(height: 20),
                           Text(
@@ -176,6 +209,8 @@ class _NewBookingState extends State<NewBooking> {
                     ),
                   ),
 
+                  SizedBox(height: 20),
+
                   RaisedButton.icon(
                     onPressed: () {
                       _location(context);
@@ -186,22 +221,21 @@ class _NewBookingState extends State<NewBooking> {
                     textColor: Colors.white,
                   ),
 
-                  TextFormField(
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Please enter a location";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        bookingData['location'] = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.place),
-                      labelText: retVal == null ? '' : retVal['description'],
-                    ),
+                  Container(
+                    
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(child: Text(bookingData['location']), width: 250),
+                        Container(
+                          padding: EdgeInsets.only(right: 10),
+                          child: Icon(
+                            (Icons.location_on_outlined)
+                          ),
+                        ),
+                      ],
+                    )
                   ),
 
                   TextFormField(
@@ -387,38 +421,46 @@ class _NewBookingState extends State<NewBooking> {
                     child: RaisedButton.icon(
                       onPressed: () async {
                         if (_key.currentState.validate()) {
-                          setState(() {
-                            showSpinner = true;
-                          });
+                          if(bookingData['timeStart'] == '' || bookingData['timeEnd'] == '' || bookingData['date'] == ''){
+                            Fluttertoast.showToast(
+                                msg: "You are missing data such has a time start or didn't insert a date.",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIos: 1,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                                fontSize: 16.0
+                            );
+                          }else {
+                            setState(() {
+                              showSpinner = true;
+                              bookingData['total'] = (double.parse(bookingData['rate']) * double.parse(bookingData['numberOfStudents'])).toString();
+                            });
 
-                          try {
-                            returnValue = await _model.createBooking(
-                                bookingData, testData);
-                            if (returnValue == true) {
-                              setState(() {
-                                showSpinner = false;
-                              });
-                              Fluttertoast.showToast(
-                                  msg: "Booking request sent",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIos: 1,
-                                  backgroundColor: Colors.blue,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
-                              print('inserted');
-                              Navigator.pop(context);
+                            try {
+                              returnValue = await _model.createBooking(
+                                  bookingData, testData);
+                              if (returnValue == true) {
+                                setState(() {
+                                  showSpinner = false;
+                                });
+                                Fluttertoast.showToast(
+                                    msg: "Booking request sent",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                                print('inserted');
+                                Navigator.pop(context);
+                              }
+                            } catch (e) {
+                              print(e.toString());
                             }
-                          } catch (e) {
-                            print(e.toString());
                           }
+                          
                         }
-
-                        //insertBooking();
-                        /*Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Bookings()),
-                        );*/
                       },
                       icon: Icon(Icons.assignment),
                       label: Text('Send Booking Request'),

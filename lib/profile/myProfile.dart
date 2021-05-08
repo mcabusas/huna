@@ -144,9 +144,8 @@ class _MyProfileState extends State<MyProfile> {
                                 Container(child: CircularProgressIndicator());
                           }
                           if (snapshot.connectionState == ConnectionState.done) {
-                            retWidget = CircleAvatar(
-                              radius: 40,
-                              child: ProfilePicture(url: snapshot.data)
+                            retWidget = ClipOval(
+                              child: ProfilePicture(url: snapshot.data, width: 100, height: 100)
                             );
                           }
                           return retWidget;
@@ -208,21 +207,22 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    Widget reviews;
     return Container(
-        child: SingleChildScrollView(
-      child: FutureBuilder(
+        child: FutureBuilder(
         future: initAwait(),
         builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            if (snapshot.data.length == 0) {
-              return Center(
-                child: Container(
-                  height: 0,
-                  width: 0,
-                ),
-              );
-            } else {
-              return Column(
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data.length == 0) {
+            reviews = Center(
+              child: Container(
+                height: 0,
+                width: 0,
+              ),
+            );
+          } else {
+            reviews = Container(
+              child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
@@ -271,14 +271,15 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                     },
                   )
                 ],
-              );
-            }
-          } else {
-            return Container(child: Center(child: CircularProgressIndicator()));
+              ),
+            );
           }
+        } else {
+          return Container(child: Center(child: CircularProgressIndicator()));
+        }
+        return reviews;
         },
-      ),
-    ));
+      ));
   }
 }
 

@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:huna/services/auth_services.dart';
+import 'package:intl/intl.dart';
+import 'package:random_string/random_string.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../profile/myProfile_model.dart';
 import '../../favorites/favorites_model.dart';
@@ -9,26 +11,9 @@ import '../../favorites/favorites_model.dart';
 class ViewTutorProfileModel extends MyProfileModel {
   AuthServices _authServices = new AuthServices();
 
-  Future<Map<String, dynamic>> getTutorData(String uid, String tid) async {
-    Map<String, dynamic> tutorData = {
-      'majors': [],
-      'topics': [],
-      'languages': [],
-      'rating': 0.0,
-      'city': '',
-      'country': ''
-    };
-
-    await FirebaseFirestore.instance
-        .collection('tutors')
-        .doc(tid)
-        .get()
-        .then((value) async {
-      tutorData['majors'] = value.data()['majors'];
-      tutorData['topics'] = value.data()['topics'];
-      tutorData['languages'] = value.data()['languages'];
-
-      QuerySnapshot ratingsQuery = await FirebaseFirestore.instance
+  Future<double> getTutorData(String uid) async {
+    double rating = 0.0;
+    QuerySnapshot ratingsQuery = await FirebaseFirestore.instance
           .collection('reviews')
           .where('t_uid', isEqualTo: uid)
           .get();
@@ -41,38 +26,37 @@ class ViewTutorProfileModel extends MyProfileModel {
               FirebaseFirestore.instance.collection('reviews').doc(ratingsid);
 
           await ratingsRef.get().then((value) {
-            tutorData['rating'] += value.data()['tutor_rating'];
+            rating += value.data()['tutor_rating'];
           });
         }
 
-        tutorData['rating'] /= ratingsQuery.docs.length;
+        rating /= ratingsQuery.docs.length;
       }
 
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .get()
-          .then((value) {
-        tutorData['city'] = value.data()['city'];
-        tutorData['country'] = value.data()['country'];
-      });
-    });
+    
 
-    print(tutorData);
-
-    return tutorData;
+    return rating;
   }
 
   Future<bool> createReport(Map<String, dynamic> data) async {
     bool retVal = false;
-    
+
+    var now = new DateTime.now();
+    var formatter = new DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
+
+    String rid = randomAlphaNumeric(15);
+    data['report_id'] = rid;
+    data['date_created'] = formattedDate;
 
     await FirebaseFirestore.instance
-        .collection('reports')
-        .add(data)
-        .then((value) => {retVal = true})
-        .catchError((e) {
-      print(e.toString());
+    .collection('reports')
+    .doc(rid)
+    .set(data)
+    .then((value) => {
+      retVal = true
+    }).catchError((e) => {
+      print(e.toString())
     });
 
     return retVal;

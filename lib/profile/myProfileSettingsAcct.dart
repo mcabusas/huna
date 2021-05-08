@@ -106,6 +106,49 @@ class EmergencyDetails extends StatelessWidget {
                         ),
                         keyboardType: TextInputType.number,
                       ),
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width,
+                        child: new MaterialButton(
+                          color: Colors.grey.shade900,
+                          textColor: Colors.white,
+                          child: new Text(
+                            "Save",
+                            style: TextStyle(fontSize: 15.0),
+                          ),
+                          onPressed: () async {
+                            //getDropDownItem();
+                            if (_formKey.currentState.validate()) {
+                              try {
+                                retVal = await _model.editStudentEmergencyContact(
+                                    uid, data);
+                                if (retVal == true) {
+                                  Fluttertoast.showToast(
+                                      msg: "Emergency Details was updated successfully",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.blue,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
+                              } catch (e) {
+                                print(e.toString());
+                                Fluttertoast.showToast(
+                                    msg: "Error updating data",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
+                            }
+
+                            //createAlertDialog(context);
+                          },
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -118,65 +161,24 @@ class EmergencyDetails extends StatelessWidget {
             return form;
           },
         ),
-        DropdownButton<String>(
-          value: 'Parent',
-          hint: Text(currentMenuItem.toString()),
-          items: <String>['Parent', 'Sibling', 'Guardian'].map((String value) {
-            return new DropdownMenuItem<String>(
-              value: value,
-              child: new Text(value),
-            );
-          }).toList(),
-          onChanged: (value) {
-            currentMenuItem = value;
-            print(currentMenuItem);
-            // setState(() {
-            //   currentMenuItem = value;
-            // });
-          },
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: new MaterialButton(
-            color: Colors.grey.shade900,
-            textColor: Colors.white,
-            child: new Text(
-              "Save",
-              style: TextStyle(fontSize: 15.0),
-            ),
-            onPressed: () async {
-              //getDropDownItem();
-              if (_formKey.currentState.validate()) {
-                try {
-                  retVal = await _model.editStudentEmergencyContact(
-                      uid, data);
-                  if (retVal == true) {
-                    Fluttertoast.showToast(
-                        msg: "Emergency Details was updated successfully",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIos: 1,
-                        backgroundColor: Colors.blue,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
-                  }
-                } catch (e) {
-                  print(e.toString());
-                  Fluttertoast.showToast(
-                      msg: "Error updating data",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIos: 1,
-                      backgroundColor: Colors.blue,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
-                }
-              }
-
-              //createAlertDialog(context);
-            },
-          ),
-        ),
+        // DropdownButton<String>(
+        //   value: 'Parent',
+        //   hint: Text(currentMenuItem.toString()),
+        //   items: <String>['Parent', 'Sibling', 'Guardian'].map((String value) {
+        //     return new DropdownMenuItem<String>(
+        //       value: value,
+        //       child: new Text(value),
+        //     );
+        //   }).toList(),
+        //   onChanged: (value) {
+        //     currentMenuItem = value;
+        //     print(currentMenuItem);
+        //     // setState(() {
+        //     //   currentMenuItem = value;
+        //     // });
+        //   },
+        // ),
+        
       ],
     );
   
@@ -206,7 +208,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
           Map<String, dynamic> data = {
             'homeAddress': snapshot.data.docs[0]['homeAddress'],
             'city': snapshot.data.docs[0]['city'],
-            'country': snapshot.data.docs[0]['country'],
             'zipCode': snapshot.data.docs[0]['zipCode'],
             'contactNumber': snapshot.data.docs[0]['contactNumber'],
           };
@@ -248,17 +249,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     //controller: cityController,
                     decoration: new InputDecoration(
                       labelText: "City",
-                    ),
-                    keyboardType: TextInputType.text,
-                  ),
-                  new TextFormField(
-                    initialValue: snapshot.data.docs[0]['country'],
-                    //controller: countryController,
-                    onChanged: (val) {
-                      data['country'] = val;
-                    },
-                    decoration: new InputDecoration(
-                      labelText: "Country",
                     ),
                     keyboardType: TextInputType.text,
                   ),

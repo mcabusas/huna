@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.huna">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -7,11 +8,22 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="huna"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        tools:replace="android:label"
+        >
 
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM"/>
-
+        
+        <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="${applicationId}.braintree" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

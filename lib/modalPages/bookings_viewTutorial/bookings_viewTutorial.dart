@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/components/profilePicture.dart';
 import 'package:huna/modalPages/test/bookings_pretest.dart';
@@ -25,6 +26,8 @@ class _ViewTutorialState extends State<ViewTutorialPage> {
   String uid, tutorid;
   SharedPreferences sp;
   Map<String, dynamic> pretestInfo;
+
+  
 
   Future<void> initAwait() async {
     sp = await SharedPreferences.getInstance();
@@ -113,9 +116,10 @@ class _StudentState extends State<Student> {
                           retVal = Container(child: CircularProgressIndicator());
                         }
                         if(snapshot.connectionState == ConnectionState.done){
-                          retVal = CircleAvatar(
-                            child: ProfilePicture(url: snapshot.data, radius: 40,)
-                          );
+                          retVal = 
+                            ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                         }
                         return retVal;
                       },
@@ -243,7 +247,7 @@ class _TutorState extends State<Tutor> {
     };
 
     await _model.createPretest(pretestInfo).then((value) => {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) =>
@@ -254,13 +258,15 @@ class _TutorState extends State<Tutor> {
   
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     print('tutor');
     initAwait();
   }
+
   @override
   Widget build(BuildContext context) {
+    String bookingDate = DateFormat.yMMMEd().format(DateTime.parse(widget.studentData['bookingData']['date']));
+    String currentDate = DateFormat.yMMMEd().format(DateTime.parse(DateTime.now().toString()));
     return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(30),
@@ -281,9 +287,9 @@ class _TutorState extends State<Tutor> {
                           retVal = Container(child: CircularProgressIndicator());
                         }
                         if(snapshot.connectionState == ConnectionState.done){
-                          retVal = CircleAvatar(
-                            child: ProfilePicture(url: snapshot.data, radius: 40,)
-                          );
+                          retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                         }
                         return retVal;
                       },
@@ -354,11 +360,37 @@ class _TutorState extends State<Tutor> {
                 stream: _model.getStatus(widget.studentData['bookingId']),
                 builder: (context, snapshot) {
                   Widget retWidget;
-
+                  Color editBtnColor, beginBtn, viewBtn, sendBtn, createBtn;
+                  
                   if(!snapshot.hasData || snapshot.data.docs.isEmpty){
                     retWidget = Container(height: 0, width: 0);
                   }
                   if(snapshot.hasData){
+
+                    if(snapshot.data.docs[0]['testData']['test_id'] == snapshot.data.docs[0]['bookingId']){
+                      editBtnColor = Colors.purple;
+                      sendBtn = Colors.cyan;
+                      createBtn = Colors.grey;
+                    } else {
+                      editBtnColor = Colors.grey;
+                      sendBtn = Colors.grey;
+                      createBtn = Colors.lightGreen;
+                    }
+                    
+
+                    if(snapshot.data.docs[0]['testData']['pretest_answeredStatus']  == '1') {
+                      beginBtn = Colors.green;
+                      viewBtn = Colors.purple;
+                    } else {
+                      beginBtn = Colors.grey;
+                      viewBtn = Colors.grey;
+                    }
+
+                    // if(snapshot.data.docs[0]['testData']['test_sentStatus'] == '0') {
+                    //   createBtn = Colors.lightGreen;
+                    // } else {
+                    //   createBtn = Colors.grey;
+                    // }
                     snapshot.data.docs[0]['testData']['test_sentStatus'] == '0'
                     ? retWidget = Column(children: [
                         SizedBox(
@@ -371,82 +403,124 @@ class _TutorState extends State<Tutor> {
                             },
                             icon: Icon(Icons.add),
                             label: Text('Create Pretest Questions'),
-                            color: Colors.lightGreen,
+                            color: createBtn,
+                            textColor: Colors.white,
+                          ),
+                        ),
+
+                        
+
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton.icon(
+                            onPressed: () {
+                              if(editBtnColor == Colors.purple) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => new EditPage(
+                                            pretestId:
+                                                widget.studentData['bookingId'],
+                                          )),
+                                );
+                              } else if(editBtnColor == Colors.grey){
+                                Fluttertoast.showToast(
+                                    msg: "Please create test first before editing questions.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                              }
+                            },
+                            icon: Icon(Icons.assignment),
+                            label: Text('Edit Pretest Questions/Answers'),
+                            color:editBtnColor, // Colors.grey if not yet answered.
+                            textColor: Colors.white,
+                          ),
+                        ),
+
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: RaisedButton.icon(
+                            onPressed: () {
+
+                              if(sendBtn == Colors.cyan) {
+
+                                showDialog(
+                                  builder: (context) => AlertDialog(
+                                    title: Text("Send Pretest"),
+                                    content: Text(
+                                        "Are you sure you want to send the pretest?\n\nNOTE: You won't be able to change or edit the test once it's sent."),
+                                    elevation: 24.0,
+                                    actions: <Widget>[
+                                      FlatButton(
+                                        onPressed: () => Navigator.of(context,
+                                                rootNavigator: true)
+                                            .pop(
+                                                'dialog'), // Navigator.pop(context) closes the entire page.
+                                        child: Text(
+                                          "No",
+                                          style: TextStyle(color: Colors.cyan),
+                                        ),
+                                      ),
+                                      FlatButton(
+                                        onPressed: () async {
+                                          bool catcher = await _model.updateSentStatus(widget.studentData['bookingId']);
+                                          if(catcher) {
+                                            Fluttertoast.showToast(
+                                                msg: "Test has been sent to student.",
+                                                toastLength: Toast.LENGTH_SHORT,
+                                                gravity: ToastGravity.BOTTOM,
+                                                timeInSecForIos: 1,
+                                                backgroundColor: Colors.blue,
+                                                textColor: Colors.white,
+                                                fontSize: 16.0
+                                            );
+                                          }
+                                            
+
+                                          //Proceeding to Create a Pretest
+                                          Navigator.of(context, rootNavigator: true)
+                                              .pop('dialog');
+                                        },
+                                        child: Text(
+                                          "Yes",
+                                          style:
+                                              TextStyle(color: Colors.deepPurple),
+                                        ),
+                                      ),
+                                    ],
+                                  ), context: context,
+                                );
+
+                              } else {
+
+                                Fluttertoast.showToast(
+                                    msg: "Please create pre-test.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                              }
+                              // Alert Dialog: Create Pretest
+                              
+                            },
+                            icon: Icon(Icons.send),
+                            label: Text('Send Pretest'),
+                            color: sendBtn,
                             textColor: Colors.white,
                           ),
                         ),
                         // IF PRETEST HAS BEEN CREATED
 
-                        // VIEW PRETEST ANSWERS
-                        // IF STUDENT HAS ANSWERED THE PRETEST
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton.icon(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => new EditPage(
-                                          pretestId:
-                                              widget.studentData['bookingId'],
-                                        )),
-                              );
-                            },
-                            icon: Icon(Icons.assignment),
-                            label: Text('Edit Pretest Questions/Answers'),
-                            color:
-                                Colors.purple, // Colors.grey if not yet answered.
-                            textColor: Colors.white,
-                          ),
-                        ),
 
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width,
-                          child: RaisedButton.icon(
-                            onPressed: () {
-                              // Alert Dialog: Create Pretest
-                              showDialog(
-                                builder: (context) => AlertDialog(
-                                  title: Text("Send Pretest"),
-                                  content: Text(
-                                      "Are you sure you want to send the pretest?"),
-                                  elevation: 24.0,
-                                  actions: <Widget>[
-                                    FlatButton(
-                                      onPressed: () => Navigator.of(context,
-                                              rootNavigator: true)
-                                          .pop(
-                                              'dialog'), // Navigator.pop(context) closes the entire page.
-                                      child: Text(
-                                        "No",
-                                        style: TextStyle(color: Colors.cyan),
-                                      ),
-                                    ),
-                                    FlatButton(
-                                      onPressed: () {
-                                        _model.updateSentStatus(
-                                            widget.studentData['bookingId']);
-
-                                        //Proceeding to Create a Pretest
-                                        Navigator.of(context, rootNavigator: true)
-                                            .pop('dialog');
-                                      },
-                                      child: Text(
-                                        "Yes",
-                                        style:
-                                            TextStyle(color: Colors.deepPurple),
-                                      ),
-                                    ),
-                                  ],
-                                ), context: context,
-                              );
-                            },
-                            icon: Icon(Icons.send),
-                            label: Text('Send Pretest'),
-                            color: Colors.cyan,
-                            textColor: Colors.white,
-                          ),
-                        ),
+                        
                       ])
                     :
                     retWidget = Column(
@@ -455,17 +529,34 @@ class _TutorState extends State<Tutor> {
                           width: MediaQuery.of(context).size.width,
                           child: RaisedButton.icon(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ResultsPage(
-                                        testData: widget.studentData, flag: 0, stackFlag: 0,)),
-                              );
+
+                              if(viewBtn == Colors.purple) {
+
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ResultsPage(
+                                          testData: widget.studentData, flag: 0, stackFlag: 0,)),
+                                );
+
+                              } else {
+
+                                Fluttertoast.showToast(
+                                    msg: "Student must answer pre-test before you can see his answers.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+
+                              }
+                              
                             },
                             icon: Icon(Icons.assignment),
                             label: Text('View Pretest Answers'),
-                            color:
-                                Colors.purple, // Colors.grey if not yet answered.
+                            color: viewBtn, // Colors.grey if not yet answered.
                             textColor: Colors.white,
                           ),
                         ),
@@ -474,22 +565,54 @@ class _TutorState extends State<Tutor> {
                           width: MediaQuery.of(context).size.width,
                           child: RaisedButton.icon(
                             onPressed: () async {
-                              _model.beginTutorial(widget.studentData['bookingId']).then((value) => {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TutorialInSession(
-                                        data: widget.studentData,
-                                        flag: widget.flag
-                                          )),
-                                )
-                              });
+
+                              
+
+                              print(bookingDate);
+                              print(currentDate);
+
+                              // if()
+
+                              if(beginBtn == Colors.green && bookingDate == currentDate) {
+                                _model.beginTutorial(widget.studentData['bookingId']).then((value) => {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TutorialInSession(
+                                          data: widget.studentData,
+                                          flag: widget.flag
+                                            )),
+                                  )
+                                });
+                              } else if(beginBtn != Colors.green){
+                                Fluttertoast.showToast(
+                                    msg: "Student must answer pre-test before begining tutorial.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+                              } else if(bookingDate != currentDate) {
+
+                                Fluttertoast.showToast(
+                                    msg: "You can only begin the tutorial on the date you have agreed on.",
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIos: 1,
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0
+                                );
+
+                              }
+                              
                               
                             },
                             icon: Icon(Icons.assignment_turned_in),
                             label: Text('Begin Tutorial'),
-                            color:
-                                Colors.green, // Colors.grey if not yet answered.
+                            color: beginBtn, // Colors.grey if not yet answered.
                             textColor: Colors.white,
                           ),
                         )

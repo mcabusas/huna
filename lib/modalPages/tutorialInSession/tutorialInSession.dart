@@ -107,12 +107,10 @@ class _TutorialInSessionState extends State<TutorialInSession> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: RaisedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SOS()),
-                              );
+                          onPressed: ()async {
+                            await _model.reportSos(widget.data['bookingId']);
+                             Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                SOS()), (Route<dynamic> route) => false);
                           },
                           icon: Icon(Icons.assignment),
                           label: Text('SOS'),

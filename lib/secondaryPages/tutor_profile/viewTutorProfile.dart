@@ -237,9 +237,9 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   bool showSpinner = false;
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
 
-  Future<Map<String, dynamic>> initAwait() async {
+  Future<double> initAwait() async {
     return await _model.getTutorData(
-        widget.tutorData['uid'], widget.tutorData['tid']);
+        widget.tutorData['uid']);
   }
 
   @override
@@ -258,6 +258,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                 Container(child: Center(child: CircularProgressIndicator()));
           }
           if (snapshot.connectionState == ConnectionState.done) {
+            print('done');
             retWidget = Stack(
               children: <Widget>[
                 Container(
@@ -288,9 +289,9 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               }
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
-                                picture = CircleAvatar(
-                                    radius: 40,
-                                    child: ProfilePicture(url: snapshot.data));
+                                picture = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 100, height: 100)
+                                );
                               }
 
                               return picture;
@@ -331,11 +332,11 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                 color: Colors.white,
                                 size: 15,
                               ),
-                              Text(
-                                '${snapshot.data['city']}, ${snapshot.data['country']}',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 12),
-                              ),
+                              // Text(
+                              //   '${snapshot.data['city']}, ${snapshot.data['country']}',
+                              //   style: TextStyle(
+                              //       color: Colors.white, fontSize: 12),
+                              // ),
                             ],
                           ),
                         ),
@@ -361,7 +362,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    'Average Rating: ${snapshot.data['rating']}',
+                                    'Average Rating: ${snapshot.data}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -370,7 +371,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                       data: IconThemeData(
                                           color: Colors.amber, size: 20),
                                       child: StarDisplay(
-                                          value: snapshot.data['rating']))
+                                          value: snapshot.data))
                                 ],
                               ),
                             ),
@@ -448,16 +449,15 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot
-                                                      .data['majors'].length ==
+                                          itemCount: widget.tutorData['majors'].length ==
                                                   null
                                               ? 0
-                                              : snapshot.data['majors'].length,
+                                              : widget.tutorData['majors'].length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
                                               label: Text(
-                                                snapshot.data['majors'][index],
+                                                widget.tutorData['majors'][index],
                                                 //majors[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -479,17 +479,16 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot.data['languages']
+                                          itemCount: widget.tutorData['languages']
                                                       .length ==
                                                   null
                                               ? 0
-                                              : snapshot
-                                                  .data['languages'].length,
+                                              : widget.tutorData['languages'].length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
                                               label: Text(
-                                                snapshot.data['languages']
+                                                widget.tutorData['languages']
                                                     [index],
                                                 //languages[index],
                                                 style: TextStyle(
@@ -512,16 +511,15 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: snapshot
-                                                      .data['topics'].length ==
+                                          itemCount: widget.tutorData['topics'].length ==
                                                   null
                                               ? 0
-                                              : snapshot.data['topics'].length,
+                                              : widget.tutorData['topics'].length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
                                               label: Text(
-                                                snapshot.data['topics'][index],
+                                                widget.tutorData['topics'][index],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:

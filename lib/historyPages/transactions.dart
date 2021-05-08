@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:huna/payment.dart';
+import 'package:huna/payment/payment.dart';
 
 void main() => runApp(Transactions());
 

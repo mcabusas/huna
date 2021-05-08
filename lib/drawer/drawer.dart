@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:huna/login/login.dart';
-import 'package:huna/payment.dart';
+import 'package:huna/payment/payment.dart';
 import 'package:huna/services/auth_services.dart';
 import 'package:huna/bookings/bookings_view.dart';
 import 'package:huna/favorites/favorites.dart';
@@ -57,10 +57,7 @@ class _SideDrawerState extends State<SideDrawer> {
                         retVal = Container(child: CircularProgressIndicator());
                       }
                       if(snapshot.connectionState == ConnectionState.done){
-                        retVal = CircleAvatar(
-                              radius: 40,
-                              child: ProfilePicture(url: snapshot.data)
-                            );
+                        retVal = ClipOval(child: ProfilePicture(url: snapshot.data));
                       }
 
                       return retVal;
@@ -107,15 +104,6 @@ class _SideDrawerState extends State<SideDrawer> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => FavoritesPage()),
-                      );
-                    }),
-                ListTile(
-                    leading: Icon(Icons.credit_card),
-                    title: Text('Payment'),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Payment()),
                       );
                     }),
                 Divider(),

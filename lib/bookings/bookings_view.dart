@@ -145,13 +145,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
             retWidget = Align(
               alignment: Alignment.center,
               child: Container(
-                alignment: Alignment.center,
-               // padding: EdgeInsets.all(15.0),
-                        height: 100,
-                        width: 250,
-                        child: Center(
-                          child: Text('You have no new bookings'),
-                        )),
+                height: 0, width: 0,),
             );
           }else if (snapshot.hasData) {
             
@@ -167,18 +161,12 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
 
                 if ((snapshot.data.docs[index]['bookingData']
                         ['booking_status'] ==
-                    'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == '1') || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Cancelled') {
+                    'Finished' && snapshot.data.docs[index]['testData']['posttest_answeredStatus'] == '1') || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Cancelled' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Declined') {
                   return Center(
                     child: Align(
                         alignment: Alignment.center,
                         child: Container(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.all(15.0),
-                                  height: 100,
-                                  width: 250,
-                                  child: Center(
-                                    child: Text('You have no new bookings'),
-                                  )),
+                          height: 0, width: 0),
                       ),
                   );
                 } 
@@ -201,9 +189,10 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                 retVal = Container(child: CircularProgressIndicator());
                               }
                               if(snapshot.connectionState == ConnectionState.done){
-                                retVal = CircleAvatar(
-                                  child: ProfilePicture(url: snapshot.data, radius: 40,)
+                                retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
                                 );
+                                
                               }
                               return retVal;
                             },
@@ -269,6 +258,17 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                               leading: Icon(Icons.attach_money),
                               title: Text(
                                   'P ${snapshot.data.docs[index]['bookingData']['rate']}.00'),
+                              dense: true,
+                            ),
+                            ListTile(
+                              leading: Icon(Icons.attach_money),
+                              title: Text(
+                                  'P ${snapshot.data.docs[index]['bookingData']['rate']}.00'),
+                              dense: true,
+                            ),
+                            ListTile(
+                              leading: Text('Status', style: TextStyle(color: Colors.grey)),
+                              title: Text(snapshot.data.docs[index]['bookingData']['booking_status'], style: TextStyle(color: Colors.black, fontSize: 20)),
                               dense: true,
                             ),
 
@@ -387,7 +387,10 @@ class TutorModeWidget extends StatefulWidget {
 }
 
 class _TutorModeWidgetState extends State<TutorModeWidget> {
-  bool check;
+  bool pretestCheck = false;
+  bool acceptCheck = false;
+  bool declineCheck = false;
+  bool cancelCheck = false;
   Stream retVal;
 
   initState() {
@@ -406,50 +409,38 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
             retWidget = Align(
               alignment: Alignment.center,
               child: Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(15.0),
-                        height: 100,
-                        width: 250,
-                        child: Center(
-                          child: Text('You have no new bookings'),
-                        )),
+                height: 0, width: 0),
             );
-          }else if (snapshot.hasData) {
-            print('there is data');
+          }
+          if (snapshot.hasData) {
             retWidget = ListView.builder(
               shrinkWrap: true,
               padding: EdgeInsets.all(15.0),
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
-                //return new  Text(snapshot.data.docs[index]['bookingData']['student_firstName'].toString());
-                //var booking = snapshot.data.docs[index]['bookingData'];
 
                 if (snapshot.data.docs[index]['bookingData']
                         ['booking_status'] ==
-                    'Finished') {
+                    'Finished' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Declined') {
                   return Container(
-                      height: 100,
-                      width: 100,
-                      child: Center(
-                        child: Text('you have no new bookings'),
-                      ));
+                      height: 0,
+                      width: 0,
+                    );
                 } else {
                   var parsedDate = DateTime.parse(
                       snapshot.data.docs[index]['bookingData']['date']);
-                  if (snapshot.data.docs[index]['bookingData']
-                          ['booking_status'] ==
-                      'Pending') {
-                    check = true;
-                  } else if (snapshot.data.docs[index]['bookingData']
-                              ['booking_status'] ==
-                          'Finished' ||
-                      snapshot.data.docs[index]['bookingData']
-                              ['booking_status'] ==
-                          'Accepted' ||
-                      snapshot.data.docs[index]['bookingData']
-                              ['booking_status'] ==
-                          'Ongoing') {
-                    check = false;
+                  if (snapshot.data.docs[index]['bookingData']['booking_status'] =='Pending') {
+                    acceptCheck = true;
+                    declineCheck = true;
+                    cancelCheck = false;
+                    pretestCheck = false;
+
+                  } 
+                  if ( snapshot.data.docs[index]['bookingData']['booking_status'] == 'Accepted' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Ongoing') {
+                    acceptCheck = false;
+                    declineCheck = false;
+                    cancelCheck = true;
+                    pretestCheck = true;
                   }
 
                   component.pretestBtn = new component.TrailingButton(
@@ -457,7 +448,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                       buttonTitle: 'Pretest',
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                       icon: Icon(Icons.assignment),
-                      visible: !check,
+                      visible: pretestCheck,
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -481,9 +472,9 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                             retVal = Container(child: CircularProgressIndicator());
                           }
                           if(snapshot.connectionState == ConnectionState.done){
-                            retVal = CircleAvatar(
-                              child: ProfilePicture(url: snapshot.data, radius: 40,)
-                            );
+                            retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                           }
                           return retVal;
                         },
@@ -532,19 +523,31 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                                   snapshot.data.docs[index]['bookingId'], 1);
                             },
                             padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            visible: check,
+                            visible: acceptCheck,
+                          ),
+                          component.declineBtn = new component.TrailingButton(
+                            onPressed: () {
+                              print(snapshot.data.docs[index]['bookingId']);
+                              //print(booking.id.runtimeType);
+                              _model.updateBookingStatus(snapshot.data.docs[index]['bookingId'], 2);
+                            },
+                            buttonColor: Colors.red.shade800,
+                            buttonTitle: 'Decline Booking',
+                            padding: const EdgeInsets.fromLTRB(25, 0, 0, 10),
+                            icon: Icon(Icons.cancel),
+                            visible: declineCheck,
                           ),
                           component.cancelBtn = new component.TrailingButton(
                             onPressed: () {
                               print(snapshot.data.docs[index]['bookingId']);
                               //print(booking.id.runtimeType);
-                              //_model.updateBookingStatus(snapshot.data.docs[index]['bookingId'], 0);
+                              _model.updateBookingStatus(snapshot.data.docs[index]['bookingId'], 0);
                             },
                             buttonColor: Colors.red.shade800,
                             buttonTitle: 'Cancel Booking',
                             padding: const EdgeInsets.fromLTRB(25, 0, 0, 10),
                             icon: Icon(Icons.cancel),
-                            visible: true,
+                            visible: cancelCheck,
                           )
                         ],
                       )

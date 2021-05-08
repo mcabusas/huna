@@ -333,20 +333,30 @@ class _TagsState extends State<TagsPage> {
                   width: MediaQuery.of(context).size.width,
                   child: RaisedButton.icon(
                     onPressed: () async {
-                    if(majorTiles.isNotEmpty) {
-                      bool catcher = await _model.updateMajorTags(widget.tid, majorTiles);
-                      if(catcher) {
+                      if(majorTiles.isNotEmpty) {
+                        bool catcher = await _model.updateMajorTags(widget.tid, majorTiles);
+                        if(catcher) {
+                          Fluttertoast.showToast(
+                            msg: "Majors updated successfully",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
+                        }
+                      }else {
                         Fluttertoast.showToast(
-                          msg: "Majors updated successfully",
+                          msg: "Please select one or more majors of expertise.",
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIos: 1,
                           backgroundColor: Colors.blue,
                           textColor: Colors.white,
                           fontSize: 16.0
-                      );
+                        );
                       }
-                    }
                     },
                     icon: Icon(Icons.save),
                     label: Text('Save'),
@@ -381,7 +391,7 @@ class _TagsState extends State<TagsPage> {
                   key: _languageFormKey,
                   child: TextFormField(
                     validator :(val){
-                      if(val.isEmpty && _language == " "){
+                      if(val.isEmpty){
                         return 'Enter a Language';
                       }
                       return null;
@@ -409,9 +419,10 @@ class _TagsState extends State<TagsPage> {
                           style: TextStyle(color: Colors.white)),
                       color: Colors.lightGreen,
                       onPressed: () {
-                        if(_languageFormKey.currentState.validate() && _language != " "){
+                        if(_languageFormKey.currentState.validate()){
                           setState(() {
                             _languageTags.add(_language);
+                            _language = '';
                             _languageController.clear();
                           });
 
@@ -452,20 +463,31 @@ class _TagsState extends State<TagsPage> {
                   child: RaisedButton.icon(
                     onPressed: () async {
                     // updateTags();
-                    if(_languageTags.isNotEmpty) {
-                      bool catcher = await _model.updateLanguageTags(widget.tid, _languageTags);
-                      if(catcher) {
+                      if(_languageTags.isNotEmpty) {
+                        bool catcher = await _model.updateLanguageTags(widget.tid, _languageTags);
+                        if(catcher) {
+                          Fluttertoast.showToast(
+                            msg: "Languages updated successfully",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
+                        }
+                      } else {
                         Fluttertoast.showToast(
-                          msg: "Languages updated successfully",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
+                            msg: "Please add one or more languages.",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
                       }
-                    }
+                      
                     },
                     icon: Icon(Icons.save),
                     label: Text('Save'),
@@ -502,7 +524,7 @@ class _TagsState extends State<TagsPage> {
                   key: _topicFormKey,
                   child: TextFormField(
                     validator: (val){
-                      if(val.isEmpty || '${_topic[0]}' == " "){
+                      if(val.isEmpty){
                         return "Enter a Topic of Expertise";
                       }
                       return null;
@@ -533,6 +555,7 @@ class _TagsState extends State<TagsPage> {
                         if(_topicFormKey.currentState.validate()) {
                           setState(() {
                             _topicsTags.add(_topic);
+                            _topic = '';
                             _topicController.clear();
                           });
                         }
@@ -572,20 +595,30 @@ class _TagsState extends State<TagsPage> {
                   child: RaisedButton.icon(
                     onPressed: () async {
                     // updateTags();
-                    if(_topicsTags.isNotEmpty) {
-                      bool catcher = await _model.updateTopicsTags(widget.tid, _topicsTags);
-                      if(catcher) {
+                      if(_topicsTags.isNotEmpty) {
+                        bool catcher = await _model.updateTopicsTags(widget.tid, _topicsTags);
+                        if(catcher) {
+                          Fluttertoast.showToast(
+                            msg: "Topics updated successfully",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
+                        }
+                      } else {
                         Fluttertoast.showToast(
-                          msg: "Topics updated successfully",
-                          toastLength: Toast.LENGTH_SHORT,
-                          gravity: ToastGravity.BOTTOM,
-                          timeInSecForIos: 1,
-                          backgroundColor: Colors.blue,
-                          textColor: Colors.white,
-                          fontSize: 16.0
-                      );
+                            msg: "Please add one or more topics.",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.blue,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                          );
                       }
-                    }
                     },
                     icon: Icon(Icons.save),
                     label: Text('Save'),

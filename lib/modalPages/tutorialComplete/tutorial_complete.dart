@@ -183,11 +183,9 @@ class _StudentState extends State<Student> {
                       retVal = Container(child: CircularProgressIndicator());
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
-                      retVal = CircleAvatar(
-                          child: ProfilePicture(
-                        url: snapshot.data,
-                        radius: 40,
-                      ));
+                      retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                     }
                     return retVal;
                   },
@@ -373,11 +371,9 @@ class _TutorState extends State<Tutor> {
                       retVal = Container(child: CircularProgressIndicator());
                     }
                     if (snapshot.connectionState == ConnectionState.done) {
-                      retVal = CircleAvatar(
-                          child: ProfilePicture(
-                        url: snapshot.data,
-                        radius: 40,
-                      ));
+                      retVal = ClipOval(
+                                  child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                                );
                     }
                     return retVal;
                   },
