@@ -164,8 +164,8 @@ class _TutorMessagesState extends State<TutorMessages> {
                             ret = Container(child: CircularProgressIndicator());
                           }
                           if(snapshot.connectionState == ConnectionState.done){
-                            ret = CircleAvatar(
-                              child: ProfilePicture(url: snapshot.data)
+                            ret = ClipOval(
+                              child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
                             );
                           }
 

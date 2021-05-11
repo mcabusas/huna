@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'paypal_services.dart';
 import '../paytutorial_model.dart';
+import '../receipt/receipt.dart';
 
 class PaypalPayment extends StatefulWidget {
   final Function onFinish;
@@ -159,7 +160,6 @@ class PaypalPaymentState extends State<PaypalPayment> {
   @override
   Widget build(BuildContext context) {
     //print(checkoutUrl);
-    bool catcher;
     if (checkoutUrl != null) {
       return Scaffold(
         appBar: AppBar(
@@ -172,38 +172,34 @@ class PaypalPaymentState extends State<PaypalPayment> {
         body: WebView(
           initialUrl: checkoutUrl,
           javascriptMode: JavascriptMode.unrestricted,
-          navigationDelegate: (NavigationRequest request) {
+          navigationDelegate: (NavigationRequest request) async {
             if (request.url.contains(returnURL)) {
               final uri = Uri.parse(request.url);
               final payerID = uri.queryParameters['PayerID'];
               if (payerID != null) {
                 services
                     .executePayment(executeUrl, payerID, accessToken)
-                    .then((id) async {
-                  final orderDetails = getOrderParams();
-                  print("THIS IS ORDER DETAILS: " + orderDetails.runtimeType.toString());
-                  catcher = await _model.payment(widget.data, Map<String, dynamic>.from(orderDetails), 'paypal');
-                  // print(catcher);
+                    .then((id) {
                   widget.onFinish(id);
-                  Navigator.of(context).pop();
-                  
-
+                  //Navigator.of(context).pop();
                 });
               } else {
                 Navigator.of(context).pop();
+                print('onEEEE');
               }
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+              print('twOOOO');
+             bool catcher = await _model.payment(widget.data, Map<String, dynamic>.from(getOrderParams()), 'paypal');
+             print('this is catcher: ' + catcher.toString());
+              if(catcher == true){
+                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                Receipt(data: widget.data)), (Route<dynamic> route) => false);
+              }
             }
             if (request.url.contains(cancelURL)) {
               Navigator.of(context).pop();
             }
-            if(catcher == true){
-              return Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                                DashboardPage()), (Route<dynamic> route) => false);
-            }else{
-              return NavigationDecision.navigate;
-            }
-            
+            return NavigationDecision.navigate;
           },
         ),
       );

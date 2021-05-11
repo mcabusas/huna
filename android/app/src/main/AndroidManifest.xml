@@ -13,7 +13,9 @@
         >
 
         <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM"/>
+                android:value="AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM"/>
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel"
+                android:value="@string/default_notification_channel_id"/>
         
         <activity android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
             android:launchMode="singleTask">

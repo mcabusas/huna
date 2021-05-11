@@ -18,10 +18,17 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     loadData();    
     //initAwait();
+    _getToken();
     _configureFirebaseListener();
   }
   final FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   FirebaseFunctions functions = FirebaseFunctions.instance;
+
+    _getToken() {
+      _firebaseMessaging.getToken().then((token) => {
+        print('device token: $token')
+      });
+    }
 
   _configureFirebaseListener() {
     _firebaseMessaging.configure(

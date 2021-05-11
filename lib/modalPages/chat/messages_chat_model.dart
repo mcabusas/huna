@@ -22,7 +22,7 @@ class MessagesChatModel {
     .collection('chatrooms')
     .doc(chatRoomId)
     .collection('messages')
-    .orderBy('timeStamp',descending: true)
+    .orderBy('timeStamp',descending: false)
     .snapshots();
 
   }

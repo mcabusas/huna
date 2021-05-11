@@ -18,6 +18,7 @@ class PaypalServices {
     try {
       var client = BasicAuthClient(clientId, secret);
       var response = await client.post('https://api-m.sandbox.paypal.com/v1/oauth2/token?grant_type=client_credentials');
+      print('this is respoinse code: ' + response.statusCode.toString());
       if (response.statusCode == 200) {
         final body = convert.jsonDecode(response.body);
         return body["access_token"];
@@ -61,9 +62,11 @@ class PaypalServices {
         return null;
       } else {
         throw Exception(body["message"]);
+        
       }
     } catch (e) {
       rethrow;
+      print('error here in createpayment');
     }
   }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,7 +11,7 @@ import '../profile/myProfile_model.dart';
 class AuthServices extends MyProfileModel with ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   SharedPreferences sp;
-  FirebaseMessaging _firebaseMessaging;
+  FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
 
   Stream getTutorTag(String uid) {
     return FirebaseFirestore.instance
@@ -35,11 +36,6 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
             email: email, password: password))
         .user;
 
-    notifyListeners();
-     _firebaseMessaging = new FirebaseMessaging();
-
-    List deviceTokens = [];
-
     Map<String, dynamic> returnData = {
       'account_type': '',
       'firstName': '',
@@ -58,7 +54,7 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
       'emergencyLastName': '',
       'emergencyRelation': '',
       'emergencyContactNumber': '',
-      'picture': ''
+      'picture': '',
     };
 
     DocumentReference retValDoc =
@@ -79,9 +75,6 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
         returnData['emergencyContactNumber'] =
             snapshot.data()['emergencyContactNumber'];
         returnData['emergencyRelation'] = snapshot.data()['emergencyRelation'];
-        //  List.from(snapshot.data()['device_tokens']).forEach((element){
-        //     deviceTokens.add(element);
-        // });
 
         await FirebaseFirestore.instance
             .collection('tutors')
@@ -104,19 +97,8 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
       
     });
 
-    // _firebaseMessaging.getToken().then((value) => {
-    //   print(value),
-    //   print(deviceTokens),
-    //   //deviceTokens[deviceTokens.length] = value,
-    //   // retVal.update({
-    //   //   'device_tokens': deviceTokens
-    //   // }).catchError((e) => {
-    //   //   print('update error: ' + e.toString())
-    //   // })
-    // }).catchError((e) => {
-    //   print(e.toString())
-    // });
-
+    
+ 
 
     if (user != null) {
       retVal = true;
