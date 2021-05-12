@@ -1,25 +1,8 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "C:\\Users\\micha\\Documents\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
-                {
-                    "source": "C:\\xampp\\htdocs\\huna\\build\\location\\intermediates\\packaged_res\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "82",
-                        "endOffsets": "133"
-                    },
-                    "to": {
-                        "startLines": "111",
-                        "startColumns": "4",
-                        "startOffsets": "8504",
-                        "endColumns": "82",
-                        "endOffsets": "8582"
-                    }
-                },
                 {
                     "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\9d70b68107affaaf888e3ea0a880dad8\\play-services-base-17.2.1\\res\\values\\values.xml",
                     "from": {
@@ -93,7 +76,7 @@
                     }
                 },
                 {
-                    "source": "C:\\xampp\\htdocs\\huna\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "source": "C:\\Users\\micha\\Documents\\huna\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8",
                         "startColumns": "4,4,4,4,4,4,4",
@@ -129,7 +112,24 @@
                     }
                 },
                 {
-                    "source": "C:\\xampp\\htdocs\\huna\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\micha\\Documents\\huna\\build\\location\\intermediates\\packaged_res\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "82",
+                        "endOffsets": "133"
+                    },
+                    "to": {
+                        "startLines": "111",
+                        "startColumns": "4",
+                        "startOffsets": "8504",
+                        "endColumns": "82",
+                        "endOffsets": "8582"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\micha\\Documents\\huna\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

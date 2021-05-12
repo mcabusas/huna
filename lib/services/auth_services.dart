@@ -97,7 +97,28 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
       
     });
 
-    
+    _firebaseMessaging.getToken().then((token) async => {
+        await FirebaseFirestore.instance
+          .collection('tokens')
+          .doc(user.uid)
+          .get()
+          .then((doc) async => {
+            if(doc.exists) {
+              await FirebaseFirestore.instance
+              .collection('tokens')
+              .doc(doc.id)
+              .update({'tokens': FieldValue.arrayUnion([token])})
+            } else{
+              await FirebaseFirestore.instance
+              .collection('tokens')
+              .doc(doc.id)
+              .set({
+                'tokens': [token]
+              })
+            }
+          })
+        
+    });
  
 
     if (user != null) {

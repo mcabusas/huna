@@ -12,20 +12,20 @@
 12         to allow setting breakpoints, to provide hot reload, etc.
 13    -->
 14    <uses-permission android:name="android.permission.INTERNET" />
-14-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:5:5-67
-14-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:5:22-64
+14-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:5:5-67
+14-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:5:22-64
 15    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-15-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:6:5-78
-15-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:6:22-76
+15-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:6:5-78
+15-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:6:22-76
 16    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-16-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
-16-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
+16-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-81
+16-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-78
 17    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-17-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
-17-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
+17-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:5-80
+17-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:7:22-77
 18    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Include required permissions for Google Maps API to run. -->
-18-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
-18-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
+18-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:5-81
+18-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:8:22-78
 19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\e94779fa7ba36499db7699b61b096e14\play-services-maps-17.0.0\AndroidManifest.xml:23:5-79
 19-->[com.google.android.gms:play-services-maps:17.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\e94779fa7ba36499db7699b61b096e14\play-services-maps-17.0.0\AndroidManifest.xml:23:22-76
@@ -48,70 +48,70 @@
 27-->[com.google.android.gms:play-services-measurement:18.0.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\d666009f28dcb31217495764c7fd00a0\play-services-measurement-18.0.0\AndroidManifest.xml:26:22-107
 28
 29    <application
-29-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:8:5-44:19
+29-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:8:5-44:19
 30        android:name="io.flutter.app.FlutterApplication"
-30-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:9:9-57
+30-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:9:9-57
 31        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 31-->[androidx.core:core:1.3.2] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\5ca3ae534ba6913a9728b2667758f860\core-1.3.2\AndroidManifest.xml:24:18-86
 32        android:debuggable="true"
 33        android:icon="@mipmap/ic_launcher"
-33-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:11:9-43
+33-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:11:9-43
 34        android:label="huna"
-34-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:10:9-29
+34-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:10:9-29
 35        android:usesCleartextTraffic="true" >
-35-->[:cloud_functions] C:\xampp\htdocs\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:9:9-44
+35-->[:cloud_functions] C:\Users\micha\Documents\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:9:9-44
 36        <meta-data
-36-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:15:9-16:73
+36-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:15:9-16:74
 37            android:name="com.google.android.geo.API_KEY"
-37-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:15:20-65
+37-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:15:20-65
 38            android:value="AIzaSyA4-_FPY4lT-89lzerQumcnIRkjALK4ljM" />
-38-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:16:16-71
+38-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:16:17-72
 39
 40        <activity
-40-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:18:9-26:20
+40-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:18:9-26:20
 41            android:name="com.braintreepayments.api.BraintreeBrowserSwitchActivity"
-41-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:18:19-90
+41-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:18:19-90
 42            android:launchMode="singleTask" >
-42-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:19:13-44
+42-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:19:13-44
 43            <intent-filter>
-43-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:20:13-25:29
+43-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:20:13-25:29
 44                <action android:name="android.intent.action.VIEW" />
-44-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:17-69
-44-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:25-66
+44-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:17-69
+44-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:25-66
 45
 46                <category android:name="android.intent.category.DEFAULT" />
-46-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:17-76
-46-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:27-73
+46-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:17-76
+46-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:27-73
 47                <category android:name="android.intent.category.BROWSABLE" />
-47-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:17-78
-47-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:27-75
+47-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:17-78
+47-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:27-75
 48
 49                <data android:scheme="com.exmaple.huna.braintree" />
 50            </intent-filter>
 51        </activity>
 52        <activity
-52-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:27:9-38:20
+52-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:27:9-38:20
 53            android:name="com.example.huna.MainActivity"
-53-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:28:13-41
+53-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:28:13-41
 54            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
-54-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:31:13-163
+54-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:31:13-163
 55            android:hardwareAccelerated="true"
-55-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:32:13-47
+55-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:32:13-47
 56            android:launchMode="singleTop"
-56-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:29:13-43
+56-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:29:13-43
 57            android:theme="@style/LaunchTheme"
-57-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:30:13-47
+57-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:30:13-47
 58            android:windowSoftInputMode="adjustResize" >
-58-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:33:13-55
+58-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:33:13-55
 59            <intent-filter>
-59-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:34:13-37:29
+59-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:34:13-37:29
 60                <action android:name="android.intent.action.MAIN" />
-60-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:35:17-68
-60-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:35:25-66
+60-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:35:17-68
+60-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:35:25-66
 61
 62                <category android:name="android.intent.category.LAUNCHER" />
-62-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:36:17-76
-62-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:36:27-74
+62-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:36:17-76
+62-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:36:27-74
 63            </intent-filter>
 64        </activity>
 65        <!--
@@ -119,85 +119,85 @@
 67             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
 68        -->
 69        <meta-data
-69-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:41:9-43:33
+69-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:41:9-43:33
 70            android:name="flutterEmbedding"
-70-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:42:13-44
+70-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:42:13-44
 71            android:value="2" />
-71-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:43:13-30
+71-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:43:13-30
 72
 73        <service
-73-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-15:56
+73-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-15:56
 74            android:name="com.lyokone.location.FlutterLocationService"
-74-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-71
+74-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-71
 75            android:enabled="true"
-75-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-35
+75-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-35
 76            android:exported="false"
-76-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+76-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
 77            android:foregroundServiceType="location" />
-77-->[:location] C:\xampp\htdocs\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-53
+77-->[:location] C:\Users\micha\Documents\huna\build\location\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-53
 78
 79        <provider
-79-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
+79-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:11:9-19:20
 80            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
-80-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
+80-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-82
 81            android:authorities="com.exmaple.huna.flutter.image_provider"
-81-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
+81-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:13:13-74
 82            android:exported="false"
-82-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
+82-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-37
 83            android:grantUriPermissions="true" >
-83-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
+83-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:15:13-47
 84            <meta-data
-84-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
+84-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:16:13-18:75
 85                android:name="android.support.FILE_PROVIDER_PATHS"
-85-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
+85-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:17:17-67
 86                android:resource="@xml/flutter_image_picker_file_paths" />
-86-->[:image_picker] C:\xampp\htdocs\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
+86-->[:image_picker] C:\Users\micha\Documents\huna\build\image_picker\intermediates\library_manifest\debug\AndroidManifest.xml:18:17-72
 87        </provider>
 88
 89        <service
-89-->[:cloud_firestore] C:\xampp\htdocs\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
+89-->[:cloud_firestore] C:\Users\micha\Documents\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
 90            android:name="com.google.firebase.components.ComponentDiscoveryService"
-90-->[:cloud_firestore] C:\xampp\htdocs\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-89
+90-->[:cloud_firestore] C:\Users\micha\Documents\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-89
 91            android:directBootAware="true"
 91-->[com.google.firebase:firebase-common:19.5.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\2b409ca8f311660ae76f9a35c03036ba\jetified-firebase-common-19.5.0\AndroidManifest.xml:35:13-43
 92            android:exported="false" >
 92-->[com.google.firebase:firebase-messaging:21.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\1ec63350ad06b8d127a438f3428bbb36\jetified-firebase-messaging-21.0.1\AndroidManifest.xml:38:13-37
 93            <meta-data
-93-->[:cloud_firestore] C:\xampp\htdocs\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+93-->[:cloud_firestore] C:\Users\micha\Documents\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
 94                android:name="com.google.firebase.components:io.flutter.plugins.firebase.firestore.FlutterFirebaseFirestoreRegistrar"
-94-->[:cloud_firestore] C:\xampp\htdocs\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-134
+94-->[:cloud_firestore] C:\Users\micha\Documents\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-134
 95                android:value="com.google.firebase.components.ComponentRegistrar" />
-95-->[:cloud_firestore] C:\xampp\htdocs\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+95-->[:cloud_firestore] C:\Users\micha\Documents\huna\build\cloud_firestore\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 96            <meta-data
-96-->[:firebase_auth] C:\xampp\htdocs\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+96-->[:firebase_auth] C:\Users\micha\Documents\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
 97                android:name="com.google.firebase.components:io.flutter.plugins.firebase.auth.FlutterFirebaseAuthRegistrar"
-97-->[:firebase_auth] C:\xampp\htdocs\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+97-->[:firebase_auth] C:\Users\micha\Documents\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
 98                android:value="com.google.firebase.components.ComponentRegistrar" />
-98-->[:firebase_auth] C:\xampp\htdocs\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+98-->[:firebase_auth] C:\Users\micha\Documents\huna\build\firebase_auth\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 99            <meta-data
-99-->[:cloud_functions] C:\xampp\htdocs\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-14:85
+99-->[:cloud_functions] C:\Users\micha\Documents\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:12:13-14:85
 100                android:name="com.google.firebase.components:io.flutter.plugins.firebase.functions.FlutterFirebaseAppRegistrar"
-100-->[:cloud_functions] C:\xampp\htdocs\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:13:17-128
+100-->[:cloud_functions] C:\Users\micha\Documents\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:13:17-128
 101                android:value="com.google.firebase.components.ComponentRegistrar" />
-101-->[:cloud_functions] C:\xampp\htdocs\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-82
+101-->[:cloud_functions] C:\Users\micha\Documents\huna\build\cloud_functions\intermediates\library_manifest\debug\AndroidManifest.xml:14:17-82
 102            <meta-data
-102-->[:firebase_storage] C:\xampp\htdocs\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+102-->[:firebase_storage] C:\Users\micha\Documents\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
 103                android:name="com.google.firebase.components:io.flutter.plugins.firebase.storage.FlutterFirebaseAppRegistrar"
-103-->[:firebase_storage] C:\xampp\htdocs\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-126
+103-->[:firebase_storage] C:\Users\micha\Documents\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-126
 104                android:value="com.google.firebase.components.ComponentRegistrar" />
-104-->[:firebase_storage] C:\xampp\htdocs\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+104-->[:firebase_storage] C:\Users\micha\Documents\huna\build\firebase_storage\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 105            <meta-data
-105-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-16:85
+105-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:14:13-16:85
 106                android:name="com.google.firebase.components:io.flutter.plugins.firebasemessaging.FlutterFirebaseAppRegistrar"
-106-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-127
+106-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:15:17-127
 107                android:value="com.google.firebase.components.ComponentRegistrar" />
-107-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:16:17-82
+107-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:16:17-82
 108            <meta-data
-108-->[:firebase_core] C:\xampp\htdocs\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
+108-->[:firebase_core] C:\Users\micha\Documents\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:85
 109                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
-109-->[:firebase_core] C:\xampp\htdocs\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
+109-->[:firebase_core] C:\Users\micha\Documents\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-124
 110                android:value="com.google.firebase.components.ComponentRegistrar" />
-110-->[:firebase_core] C:\xampp\htdocs\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
+110-->[:firebase_core] C:\Users\micha\Documents\huna\build\firebase_core\intermediates\library_manifest\debug\AndroidManifest.xml:11:17-82
 111            <meta-data
 111-->[com.google.firebase:firebase-messaging:21.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\1ec63350ad06b8d127a438f3428bbb36\jetified-firebase-messaging-21.0.1\AndroidManifest.xml:39:13-41:85
 112                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
@@ -264,13 +264,13 @@
 144-->[com.google.firebase:firebase-common:19.5.0] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\2b409ca8f311660ae76f9a35c03036ba\jetified-firebase-common-19.5.0\AndroidManifest.xml:45:17-82
 145        </service>
 146        <service android:name="io.flutter.plugins.firebasemessaging.FlutterFirebaseMessagingService" >
-146-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
-146-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-101
+146-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:8:9-12:19
+146-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:8:18-101
 147            <intent-filter>
-147-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:29
+147-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:29
 148                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-148-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-78
-148-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:25-75
+148-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-78
+148-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:25-75
 149            </intent-filter>
 150        </service>
 151        <!--
@@ -286,10 +286,10 @@
 158            android:exported="false" >
 158-->[com.google.firebase:firebase-messaging:21.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\1ec63350ad06b8d127a438f3428bbb36\jetified-firebase-messaging-21.0.1\AndroidManifest.xml:31:13-37
 159            <intent-filter android:priority="-500" >
-159-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:29
+159-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:9:13-11:29
 160                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-160-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-78
-160-->[:firebase_messaging] C:\xampp\htdocs\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:25-75
+160-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:17-78
+160-->[:firebase_messaging] C:\Users\micha\Documents\huna\build\firebase_messaging\intermediates\library_manifest\debug\AndroidManifest.xml:10:25-75
 161            </intent-filter>
 162        </service> <!-- Needs to be explicitly declared on P+ -->
 163        <uses-library
@@ -314,15 +314,15 @@
 173            <intent-filter>
 173-->[com.google.firebase:firebase-auth:20.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6f83846f2f5599bf488ac6a232fe5cfc\jetified-firebase-auth-20.0.1\AndroidManifest.xml:33:13-43:29
 174                <action android:name="android.intent.action.VIEW" />
-174-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:17-69
-174-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:25-66
+174-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:17-69
+174-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:25-66
 175
 176                <category android:name="android.intent.category.DEFAULT" />
-176-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:17-76
-176-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:27-73
+176-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:17-76
+176-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:27-73
 177                <category android:name="android.intent.category.BROWSABLE" />
-177-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:17-78
-177-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:27-75
+177-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:17-78
+177-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:27-75
 178
 179                <data
 180                    android:host="firebase.auth"
@@ -345,15 +345,15 @@
 191            <intent-filter>
 191-->[com.google.firebase:firebase-auth:20.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6f83846f2f5599bf488ac6a232fe5cfc\jetified-firebase-auth-20.0.1\AndroidManifest.xml:51:13-61:29
 192                <action android:name="android.intent.action.VIEW" />
-192-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:17-69
-192-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:21:25-66
+192-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:17-69
+192-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:21:25-66
 193
 194                <category android:name="android.intent.category.DEFAULT" />
-194-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:17-76
-194-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:27-73
+194-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:17-76
+194-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:27-73
 195                <category android:name="android.intent.category.BROWSABLE" />
-195-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:17-78
-195-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:23:27-75
+195-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:17-78
+195-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:23:27-75
 196
 197                <data
 198                    android:host="firebase.auth"
@@ -377,8 +377,8 @@
 209-->[com.google.firebase:firebase-auth:20.0.1] C:\Users\micha\.gradle\caches\transforms-2\files-2.1\6f83846f2f5599bf488ac6a232fe5cfc\jetified-firebase-auth-20.0.1\AndroidManifest.xml:69:25-86
 210
 211                <category android:name="android.intent.category.DEFAULT" />
-211-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:17-76
-211-->C:\xampp\htdocs\huna\android\app\src\main\AndroidManifest.xml:22:27-73
+211-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:17-76
+211-->C:\Users\micha\Documents\huna\android\app\src\main\AndroidManifest.xml:22:27-73
 212            </intent-filter>
 213        </service>
 214

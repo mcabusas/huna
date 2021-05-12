@@ -155,7 +155,7 @@ class _TutorMessagesState extends State<TutorMessages> {
                 return new Card(
                     child: ListTile(
                       leading: FutureBuilder(
-                        future: _model.getPicture(snapshot.data[index]['student_id']),
+                        future: _model.getPicture(snapshot.data[index]['uid']),
                         builder: (BuildContext context, AsyncSnapshot snapshot){
                           Widget ret;
                           if(snapshot.connectionState == ConnectionState.waiting){
@@ -177,6 +177,7 @@ class _TutorMessagesState extends State<TutorMessages> {
                       // ),
                       onTap: () {
                         // print(jsonData[index]['chat_id']);
+                        print(snapshot.data[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'], page: 1)),
@@ -243,7 +244,7 @@ class _StudentMessagesState extends State<StudentMessages> {
                 return new Card(
                     child: ListTile(
                       leading: FutureBuilder(
-                        future: _model.getPicture(snapshot.data[index]['tutor_userid']),
+                        future: _model.getPicture(snapshot.data[index]['uid']),
                         builder: (BuildContext context, AsyncSnapshot snapshot){
                           Widget ret;
                           if(snapshot.connectionState == ConnectionState.waiting){
@@ -265,6 +266,7 @@ class _StudentMessagesState extends State<StudentMessages> {
                       // ),
                       onTap: () {
                         // print(jsonData[index]['chat_id']);
+                        print(snapshot.data[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ChatPage(tutorData: snapshot.data[index], chatRoomId: snapshot.data[index]['chatRoomId'], page: 0)),

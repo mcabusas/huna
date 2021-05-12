@@ -39,6 +39,7 @@ class _ChatState extends State<ChatPage> {
     initAwait();
     conversationMessages = _model.getConversationMessages(widget.chatRoomId);
     print(widget.tutorData['firstName']);
+    print(widget.tutorData['uid']);
   }
 
   Widget getButtonWidget(){
@@ -158,7 +159,7 @@ class _ChatState extends State<ChatPage> {
                           ),
                           onPressed: (){
                             if(messageController.text.isNotEmpty){
-                              _model.insertMessage(widget.chatRoomId, messageController.text);
+                              _model.insertMessage(widget.chatRoomId, messageController.text, widget.tutorData['uid']);
                               messageController.clear();
 
                             }

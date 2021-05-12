@@ -17,12 +17,10 @@ exports.newBookings = functions.firestore.document('bookings/{bookingId}').onCre
     };
     
 
-    var tokens = [
-        'd7UjP5bOQKCXmuekTr8PSN:APA91bGjAi-_oaB_srEyRxY8xvUeuIOExgKih8SUwjSaydQ8r_pGXKdbOQ-XbXebriezW98twc0qK-i7LD_kTys6EVHPBIxsNG9Wri--SLLvqt5mpRo1ps9Mdgd0LXtbuzcs0sV_ekXT'
-    ];
+    const deviceTokens = await admin.firestore().collection('tokens').doc(newData.bookingData['tutor_uid']).get();
 
     try{
-        const response = await admin.messaging().sendToDevice(tokens, payload);
+        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
         console.log(payload);
         console.log('sent notification');
     } catch (err) {
@@ -34,34 +32,42 @@ exports.newBookings = functions.firestore.document('bookings/{bookingId}').onCre
 
 exports.newMessages = functions.firestore.document('chatrooms/{chatroomid}/messages/{messageid}').onCreate(async (create, context) => {
     const newData = create.data();
-    const user = await admin.firestore().collection('users').doc(newData['sentBy']).get();
-    var fName = user.data()['firstName'];
-    var lName = user.data()['lastName'];
-
-    var tokens = [
-        'd7UjP5bOQKCXmuekTr8PSN:APA91bGjAi-_oaB_srEyRxY8xvUeuIOExgKih8SUwjSaydQ8r_pGXKdbOQ-XbXebriezW98twc0qK-i7LD_kTys6EVHPBIxsNG9Wri--SLLvqt5mpRo1ps9Mdgd0LXtbuzcs0sV_ekXT'
-    ];
-
-    var payload = {
-        notification: {title: fName + " " + lName + " sent you a message!", body: newData['message'], sound: 'default'}, 
-        data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
-    };
-
-    try{
-        const response = await admin.messaging().sendToDevice(tokens, payload);
-        console.log('notification sent!');
-    } catch (err) {
-        console.log('ERROR IN SENDING MESSAGE NOTIFICATION ' + err);
+    const user =  admin.firestore().collection('users').doc('KNGXU0j8xZhbq1ZIKHjpubpylUx2');
+    const userData = await user.get();
+    if(!userData.exists){
+        console.log('userData is empty');
+    }else{
+        console.log(userData.data());
     }
+   // var fName = user.data()['firstName'];
+    //var lName = user.data()['lastName'];
+
+    
+
+    const deviceTokens = await admin.firestore().collection('tokens').doc(newData['sentTo']).get();
+    console.log(newData);
+    //console.log(deviceTokens);
+
+    // var payload = {
+    //     notification: {title: fName + " " + lName + " sent you a message!", body: newData['message'], sound: 'default'}, 
+    //     data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
+    // };
+
+    // try{
+    //     const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
+    //     console.log('notification sent!');
+    // } catch (err) {
+    //     console.log('ERROR IN SENDING MESSAGE NOTIFICATION ' + err);
+    // }
 });
 
 exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
 
     const after = update.after.data();
     //aly
-    var tokens = [
-        'cDeUVmLuSxu5CykMuvbmSy:APA91bGgSfMXcgFSC4aTQP4EfnZwzwD1MjK-bAvGqjrAtuOGGv0TaxvLqvc-fU7mmRnM2NUZyx46M1Y_41ywZ32u4yl0rTvFiybwQI4ady9SXTLCqihAp1TO6rf9A_SkdmPHfNGnMzSG'
-    ];
+    
+
+    const deviceTokens = await admin.firestore().collection('tokens').doc(newData.bookingData['tutor_uid']).get();
 
     var payload = {
         notification: {title: 'Booking Cancelled', body: "Your booking for " + after.bookingData['date'] + " has been cancelled.", sound: 'default'}, 
@@ -69,7 +75,7 @@ exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').o
     };
 
     try{
-        const response = await admin.messaging().sendToDevice(tokens, payload);
+        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
         console.log('sent notification');
         console.log(payload);
     } catch (err) {
@@ -84,10 +90,12 @@ exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').o
 exports.bookingStatusForStudents = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
     //me
     const after = update.after.data();
-    var tokens = [
-        'd7UjP5bOQKCXmuekTr8PSN:APA91bGjAi-_oaB_srEyRxY8xvUeuIOExgKih8SUwjSaydQ8r_pGXKdbOQ-XbXebriezW98twc0qK-i7LD_kTys6EVHPBIxsNG9Wri--SLLvqt5mpRo1ps9Mdgd0LXtbuzcs0sV_ekXT'
-    ]; 
     
+
+    //var tokens = [];
+    
+
+    const deviceTokens = await admin.firestore().collection('tokens').doc(after.bookingData['student_id']).get();
     
     var payloadMessage = '';
     var titleMessage = '';
@@ -118,7 +126,7 @@ exports.bookingStatusForStudents = functions.firestore.document('bookings/{id}')
     };
 
     try{
-        const response = await admin.messaging().sendToDevice(tokens, payload);
+        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
         console.log('sent notification');
         console.log(payloadMessage);
     } catch (err) {

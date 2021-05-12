@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "C:\\xampp\\htdocs\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw\\values-sw.xml",
+            "outputFile": "C:\\Users\\micha\\Documents\\huna\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw\\values-sw.xml",
             "map": [
                 {
                     "source": "C:\\Users\\micha\\.gradle\\caches\\transforms-2\\files-2.1\\2886bfc7ad7a6a47b49dda547f6a65ae\\jetified-play-services-basement-17.2.1\\res\\values-sw\\values.xml",

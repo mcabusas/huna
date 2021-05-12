@@ -27,13 +27,14 @@ class MessagesChatModel {
 
   }
 
-  Future<void> insertMessage(String chatRoomId, String message) async{
+  Future<void> insertMessage(String chatRoomId, String message, String sentTo) async{
 
     User user = await _authServices.getCurrentUser();
 
     Map<String, dynamic> messageMap = {
       'message': message,
       'sentBy': user.uid,
+      'sentTo': sentTo,
       'timeStamp': DateTime.now().microsecondsSinceEpoch
     };
 

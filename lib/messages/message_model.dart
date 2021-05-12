@@ -30,8 +30,8 @@ class MessagesModel extends MyProfileModel {
             'lastName': snapshot.data()['users']['tutor_lastName'],
             'chatRoomId': snapshot.data()['chatroomid'],
             'rate': snapshot.data()['users']['tutor_rate'],
-            'tutor_id': snapshot.data()['users']['tutorid'],
-            'tutor_userid': snapshot.data()['users']['tutor_userid']
+            'tid': snapshot.data()['users']['tutorid'],
+            'uid': snapshot.data()['users']['tutor_userid']
             
           });
 
@@ -70,7 +70,7 @@ class MessagesModel extends MyProfileModel {
           'lastName': snapshot.data()['users']['student_lastName'],
           'chatRoomId': snapshot.data()['chatroomid'],
           'rate': snapshot.data()['users']['tutor_rate'],
-          'student_id': snapshot.data()['users']['studentid'],
+          'uid': snapshot.data()['users']['studentid'],
           
         });
 
