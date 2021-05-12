@@ -5,6 +5,7 @@ import 'package:bubble/bubble.dart';
 import 'package:huna/services/auth_services.dart';
 import 'messages_chat_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 Widget buttonRet;
 
 class ChatPage extends StatefulWidget {
@@ -91,11 +92,16 @@ class _ChatState extends State<ChatPage> {
                 }
                 return ListView.builder(
                   shrinkWrap: true,
-                  padding: EdgeInsets.all(15.0),
+                  padding: EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0, bottom: 80.0),
                   //physics: NeverScrollableScrollPhysics(),
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index){
                     DocumentSnapshot message = snapshot.data.docs[index];
+
+                    DateTime dtEpoch = DateTime.fromMicrosecondsSinceEpoch(message['timeStamp']);
+                    // String dateT = DateFormat('yyyy-MM-dd - hh:mm a').format(dtEpoch);
+                    String dateT = DateFormat('MMMM dd, yyyy hh:mm a').format(dtEpoch);
+
                     if(message['sentBy'] == sp.getString('uid')){
                       bubble = ChatBubble(
                         message: message['message'],
@@ -103,6 +109,8 @@ class _ChatState extends State<ChatPage> {
                         textSide: TextAlign.end,
                         bubbleColor: Colors.deepPurple,
                         textColor: Colors.white,
+                        dateTime: dateT,
+                        textAlign: TextAlign.right,
                       );
                     }else {
                       bubble = ChatBubble(
@@ -111,12 +119,16 @@ class _ChatState extends State<ChatPage> {
                         textSide: TextAlign.start,
                         bubbleColor: Colors.white,
                         textColor: Colors.black,
+                        dateTime: dateT,
+                        textAlign: TextAlign.left,
                       );
                     }
                     return bubble;
                   }
-                  
+                
+
                 );
+
               },
             ),
 
@@ -136,12 +148,13 @@ class _ChatState extends State<ChatPage> {
                       decoration: InputDecoration(
                         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
                         focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                        hintText: 'Message',
+                        hintText: 'Enter your message here',
+                        hintStyle: TextStyle(color: Colors.grey.shade500),
                         suffixIcon: IconButton(
                           icon: Icon(
                             Icons.send, 
                             color: Colors.deepPurple, 
-                            size: 45,
+                            size: 30,
                           ),
                           onPressed: (){
                             if(messageController.text.isNotEmpty){
@@ -165,13 +178,16 @@ class _ChatState extends State<ChatPage> {
 }
 
 class ChatBubble extends StatelessWidget {
+
   final TextAlign textSide;
   final Alignment messageSide;
   final String message; /*time*/
   final Color bubbleColor, textColor;
+  final String dateTime;
+  final TextAlign textAlign;
 
 
-  ChatBubble({this.textSide, this.messageSide, this.message, this.bubbleColor, this.textColor, /*this.time*/});
+  ChatBubble({this.textSide, this.messageSide, this.message, this.bubbleColor, this.textColor, this.dateTime, this.textAlign});
 
   @override
   Widget build(BuildContext context) {
@@ -189,8 +205,14 @@ class ChatBubble extends StatelessWidget {
             ),
             color: bubbleColor,
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 5, right: 15),
+          Container(
+            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+            alignment: messageSide,
+            child: Text(
+              dateTime,
+              style: TextStyle(fontSize:12),
+              textAlign: textAlign,
+            )
             
           ),
 

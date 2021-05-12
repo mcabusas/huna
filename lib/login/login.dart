@@ -73,7 +73,7 @@ class LoginPageState extends State<LoginPage>
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: new Stack(
@@ -85,7 +85,12 @@ class LoginPageState extends State<LoginPage>
               color: Colors.black87,
               colorBlendMode: BlendMode.darken,
             ),
-            new Column(
+
+            new Center (
+
+            child: new SingleChildScrollView (
+
+            child: new Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 new Container(
@@ -342,9 +347,17 @@ class LoginPageState extends State<LoginPage>
                 ),
               ],
             ),
+
+            ),
+
+            ),
+
           ],
         ),
       ),
+
+
+
     );
   }
 }

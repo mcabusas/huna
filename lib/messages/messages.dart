@@ -142,10 +142,8 @@ class _TutorMessagesState extends State<TutorMessages> {
         if(snapshot.connectionState == ConnectionState.done){
           if(snapshot.data.length == 0){
             return Container(
-              height: 100,
-              width: 100,
               child: Center(
-                child: Text('YOU NO NEW MESSAGES')
+                child: Text('YOU HAVE NO NEW MESSAGES')
               )
             );
           }else{
@@ -164,8 +162,8 @@ class _TutorMessagesState extends State<TutorMessages> {
                             ret = Container(child: CircularProgressIndicator());
                           }
                           if(snapshot.connectionState == ConnectionState.done){
-                            ret = ClipOval(
-                              child: ProfilePicture(url: snapshot.data, width: 45, height: 45)
+                            ret = CircleAvatar(
+                              child: ProfilePicture(url: snapshot.data)
                             );
                           }
 
@@ -232,10 +230,8 @@ class _StudentMessagesState extends State<StudentMessages> {
         if(snapshot.connectionState == ConnectionState.done){
           if(snapshot.data.length == 0){
             return Container(
-              height: 100,
-              width: 100,
               child: Center(
-                child: Text('YOU NO NEW MESSAGES')
+                child: Text('YOU HAVE NO NEW MESSAGES')
               )
             );
           }else{

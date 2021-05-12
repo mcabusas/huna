@@ -12,7 +12,7 @@ import '../paytutorial/paytutorial.dart';
 
 MessagesNewBookingModel _model = new MessagesNewBookingModel();
 SharedPreferences sp;
-String firstName, lastName, studentid;
+String firstName, lastName, studentid, userName;
 
 class NewBooking extends StatefulWidget {
   final tutorInfo, chatRoomId;
@@ -80,9 +80,11 @@ class _NewBookingState extends State<NewBooking> {
     print(sp.getString('firstName'));
     print(sp.getString('lastName'));
     print(sp.getString('uid'));
+    // print(sp.getString('username'));
     setState(() {
       firstName = sp.getString('firstName');
       lastName = sp.getString('lastName');
+      // userName = sp.getString('username');
       studentid = sp.getString('uid');
       bookingData['student_firstName'] = firstName;
       bookingData['student_lastName'] = lastName;
@@ -145,9 +147,9 @@ class _NewBookingState extends State<NewBooking> {
                           Text(
                             '$firstName $lastName',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          Text('@'),
+                          // Text('@$userName'),
                         ],
                       ),
                       // You
@@ -177,8 +179,9 @@ class _NewBookingState extends State<NewBooking> {
                           Text(
                             '${widget.tutorInfo['firstName']} ${widget.tutorInfo['lastName']}',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
+                          // Text('@${widget.tutorInfo['username']}'),
                         ],
                       ),
                     ],
