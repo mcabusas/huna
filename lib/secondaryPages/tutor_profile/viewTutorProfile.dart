@@ -40,8 +40,9 @@ class _TutorProfileState extends State<TutorProfilePage> {
         'tid': widget.tutorData['tid']
       };
     });
-    favoriteChecker = await _model.checkFavorite(widget.tutorData['tid'], userId);
-    if(favoriteChecker == true) {
+    favoriteChecker =
+        await _model.checkFavorite(widget.tutorData['tid'], userId);
+    if (favoriteChecker == true) {
       setState(() {
         favoriteIconColor = Colors.red;
       });
@@ -52,7 +53,6 @@ class _TutorProfileState extends State<TutorProfilePage> {
   void initState() {
     super.initState();
     initAwait();
-    
   }
 
   @override
@@ -70,17 +70,15 @@ class _TutorProfileState extends State<TutorProfilePage> {
                 retVal = await _model.addToFavorites(widget.tutorData);
                 if (retVal == true) {
                   Fluttertoast.showToast(
-                    msg: 'Tutor added to your favorites.',
-                    toastLength: Toast.LENGTH_SHORT,
-                    gravity: ToastGravity.BOTTOM,
-                    timeInSecForIos: 1,
-                    backgroundColor: Colors.blue,
-                    textColor: Colors.white
-                  );
+                      msg: 'Tutor added to your favorites.',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white);
                   setState(() {
                     favoriteIconColor = Colors.red;
                   });
-
                 } else {
                   Fluttertoast.showToast(
                       msg: 'Tutor is already part of your favorites',
@@ -190,8 +188,8 @@ class _TutorProfileState extends State<TutorProfilePage> {
                                 backgroundColor: Colors.blue,
                                 textColor: Colors.white,
                                 fontSize: 16.0);
-                                Navigator.of(context, rootNavigator: true).pop(
-                              'dialog');
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
                           } else {
                             Fluttertoast.showToast(
                                 msg: "Error reporting tutor, please try again.",
@@ -238,8 +236,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
   ViewTutorProfileModel _model = new ViewTutorProfileModel();
 
   Future<double> initAwait() async {
-    return await _model.getTutorData(
-        widget.tutorData['uid']);
+    return await _model.getTutorData(widget.tutorData['uid']);
   }
 
   @override
@@ -290,8 +287,10 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               if (snapshot.connectionState ==
                                   ConnectionState.done) {
                                 picture = ClipOval(
-                                  child: ProfilePicture(url: snapshot.data, width: 100, height: 100)
-                                );
+                                    child: ProfilePicture(
+                                        url: snapshot.data,
+                                        width: 100,
+                                        height: 100));
                               }
 
                               return picture;
@@ -322,24 +321,24 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                         // ),
                         SizedBox(height: 20),
                         // Location
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 25.0, right: 25.0),
-                          child: Row(
-                            children: <Widget>[
-                              Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                                size: 15,
-                              ),
-                              // Text(
-                              //   '${snapshot.data['city']}, ${snapshot.data['country']}',
-                              //   style: TextStyle(
-                              //       color: Colors.white, fontSize: 12),
-                              // ),
-                            ],
-                          ),
-                        ),
+                        // Padding(
+                        //   padding:
+                        //       const EdgeInsets.only(left: 25.0, right: 25.0),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Icon(
+                        //         Icons.location_on,
+                        //         color: Colors.white,
+                        //         size: 15,
+                        //       ),
+                        //       // Text(
+                        //       //   '${snapshot.data['city']}, ${snapshot.data['country']}',
+                        //       //   style: TextStyle(
+                        //       //       color: Colors.white, fontSize: 12),
+                        //       // ),
+                        //     ],
+                        //   ),
+                        // ),
                         // White Body Contents
                       ],
                     ),
@@ -370,8 +369,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                   IconTheme(
                                       data: IconThemeData(
                                           color: Colors.amber, size: 20),
-                                      child: StarDisplay(
-                                          value: snapshot.data))
+                                      child: StarDisplay(value: snapshot.data))
                                 ],
                               ),
                             ),
@@ -449,15 +447,18 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: widget.tutorData['majors'].length ==
+                                          itemCount: widget.tutorData['majors']
+                                                      .length ==
                                                   null
                                               ? 0
-                                              : widget.tutorData['majors'].length,
+                                              : widget
+                                                  .tutorData['majors'].length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
                                               label: Text(
-                                                widget.tutorData['majors'][index],
+                                                widget.tutorData['majors']
+                                                    [index],
                                                 //majors[index],
                                                 style: TextStyle(
                                                     color: Colors.white,
@@ -479,11 +480,13 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: widget.tutorData['languages']
+                                          itemCount: widget
+                                                      .tutorData['languages']
                                                       .length ==
                                                   null
                                               ? 0
-                                              : widget.tutorData['languages'].length,
+                                              : widget.tutorData['languages']
+                                                  .length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
@@ -511,15 +514,18 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                         GridView.builder(
                                           shrinkWrap: true,
                                           padding: EdgeInsets.all(15),
-                                          itemCount: widget.tutorData['topics'].length ==
+                                          itemCount: widget.tutorData['topics']
+                                                      .length ==
                                                   null
                                               ? 0
-                                              : widget.tutorData['topics'].length,
+                                              : widget
+                                                  .tutorData['topics'].length,
                                           itemBuilder: (BuildContext context,
                                               int index) {
                                             return new Chip(
                                               label: Text(
-                                                widget.tutorData['topics'][index],
+                                                widget.tutorData['topics']
+                                                    [index],
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontWeight:

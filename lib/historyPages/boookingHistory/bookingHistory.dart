@@ -138,93 +138,115 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
             if (snapshot.data['docData'].length > 0) {
               retWidget = Column(
                 children: [
-
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text('Total Spent: ' + snapshot.data['total'].toString(), style: TextStyle(color: Colors.black, fontSize: 24))
-                    )
-                  ),
-
-
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                          padding: EdgeInsets.all(15.0),
+                          child: Text(
+                              'Total Spent: ' +
+                                  snapshot.data['total'].toString(),
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 24)))),
                   ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.all(15),
-                    itemCount: snapshot == null ? 0 : snapshot.data['docData'].length,
+                    itemCount:
+                        snapshot == null ? 0 : snapshot.data['docData'].length,
                     itemBuilder: (BuildContext context, int index) {
                       Widget card;
-                      var parsedDate = DateTime.parse(snapshot.data['docData'][index]['date']);
+                      var parsedDate = DateTime.parse(
+                          snapshot.data['docData'][index]['date']);
                       Color color;
-                      if(snapshot.data['docData'][index]['status'] == 'Finished'){
+                      if (snapshot.data['docData'][index]['status'] ==
+                          'Finished') {
                         color = Colors.greenAccent;
-                      } else if(snapshot.data['docData'][index]['status'] == 'Declined') {
+                      } else if (snapshot.data['docData'][index]['status'] ==
+                          'Declined') {
                         color = Colors.red;
                       }
-                      if(snapshot.data['docData'][index]['status'] == 'Finished' || snapshot.data['docData'][index]['status'] == 'Declined'){
+                      if (snapshot.data['docData'][index]['status'] ==
+                              'Finished' ||
+                          snapshot.data['docData'][index]['status'] ==
+                              'Declined') {
                         card = Card(
                           child: ListView(
                             shrinkWrap: true,
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                            padding: EdgeInsets.all(10),
                             children: <Widget>[
                               // Per Booking, PRETEST
-                              ExpansionTile(
-                                leading: FutureBuilder(
-                                  future: _modal.getPicture(snapshot.data['docData'][index]['uid']),
-                                  builder: (BuildContext context, AsyncSnapshot snapshot){
-                                    Widget retVal;
-                                    if(snapshot.connectionState == ConnectionState.waiting) {
-                                      retVal = Container(child: CircularProgressIndicator());
-                                    }
-                                    if(snapshot.connectionState == ConnectionState.done){
-                                      retVal = CircleAvatar(
-                                        child: ProfilePicture(url: snapshot.data, radius: 40,)
-                                      );
-                                    }
-                                    return retVal;
-                                  },
+                              Theme(
+                                data: Theme.of(context)
+                                    .copyWith(dividerColor: Colors.transparent),
+                                child: ExpansionTile(
+                                  leading: FutureBuilder(
+                                    future: _modal.getPicture(
+                                        snapshot.data['docData'][index]['uid']),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot snapshot) {
+                                      Widget retVal;
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        retVal = Container(
+                                            child: CircularProgressIndicator());
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.done) {
+                                        retVal = ClipOval(
+                                            child: ProfilePicture(
+                                                url: snapshot.data,
+                                                width: 45,
+                                                height: 45));
+                                      }
+                                      return retVal;
+                                    },
+                                  ),
+                                  title: Text(
+                                      '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
+                                  // subtitle: Text('${jsonData[index]['username']}',
+                                  //     overflow: TextOverflow.ellipsis),
+                                  children: <Widget>[
+                                    // Expanded Contents
+                                    ListTile(
+                                      leading: Icon(Icons.import_contacts),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['topic']}'),
+                                      dense: true,
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.place),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['location']}'),
+                                      dense: true,
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.event),
+                                      title: Text(DateFormat.yMMMEd()
+                                          .format(parsedDate)),
+                                      dense: true,
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.access_time),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
+                                      dense: true,
+                                    ),
+                                    ListTile(
+                                      leading: Icon(Icons.attach_money),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['rate']}.00'),
+                                      dense: true,
+                                    ),
+                                    ListTile(
+                                      leading: Text('Status',
+                                          style: TextStyle(color: Colors.cyan)),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['status']}',
+                                          style: TextStyle(
+                                              color: color, fontSize: 20)),
+                                      dense: true,
+                                    ),
+                                  ],
                                 ),
-                                title: Text(
-                                    '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
-                                // subtitle: Text('${jsonData[index]['username']}',
-                                //     overflow: TextOverflow.ellipsis),
-                                children: <Widget>[
-                                  // Expanded Contents
-                                  ListTile(
-                                    leading: Icon(Icons.import_contacts),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['topic']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.place),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['location']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.event),
-                                    title:
-                                        Text(DateFormat.yMMMEd().format(parsedDate)),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.access_time),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.attach_money),
-                                    title: Text('${snapshot.data['docData'][index]['rate']}.00'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Text('Status', style: TextStyle(color: Colors.cyan)),
-                                    title: Text('${snapshot.data['docData'][index]['status']}', style: TextStyle(color: color, fontSize: 20)),
-                                    dense: true,
-                                  ),
-                                ],
                               ),
                             ],
                           ),
@@ -235,7 +257,6 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
                       return card;
                     },
                   )
-
                 ],
               );
             }
@@ -282,102 +303,126 @@ class _TutorHistoryModeState extends State<TutorHistoryMode> {
               retWidget = Column(
                 children: [
                   Align(
-                    alignment: Alignment.topLeft,
-                    child: Container(
-                      padding: EdgeInsets.all(15.0),
-                      child: Text('Total Income: ' + snapshot.data['total'].toString(), style: TextStyle(color: Colors.black, fontSize: 24))
-                    )
-                  ),
+                      alignment: Alignment.topLeft,
+                      child: Container(
+                          padding: EdgeInsets.all(15),
+                          child: Text(
+                              'Total Income: ' +
+                                  snapshot.data['total'].toString(),
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 24)))),
                   ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(15),
-                    itemCount: snapshot == null ? 0 : snapshot.data['docData'].length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Widget card;
-                      Color color;
-                      if(snapshot.data['docData'][index]['status'] == 'Finished') {
-                        color = Colors.green;
-                      } else if(snapshot.data['docData'][index]['status'] == 'Declined'){
-                        color = Colors.red;
-                      }
-                      var parsedDate = DateTime.parse(snapshot.data['docData'][index]['date']);
-                      if(snapshot.data['docData'][index]['status'] == 'Finished' || snapshot.data['docData'][index]['status'] == 'Declined') {
-                        card = Card(
-                          child: ListView(
-                            shrinkWrap: true,
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                            children: <Widget>[
-                              // Per Booking, PRETEST
-                              ExpansionTile(
-                                leading: FutureBuilder(
-                                  future: _modal.getPicture(snapshot.data['docData'][index]['uid']),
-                                  builder: (BuildContext context, AsyncSnapshot snapshot){
-                                    Widget retVal;
-                                    if(snapshot.connectionState == ConnectionState.waiting) {
-                                      retVal = Container(child: CircularProgressIndicator());
-                                    }
-                                    if(snapshot.connectionState == ConnectionState.done){
-                                      retVal = CircleAvatar(
-                                        child: ProfilePicture(url: snapshot.data, radius: 40,)
-                                      );
-                                    }
-                                    return retVal;
-                                  },
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(15),
+                      itemCount: snapshot == null
+                          ? 0
+                          : snapshot.data['docData'].length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Widget card;
+                        Color color;
+                        if (snapshot.data['docData'][index]['status'] ==
+                            'Finished') {
+                          color = Colors.green;
+                        } else if (snapshot.data['docData'][index]['status'] ==
+                            'Declined') {
+                          color = Colors.red;
+                        }
+                        var parsedDate = DateTime.parse(
+                            snapshot.data['docData'][index]['date']);
+                        if (snapshot.data['docData'][index]['status'] ==
+                                'Finished' ||
+                            snapshot.data['docData'][index]['status'] ==
+                                'Declined') {
+                          card = Card(
+                            child: ListView(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.all(10),
+                              children: <Widget>[
+                                // Per Booking, PRETEST
+                                Theme(
+                                  data: Theme.of(context).copyWith(
+                                      dividerColor: Colors.transparent),
+                                  child: ExpansionTile(
+                                    leading: FutureBuilder(
+                                      future: _modal.getPicture(snapshot
+                                          .data['docData'][index]['uid']),
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot snapshot) {
+                                        Widget retVal;
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          retVal = Container(
+                                              child:
+                                                  CircularProgressIndicator());
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.done) {
+                                          retVal = ClipOval(
+                                              child: ProfilePicture(
+                                                  url: snapshot.data,
+                                                  width: 45,
+                                                  height: 45));
+                                        }
+                                        return retVal;
+                                      },
+                                    ),
+                                    title: Text(
+                                        '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
+                                    children: <Widget>[
+                                      // Expanded Contents
+                                      ListTile(
+                                        leading: Icon(Icons.import_contacts),
+                                        title: Text(
+                                            '${snapshot.data['docData'][index]['topic']}'),
+                                        dense: true,
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.place),
+                                        title: Text(
+                                            '${snapshot.data['docData'][index]['location']}'),
+                                        dense: true,
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.event),
+                                        title: Text(DateFormat.yMMMEd()
+                                            .format(parsedDate)),
+                                        dense: true,
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.access_time),
+                                        title: Text(
+                                            '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
+                                        dense: true,
+                                      ),
+                                      ListTile(
+                                        leading: Icon(Icons.attach_money),
+                                        title: Text(
+                                            '${snapshot.data['docData'][index]['rate']}.00'),
+                                        dense: true,
+                                      ),
+                                      ListTile(
+                                        leading: Text('Status',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                        title: Text(
+                                            '${snapshot.data['docData'][index]['status']}',
+                                            style: TextStyle(
+                                                color: color, fontSize: 20)),
+                                        dense: true,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                title: Text(
-                                    '${snapshot.data['docData'][index]['firstName']} ${snapshot.data['docData'][index]['lastName']}'),
-                                
-                                children: <Widget>[
-                                  // Expanded Contents
-                                  ListTile(
-                                    leading: Icon(Icons.import_contacts),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['topic']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.place),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['location']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.event),
-                                    title:
-                                        Text(DateFormat.yMMMEd().format(parsedDate)),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.access_time),
-                                    title: Text(
-                                        '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.attach_money),
-                                    title: Text('${snapshot.data['docData'][index]['rate']}.00'),
-                                    dense: true,
-                                  ),
-                                  ListTile(
-                                    leading: Text('Status', style: TextStyle(color: Colors.grey)),
-                                    title: Text('${snapshot.data['docData'][index]['status']}', style: TextStyle(color: color, fontSize: 20)),
-                                    dense: true,
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        );
-                      }else {
-                        card = Container(width: 0, height: 0);
-                      }
-                      return card;
-                    }
-                  ),
-                  
+                              ],
+                            ),
+                          );
+                        } else {
+                          card = Container(width: 0, height: 0);
+                        }
+                        return card;
+                      }),
                 ],
               );
-              
             }
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
