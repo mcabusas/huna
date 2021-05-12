@@ -32,33 +32,30 @@ exports.newBookings = functions.firestore.document('bookings/{bookingId}').onCre
 
 exports.newMessages = functions.firestore.document('chatrooms/{chatroomid}/messages/{messageid}').onCreate(async (create, context) => {
     const newData = create.data();
-    const user =  admin.firestore().collection('users').doc('KNGXU0j8xZhbq1ZIKHjpubpylUx2');
+    console.log(newData['sentBy'])
+    const user =  admin.firestore().collection('users').doc(newData['sentBy']);
     const userData = await user.get();
     if(!userData.exists){
         console.log('userData is empty');
     }else{
         console.log(userData.data());
     }
-   // var fName = user.data()['firstName'];
-    //var lName = user.data()['lastName'];
-
     
 
     const deviceTokens = await admin.firestore().collection('tokens').doc(newData['sentTo']).get();
-    console.log(newData);
-    //console.log(deviceTokens);
+    console.log(deviceTokens.data()['token']);
 
-    // var payload = {
-    //     notification: {title: fName + " " + lName + " sent you a message!", body: newData['message'], sound: 'default'}, 
-    //     data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
-    // };
+    var payload = {
+        notification: {title: userData.data()['firstName'] + " " + userData.data()['lastName'] + " sent you a message!", body: newData['message'], sound: 'default'}, 
+        data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
+    };
 
-    // try{
-    //     const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
-    //     console.log('notification sent!');
-    // } catch (err) {
-    //     console.log('ERROR IN SENDING MESSAGE NOTIFICATION ' + err);
-    // }
+    try{
+        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
+        console.log('notification sent!');
+    } catch (err) {
+        console.log('ERROR IN SENDING MESSAGE NOTIFICATION ' + err);
+    }
 });
 
 exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
