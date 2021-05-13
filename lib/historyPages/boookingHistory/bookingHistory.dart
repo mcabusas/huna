@@ -136,7 +136,7 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
               retWidget = Container(width: 0, height: 0);
             }
             if (snapshot.data['docData'].length > 0) {
-              retWidget = Column(
+              retWidget = Stack(
                 children: [
                   Align(
                       alignment: Alignment.topLeft,
@@ -161,14 +161,18 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
                           'Finished') {
                         color = Colors.greenAccent;
                       } else if (snapshot.data['docData'][index]['status'] ==
-                          'Declined' || snapshot.data['docData'][index]['status'] == 'Cancelled') {
+                              'Declined' ||
+                          snapshot.data['docData'][index]['status'] ==
+                              'Cancelled') {
                         color = Colors.red;
                       }
-                      if (snapshot.data['docData'][index]['status'] ==
+                      if (snapshot.data['docData'][index]
+                                  ['status'] ==
                               'Finished' ||
                           snapshot.data['docData'][index]['status'] ==
                               'Declined' ||
-                          snapshot.data['docData'][index]['status'] == 'Cancelled') {
+                          snapshot.data['docData'][index]['status'] ==
+                              'Cancelled') {
                         card = Card(
                           child: ListView(
                             shrinkWrap: true,
@@ -301,7 +305,7 @@ class _TutorHistoryModeState extends State<TutorHistoryMode> {
               retWidget = Container(width: 0, height: 0);
             }
             if (snapshot.data['docData'].length > 0) {
-              retWidget = Column(
+              retWidget = Stack(
                 children: [
                   Align(
                       alignment: Alignment.topLeft,

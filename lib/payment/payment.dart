@@ -3,6 +3,7 @@ import 'package:huna/historyPages/transactions.dart';
 import 'package:huna/drawer/drawer.dart';
 import 'package:huna/payment/payment_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../hunaIcons.dart';
 
 void main() => runApp(Payment());
 
@@ -91,7 +92,7 @@ class _PaymentState extends State<PaymentPage> {
                 ),
                 Card(
                   child: ListTile(
-                    leading: Icon(Icons.attach_money),
+                    leading: Icon(HunaIcons.peso),
                     title: Text('Cash'),
 
                   ),
