@@ -4,8 +4,6 @@ import 'search_model.dart';
 import 'package:flutter/material.dart';
 import 'package:huna/secondaryPages/tutor_profile/viewTutorProfile.dart';
 
-
-
 class SearchPage extends StatefulWidget {
   final String searchValue;
 
@@ -21,13 +19,11 @@ class _SearchState extends State<SearchPage> {
   Future<List<Map<String, dynamic>>> tutors;
   Widget tutorResuts = Container(width: 0, height: 0);
 
-  
-
   @override
-
-  void initState()  {
+  void initState() {
     super.initState();
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -48,7 +44,7 @@ class _SearchState extends State<SearchPage> {
                   children: <Widget>[
                     Row(
                       children: [
-                        Text('Majors: ', style: TextStyle(fontSize: 18)), 
+                        Text('Majors: ', style: TextStyle(fontSize: 18)),
                         Expanded(
                           child: DropdownButtonFormField(
                             value: 'Arts',
@@ -129,86 +125,106 @@ class _SearchState extends State<SearchPage> {
                       ],
                     ),
                     RaisedButton.icon(
-                      icon: Icon(Icons.search, color: Colors.white),
-                      label: Text('Search', style: TextStyle(color: Colors.white)),
-                      color: Colors.blue,
-                      onPressed: ()  async {
-                        setState(()  {
-                          tutorResuts = Container(
-                            height: 480,
-                            child: FutureBuilder(
-                              future:  _model.getTutors(_majorValue),
-                              builder: (context, snapshot) {
-                                Widget ret;
-                                if(snapshot.connectionState == ConnectionState.done){
-                                  if(snapshot.data.length == 0){
-                                    ret = Container(
-                                      child: Center(
-                                        child: Text('No search Results')
-                                      )
-                                    );
-                                  }
-                                  if(snapshot.data.length != 0){
-                                    ret = ListView.builder(
-                                      shrinkWrap: true,
-                                      padding: EdgeInsets.all(15),
-                                      itemCount: snapshot == null ? 0 : snapshot.data.length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                          
+                        icon: Icon(Icons.search, color: Colors.white),
+                        label: Text('Search',
+                            style: TextStyle(color: Colors.white)),
+                        color: Colors.blue,
+                        onPressed: () async {
+                          setState(() {
+                            tutorResuts = Container(
+                              height: 480,
+                              child: FutureBuilder(
+                                  future: _model.getTutors(_majorValue),
+                                  builder: (context, snapshot) {
+                                    Widget ret;
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.done) {
+                                      if (snapshot.data.length == 0) {
+                                        ret = Container(
+                                            child: Center(
+                                                child:
+                                                    Text('No search Results')));
+                                      }
+                                      if (snapshot.data.length != 0) {
+                                        ret = ListView.builder(
+                                          shrinkWrap: true,
+                                          padding: EdgeInsets.all(15),
+                                          itemCount: snapshot == null
+                                              ? 0
+                                              : snapshot.data.length,
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
                                             return new Card(
                                               child: ListTile(
                                                 leading: FutureBuilder(
-                                                  future: _model.getPicture(snapshot.data[index]['uid']),
-                                                  builder: (BuildContext context, AsyncSnapshot snapshot){
-                                                    Widget ret;
-                                                    if(snapshot.connectionState == ConnectionState.waiting){
-                                                      ret = Container(child: CircularProgressIndicator());
-                                                    }
-                                                    if(snapshot.connectionState == ConnectionState.done){
-                                                      ret = CircleAvatar(
-                                                        child: ProfilePicture(url: snapshot.data)
-                                                      );
-                                                    }
+                                                    future: _model.getPicture(
+                                                        snapshot.data[index]
+                                                            ['uid']),
+                                                    builder:
+                                                        (BuildContext context,
+                                                            AsyncSnapshot
+                                                                snapshot) {
+                                                      Widget ret;
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .waiting) {
+                                                        ret = Container(
+                                                            child:
+                                                                CircularProgressIndicator());
+                                                      }
+                                                      if (snapshot
+                                                              .connectionState ==
+                                                          ConnectionState
+                                                              .done) {
+                                                        ret = ClipOval(
+                                                            child: ProfilePicture(
+                                                                url: snapshot
+                                                                    .data,
+                                                                width: 45,
+                                                                height: 45));
+                                                      }
 
-                                                    return ret;
-                                                  }
-                                                ),
-                                                title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
-                                                subtitle: Text('P ' + snapshot.data[index]['rate'] + '.00'),
-                                                
+                                                      return ret;
+                                                    }),
+                                                title: Text(
+                                                    '${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
+                                                subtitle: Text('P ' +
+                                                    snapshot.data[index]
+                                                        ['rate'] +
+                                                    '.00'),
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data[index])),
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            TutorProfilePage(
+                                                                tutorData:
+                                                                    snapshot.data[
+                                                                        index])),
                                                   );
                                                 },
                                               ),
                                             );
-                                        },
-                                      );
-                                  }
-                                }else{
-                                  ret = Container(
-                                    child: Center(
-                                      child: CircularProgressIndicator()
-                                    )
-                                  );
-                                }
-                                return ret;
-                              }
-                              
-                            ),
-                          );
-                        });
-                      }
-                    )
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      ret = Container(
+                                          child: Center(
+                                              child:
+                                                  CircularProgressIndicator()));
+                                    }
+                                    return ret;
+                                  }),
+                            );
+                          });
+                        })
                   ],
                 ),
               ),
               SizedBox(height: 10),
-
               tutorResuts,
-              
             ],
           ),
         ),

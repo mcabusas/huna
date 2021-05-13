@@ -13,266 +13,208 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   EditPretestModal _model = new EditPretestModal();
-   Stream questionSnapshot;
+  Stream questionSnapshot;
   final _key = GlobalKey<FormState>();
   Map<String, dynamic> questionData;
-
-  
 
   @override
   void initState() {
     super.initState();
     print(widget.pretestId);
     questionSnapshot = _model.getQuestions(widget.pretestId);
-   
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-
-      appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        title: Text('Edit Pre-test/Post-test'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.check),
-        backgroundColor: Colors.blue,
-        onPressed: (){
-          print(widget.pretestId);
-          Navigator.pop(context);
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-
-              StreamBuilder(
-                stream: questionSnapshot,
-                builder: (context, snapshot){
-                  if(snapshot.data == null){
-                    return new Container(child: Center(child: Text('null')));
-                  }
-                    return new ListView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.all(15.0),
-                      itemCount: snapshot.data.docs.length,
-                      itemBuilder: (context, index){
-                        DocumentSnapshot questions = snapshot.data.docs[index];
-                        return new Container(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-
-                              Row(
-                                children: [
-                                  Text(
-                                    'Q${index+1}) ',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18
-                                    )
-                                  ),
-
-                                  SizedBox(width: 10),
-                                  
-                                  Text(
-                                    questions['question'],
-                                    style: TextStyle(
-                                      fontSize: 15
-                                    )
-                                  )
-
-                                ]
-                              ),
-
-                              Container(
-                                padding: EdgeInsets.all(10),
-                                child: Column(
-                                  children: [
-
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Ans.1 (Correct Answer) ',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15
-                                          )
-                                        ),
-
-                                        SizedBox(width: 10),
-                                        
-                                        Text(
-                                          questions['answer1'],
-                                          style: TextStyle(
-                                            fontSize: 15
-                                          ),
-                                        )
-
-                                      ]
-                                    ),
-
-                                    SizedBox(height: 10),
-
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Ans.2',
-                                          style: TextStyle(
-                                            color: Colors.black
-                                          )
-                                        ),
-
-                                        SizedBox(width: 10),
-                                        
-                                        Text(
-                                          questions['answer2']
-                                        )
-
-                                      ]
-                                    ),
-
-                                    SizedBox(height: 10),
-
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Ans.3 ',
-                                          style: TextStyle(
-                                            color: Colors.black
-                                          )
-                                        ),
-
-                                        SizedBox(width: 10),
-                                        
-                                        Text(
-                                          questions['answer3']
-                                        )
-
-                                      ]
-                                    ),
-
-                                    SizedBox(height: 10),
-
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Ans. 4 ',
-                                          style: TextStyle(
-                                            color: Colors.black
-                                          )
-                                        ),
-
-                                        SizedBox(width: 10),
-                                        
-                                        Text(
-                                          questions['answer4']
-                                        )
-
-                                      ]
-                                    ),
-                                  ],
-                                )
-                              ),
-
-                              RaisedButton.icon(
-                                onPressed: () {
-                                  setState(() {
-                                    questionData = {
-                                      'question': questions['question'],
-                                      'a1': questions['answer1'],
-                                      'a2': questions['answer2'],
-                                      'a3': questions['answer3'],
-                                      'a4': questions['answer4'],
-                                      'qid': questions.id,
-                                      'test_id': widget.pretestId
-                                    };
-                                  });
-                                  //print(questionData);
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => EditQuestion(questionData: questionData)),
-                                    );
-                                  
-                                },
-                                icon: Icon(Icons.assignment_late),
-                                label: Text('Update Question'),
-                                color: Colors.purple,
-                                textColor: Colors.white,
-                              ),
-
-                              SizedBox(height: 15),
-
-                              Divider(color: Colors.black)
-
-                            ]
-                          )
-                        );
-                      }
-                    );
-                  
-                }
-              )
-
-              // StreamBuilder(
-              //   stream: questionSnapshot,
-              //   builder: (context, snapshot){
-              //     if(snapshot.data == null){
-              //       return new Container(child: Center(child: Text('null')));
-              //     }else{
-              //       return new  ListView.builder(
-              //         shrinkWrap: true,
-              //         padding: EdgeInsets.all(15.0),
-              //         itemCount: snapshot.data.docs.length,
-              //         itemBuilder: (context, index){
-              //           DocumentSnapshot question = snapshot.data.docs[index];
-              //           return Form(
-              //             key: _key,
-              //             child: Column(
-              //               children: [
-              //                 TextFormField(
-              //                   validator: (value){
-              //                     if(value.isEmpty){
-              //                       return 'Please enter a new question';
-              //                     }
-              //                     return null;
-              //                   },
-              //                   initialValue: "Q${index+1} ${snapshot.data.docs.length}",
-              //                 ),
-
-              //                 // TextFormField(
-              //                 //   validator: (value){
-              //                 //     if(value.isEmpty){
-              //                 //       return 'Please enter a new question';
-              //                 //     }
-              //                 //     return null;
-              //                 //   },
-              //                 //   initialValue: "Q${index+1} ${question['question']}",
-              //                 // ),
-              //               ]
-              //             )
-              //           );
-              //         }
-              //       );
-              //     }
-              //   },
-              // )
-
-            ],
-          )
+        appBar: AppBar(
+          leading: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+          title: Text('Edit Pre-test/Post-test'),
         ),
-      )
-    );
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          backgroundColor: Colors.blue,
+          onPressed: () {
+            print(widget.pretestId);
+            Navigator.pop(context);
+          },
+        ),
+        body: SingleChildScrollView(
+          child: Container(
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StreamBuilder(
+                      stream: questionSnapshot,
+                      builder: (context, snapshot) {
+                        if (snapshot.data == null) {
+                          return new Container(
+                              child: Center(child: Text('null')));
+                        }
+                        return new ListView.builder(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.all(15.0),
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot questions =
+                                  snapshot.data.docs[index];
+                              return new Container(
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                    Column(children: [
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Question ${index + 1} ',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Text(questions['question'],
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700))
+                                    ]),
+                                    Container(
+                                        padding: EdgeInsets.only(
+                                            top: 15, bottom: 10),
+                                        child: Column(
+                                          children: [
+                                            Row(children: [
+                                              Text('1',
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                              SizedBox(width: 10),
+                                              Text(questions['answer1'],
+                                                  style: TextStyle(
+                                                      color: Colors.green,
+                                                      fontWeight:
+                                                          FontWeight.w700)),
+                                            ]),
+                                            SizedBox(height: 12),
+                                            Row(children: [
+                                              Text('2',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                              SizedBox(width: 10),
+                                              Text(questions['answer2'])
+                                            ]),
+                                            SizedBox(height: 10),
+                                            Row(children: [
+                                              Text('3',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                              SizedBox(width: 10),
+                                              Text(questions['answer3'])
+                                            ]),
+                                            SizedBox(height: 10),
+                                            Row(children: [
+                                              Text('4',
+                                                  style: TextStyle(
+                                                      color: Colors.black)),
+                                              SizedBox(width: 10),
+                                              Text(questions['answer4'])
+                                            ]),
+                                          ],
+                                        )),
+                                    SizedBox(
+                                      height: 15.0,
+                                    ),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        RaisedButton.icon(
+                                          onPressed: () {
+                                            setState(() {
+                                              questionData = {
+                                                'question': questions['question'],
+                                                'a1': questions['answer1'],
+                                                'a2': questions['answer2'],
+                                                'a3': questions['answer3'],
+                                                'a4': questions['answer4'],
+                                                'qid': questions.id,
+                                                'test_id': widget.pretestId
+                                              };
+                                            });
+                                            //print(questionData);
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditQuestion(
+                                                          questionData:
+                                                              questionData)),
+                                            );
+                                          },
+                                          icon: Icon(Icons.assignment_late),
+                                          label: Text('Update Question'),
+                                          color: Colors.purple,
+                                          textColor: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 15),
+                                    Divider(color: Colors.black)
+                                  ]));
+                            });
+                      })
+
+                  // StreamBuilder(
+                  //   stream: questionSnapshot,
+                  //   builder: (context, snapshot){
+                  //     if(snapshot.data == null){
+                  //       return new Container(child: Center(child: Text('null')));
+                  //     }else{
+                  //       return new  ListView.builder(
+                  //         shrinkWrap: true,
+                  //         padding: EdgeInsets.all(15.0),
+                  //         itemCount: snapshot.data.docs.length,
+                  //         itemBuilder: (context, index){
+                  //           DocumentSnapshot question = snapshot.data.docs[index];
+                  //           return Form(
+                  //             key: _key,
+                  //             child: Column(
+                  //               children: [
+                  //                 TextFormField(
+                  //                   validator: (value){
+                  //                     if(value.isEmpty){
+                  //                       return 'Please enter a new question';
+                  //                     }
+                  //                     return null;
+                  //                   },
+                  //                   initialValue: "Q${index+1} ${snapshot.data.docs.length}",
+                  //                 ),
+
+                  //                 // TextFormField(
+                  //                 //   validator: (value){
+                  //                 //     if(value.isEmpty){
+                  //                 //       return 'Please enter a new question';
+                  //                 //     }
+                  //                 //     return null;
+                  //                 //   },
+                  //                 //   initialValue: "Q${index+1} ${question['question']}",
+                  //                 // ),
+                  //               ]
+                  //             )
+                  //           );
+                  //         }
+                  //       );
+                  //     }
+                  //   },
+                  // )
+                ],
+              )),
+        ));
   }
 }
 
@@ -298,7 +240,7 @@ class _EditPageState extends State<EditPage> {
 //               fontWeight: FontWeight.w400
 //             ),
 //           ),
-          
+
 //           SizedBox(height: 15),
 
 //           Text(
@@ -320,7 +262,7 @@ class _EditPageState extends State<EditPage> {
 
 //           SizedBox(height: 15),
 
-//           widget.results.correctAnswer == widget.results.studentsAnswer ? 
+//           widget.results.correctAnswer == widget.results.studentsAnswer ?
 //             Text(
 //                 'Correct',
 //                 style: TextStyle(

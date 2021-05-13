@@ -5,6 +5,7 @@ import 'package:huna/components/profilePicture.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'bookingHistory_modal.dart';
+import '../../hunaIcons.dart';
 
 var page;
 var jsonData;
@@ -138,15 +139,16 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
             if (snapshot.data['docData'].length > 0) {
               retWidget = Stack(
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                          padding: EdgeInsets.all(15.0),
-                          child: Text(
-                              'Total Spent: ' +
-                                  snapshot.data['total'].toString(),
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 24)))),
+                  // Align(
+                  //   alignment: Alignment.topLeft,
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(15.0),
+                  //     child: Text(
+                  //       'Total Spent: ' + snapshot.data['total'].toString(),
+                  //       style: TextStyle(color: Colors.black, fontSize: 24),
+                  //     ),
+                  //   ),
+                  // ),
                   ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.all(15),
@@ -236,7 +238,7 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
                                       dense: true,
                                     ),
                                     ListTile(
-                                      leading: Icon(Icons.attach_money),
+                                      leading: Icon(HunaIcons.peso),
                                       title: Text(
                                           '${snapshot.data['docData'][index]['rate']}.00'),
                                       dense: true,
@@ -307,15 +309,16 @@ class _TutorHistoryModeState extends State<TutorHistoryMode> {
             if (snapshot.data['docData'].length > 0) {
               retWidget = Stack(
                 children: [
-                  Align(
-                      alignment: Alignment.topLeft,
-                      child: Container(
-                          padding: EdgeInsets.all(15),
-                          child: Text(
-                              'Total Income: ' +
-                                  snapshot.data['total'].toString(),
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 24)))),
+                  // Align(
+                  //   alignment: Alignment.topLeft,
+                  //   child: Container(
+                  //     padding: EdgeInsets.all(15),
+                  //     child: Text(
+                  //       'Total Income: ' + snapshot.data['total'].toString(),
+                  //       style: TextStyle(color: Colors.black, fontSize: 24),
+                  //     ),
+                  //   ),
+                  // ),
                   ListView.builder(
                       shrinkWrap: true,
                       padding: EdgeInsets.all(15),

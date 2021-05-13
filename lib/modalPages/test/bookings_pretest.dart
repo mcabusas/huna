@@ -274,8 +274,8 @@ class _PretestState extends State<PretestPage> {
                   ),
                   SizedBox(height: 20),
                   Container(
-                    child: Text("NOTE: If you've made a mistake after submitting the question, you will still be able to edit your question after you've finished on the previous page.",
-                      style: TextStyle(color: Colors.red, fontSize: 20)
+                    child: Text("Please click the next button to save the question. You are still able to edit the questions after.",
+                      style: TextStyle(color: Colors.red, fontSize: 12)
                     )
                   )
                 ],

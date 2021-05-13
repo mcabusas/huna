@@ -130,12 +130,13 @@ class _MyProfileState extends State<MyProfile> {
             padding: EdgeInsets.only(),
             child: Align(
               alignment: Alignment.topCenter,
-              child: SingleChildScrollView(
+              child: Container(
                 child: Column(
                   children: <Widget>[
                     FutureBuilder(
                         future: _model.getPicture(uid),
-                        builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
                           Widget retWidget;
 
                           if (snapshot.connectionState ==
@@ -143,10 +144,13 @@ class _MyProfileState extends State<MyProfile> {
                             retWidget =
                                 Container(child: CircularProgressIndicator());
                           }
-                          if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
                             retWidget = ClipOval(
-                              child: ProfilePicture(url: snapshot.data, width: 100, height: 100)
-                            );
+                                child: ProfilePicture(
+                                    url: snapshot.data,
+                                    width: 100,
+                                    height: 100));
                           }
                           return retWidget;
                         }),
@@ -169,7 +173,7 @@ class _MyProfileState extends State<MyProfile> {
                     // ),
                     SizedBox(height: 20),
                     // Location
-                    
+
                     getScreen(),
                   ],
                 ),
@@ -210,8 +214,8 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
     Widget reviews;
     return Container(
         child: FutureBuilder(
-        future: initAwait(),
-        builder: (context, AsyncSnapshot snapshot) {
+      future: initAwait(),
+      builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data.length == 0) {
             reviews = Center(
@@ -221,12 +225,12 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
               ),
             );
           } else {
-            reviews = Container(
+            reviews = Expanded(
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 25.0, top: 60.0, right: 25.0, bottom: 10.0),
+                        left: 25.0, top: 45.0, right: 25.0, bottom: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
@@ -240,34 +244,41 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                         // Average Star Ratings
                         IconTheme(
                             data: IconThemeData(color: Colors.amber, size: 20),
-                            child: StarDisplay(value: double.parse(ratings.toStringAsFixed(1))))
+                            child: StarDisplay(
+                                value:
+                                    double.parse(ratings.toStringAsFixed(1))))
                       ],
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(15),
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (snapshot.data.length == 0) {
-                        return new Container();
-                      } else {
-                        return new Card(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(20),
-                            title: IconTheme(
-                              data:
-                                  IconThemeData(color: Colors.amber, size: 20),
-                              child: StarDisplay(
-                                value: double.parse(snapshot.data[index]['tutor_rating'].toStringAsFixed(1))
+                  Expanded(
+                    child: SizedBox(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.all(15),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (snapshot.data.length == 0) {
+                            return new Container();
+                          } else {
+                            return new Card(
+                              child: ListTile(
+                                contentPadding: EdgeInsets.all(20),
+                                title: IconTheme(
+                                  data: IconThemeData(
+                                      color: Colors.amber, size: 20),
+                                  child: StarDisplay(
+                                      value: double.parse(snapshot.data[index]
+                                              ['tutor_rating']
+                                          .toStringAsFixed(1))),
+                                ),
+                                subtitle: Text(snapshot.data[index]['content']),
+                                isThreeLine: true,
                               ),
-                            ),
-                            subtitle: Text(snapshot.data[index]['content']),
-                            isThreeLine: true,
-                          ),
-                        );
-                      }
-                    },
+                            );
+                          }
+                        },
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -277,8 +288,8 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
           return Container(child: Center(child: CircularProgressIndicator()));
         }
         return reviews;
-        },
-      ));
+      },
+    ));
   }
 }
 
@@ -305,81 +316,87 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
 
   Widget build(BuildContext context) {
     return Container(
-      child: SingleChildScrollView(
-      child: FutureBuilder(
-        future: initAwait(),
-        builder: (context, AsyncSnapshot snapshot) {
-          Widget retval;
-          if (snapshot.connectionState == ConnectionState.waiting){
-            retval = Container(child: Center(child: CircularProgressIndicator()));
-          }
-          if (snapshot.connectionState == ConnectionState.done) {
-            print(snapshot.data.length);
-              retval = Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: 30.0, top: 60.0, right: 25.0, bottom: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        // Reviews Label
-                        Text(
-                          'Reviews',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
+        child: FutureBuilder(
+      future: initAwait(),
+      builder: (context, AsyncSnapshot snapshot) {
+        Widget retval;
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          retval = Container(child: Center(child: CircularProgressIndicator()));
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          print(snapshot.data.length);
+          retval = Expanded(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      left: 30.0, top: 45.0, right: 25.0, bottom: 10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      // Reviews Label
+                      Text(
+                        'Reviews',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
                         ),
-                        
-                        // Average Star Ratings
-                        IconTheme(
-                            data: IconThemeData(color: Colors.amber, size: 20),
-                            child: StarDisplay(value: double.parse(ratings.toStringAsFixed(1))))
-                      ],
+                      ),
+
+                      // Average Star Ratings
+                      IconTheme(
+                          data: IconThemeData(color: Colors.amber, size: 20),
+                          child: StarDisplay(
+                              value: double.parse(ratings.toStringAsFixed(1))))
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SizedBox(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(15),
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Widget retVal;
+
+                        if (snapshot.data.length == 0) {
+                          retVal = Center(
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              child: Text('You have no reviews.'),
+                            ),
+                          );
+                        } else {
+                          print('ok');
+                          retVal = Card(
+                            child: ListTile(
+                              contentPadding: EdgeInsets.all(20),
+                              title: IconTheme(
+                                data: IconThemeData(
+                                    color: Colors.amber, size: 20),
+                                child: StarDisplay(
+                                  value: double.parse(snapshot.data[index]
+                                          ['student_rating']
+                                      .toStringAsFixed(2)),
+                                ),
+                              ),
+                              subtitle: Text(snapshot.data[index]['content']),
+                              isThreeLine: true,
+                            ),
+                          );
+                        }
+                        return retVal;
+                      },
                     ),
                   ),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.all(15),
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Widget retVal;
-                      
-                      if (snapshot.data.length == 0) {
-                        retVal =  Center(
-                          child: Container(
-                            height: 100,
-                            width: 100,
-                            child: Text('You have no reviews.'),
-                          ),
-                        );
-                      } else {
-                        print('ok');
-                        retVal = Card(
-                          child: ListTile(
-                            contentPadding: EdgeInsets.all(20),
-                            title: IconTheme(
-                              data:
-                                  IconThemeData(color: Colors.amber, size: 20),
-                              child: StarDisplay(
-                                value: double.parse(snapshot.data[index]['student_rating'].toStringAsFixed(2)),
-                              ),
-                            ),
-                            subtitle: Text(snapshot.data[index]['content']),
-                            isThreeLine: true,
-                          ),
-                        );
-                      }
-                      return retVal;
-                    },
-                  )
-                ],
-              );
-            
-          } 
-          return retval;
-        },
-      ),
+                )
+              ],
+            ),
+          );
+        }
+        return retval;
+      },
     ));
   }
 }
