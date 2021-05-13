@@ -408,7 +408,7 @@ class _SignUpState extends State<SignUpPage> {
                               decoration: new InputDecoration(
                                 labelText: "Zip Code",
                               ),
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.phone,
                             ),
                             new TextFormField(
                               validator: (val) {

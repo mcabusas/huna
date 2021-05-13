@@ -81,6 +81,7 @@ class _NewBookingState extends State<NewBooking> {
     print(sp.getString('lastName'));
     print(sp.getString('uid'));
     // print(sp.getString('username'));
+    print(widget.tutorInfo);
     setState(() {
       firstName = sp.getString('firstName');
       lastName = sp.getString('lastName');
@@ -89,8 +90,8 @@ class _NewBookingState extends State<NewBooking> {
       bookingData['student_firstName'] = firstName;
       bookingData['student_lastName'] = lastName;
       bookingData['student_id'] = studentid;
-      bookingData['tutor_id'] = widget.tutorInfo['tutor_id'];
-      bookingData['tutor_userid'] = widget.tutorInfo['tutor_userid'];
+      bookingData['tutor_id'] = widget.tutorInfo['tid'];
+      bookingData['tutor_userid'] = widget.tutorInfo['uid'];
       bookingData['tutor_lastName'] = widget.tutorInfo['lastName'];
       bookingData['tutor_firstName'] = widget.tutorInfo['firstName'];
       bookingData['rate'] = widget.tutorInfo['rate'];
@@ -160,7 +161,7 @@ class _NewBookingState extends State<NewBooking> {
                             height: 75,
                              child: 
                             FutureBuilder(
-                                future: _model.getPicture(widget.tutorInfo['tutor_userid']),
+                                future: _model.getPicture(widget.tutorInfo['uid']),
                                 builder:  (BuildContext context, AsyncSnapshot snap) {
                                   Widget picture;
                                   if (snap.connectionState ==ConnectionState.waiting) {

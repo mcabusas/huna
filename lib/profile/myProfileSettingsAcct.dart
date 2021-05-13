@@ -7,6 +7,7 @@ import 'myProfile_model.dart';
 String currentMenuItem = "Parent";
 int settingsValue;
 final _formKey = GlobalKey<FormState>();
+final _key = GlobalKey<FormState>();
 MyProfileModel _model = new MyProfileModel();
 bool retVal;
 
@@ -48,7 +49,7 @@ class EmergencyDetails extends StatelessWidget {
                     ['emergencyContactNumber'],
               };
               form = Form(
-                key: _formKey,
+                key: _key,
                 child: Container(
                   child: Column(
                     children: <Widget>[
@@ -261,7 +262,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     decoration: new InputDecoration(
                       labelText: "Zip Code",
                     ),
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.phone,
                   ),
                   new TextFormField(
                     initialValue: snapshot.data.docs[0]['contactNumber'],
@@ -278,7 +279,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     decoration: new InputDecoration(
                       labelText: "Contact Number",
                     ),
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.phone,
                   ),
 
                   SizedBox(

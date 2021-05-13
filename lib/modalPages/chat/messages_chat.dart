@@ -112,6 +112,7 @@ class _ChatState extends State<ChatPage> {
                         textColor: Colors.white,
                         dateTime: dateT,
                         textAlign: TextAlign.right,
+                        nipTip: BubbleNip.rightBottom,
                       );
                     }else {
                       bubble = ChatBubble(
@@ -122,6 +123,7 @@ class _ChatState extends State<ChatPage> {
                         textColor: Colors.black,
                         dateTime: dateT,
                         textAlign: TextAlign.left,
+                        nipTip: BubbleNip.leftBottom,
                       );
                     }
                     return bubble;
@@ -186,9 +188,9 @@ class ChatBubble extends StatelessWidget {
   final Color bubbleColor, textColor;
   final String dateTime;
   final TextAlign textAlign;
+  final BubbleNip nipTip;
 
-
-  ChatBubble({this.textSide, this.messageSide, this.message, this.bubbleColor, this.textColor, this.dateTime, this.textAlign});
+  ChatBubble({this.textSide, this.messageSide, this.message, this.bubbleColor, this.textColor, this.dateTime, this.textAlign, this.nipTip});
 
   @override
   Widget build(BuildContext context) {
@@ -199,7 +201,7 @@ class ChatBubble extends StatelessWidget {
             alignment: messageSide,
             margin: BubbleEdges.only(top: 20),
             padding: BubbleEdges.all(15),
-            nip: BubbleNip.rightBottom,
+            nip: nipTip,
             child: Text(
               message,
               style: TextStyle(color: textColor, fontSize: 15),

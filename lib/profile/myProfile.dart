@@ -240,7 +240,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                         // Average Star Ratings
                         IconTheme(
                             data: IconThemeData(color: Colors.amber, size: 20),
-                            child: StarDisplay(value: ratings))
+                            child: StarDisplay(value: double.parse(ratings.toStringAsFixed(1))))
                       ],
                     ),
                   ),
@@ -259,8 +259,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                               data:
                                   IconThemeData(color: Colors.amber, size: 20),
                               child: StarDisplay(
-                                value: snapshot.data[index]['tutor_rating']
-                                    .toDouble(),
+                                value: double.parse(snapshot.data[index]['tutor_rating'].toStringAsFixed(1))
                               ),
                             ),
                             subtitle: Text(snapshot.data[index]['content']),
@@ -335,7 +334,7 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                         // Average Star Ratings
                         IconTheme(
                             data: IconThemeData(color: Colors.amber, size: 20),
-                            child: StarDisplay(value: ratings))
+                            child: StarDisplay(value: double.parse(ratings.toStringAsFixed(1))))
                       ],
                     ),
                   ),
@@ -363,8 +362,7 @@ class _StudentProfileWidgetState extends State<StudentProfileWidget> {
                               data:
                                   IconThemeData(color: Colors.amber, size: 20),
                               child: StarDisplay(
-                                value: snapshot.data[index]['student_rating']
-                                    .toDouble(),
+                                value: double.parse(snapshot.data[index]['student_rating'].toStringAsFixed(2)),
                               ),
                             ),
                             subtitle: Text(snapshot.data[index]['content']),

@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import "package:google_maps_webservice/places.dart";
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:geocoder/geocoder.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 
 class MapSample extends StatefulWidget {
@@ -39,65 +40,85 @@ class MapSampleState extends State<MapSample> {
   }
   Widget build(BuildContext context) {
     
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Location'),
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios),
-            onPressed: () {
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Location'),
+          automaticallyImplyLeading: false,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            if(locationData.isEmpty){
+              Fluttertoast.showToast(
+                msg: "Please select you desired location.",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.CENTER,
+                timeInSecForIos: 1,
+                backgroundColor: Colors.blue,
+                textColor: Colors.white,
+                fontSize: 16.0
+              );
+            }else{
+              print(locationData);
               Navigator.pop(context, locationData);
-            }),
-      ),
-      body: Stack(
-        children: <Widget>[
-          GoogleMap(
-            onMapCreated: mapCreated,
-            mapType: MapType.normal,
-            initialCameraPosition: CameraPosition(
-              target: LatLng(40.7128, -74.0060),
-              zoom: 11,
+            }
+          },
+          child: Icon(Icons.check),
+          backgroundColor: Colors.blue,
+        ),
+        body: Stack(
+          children: <Widget>[
+            GoogleMap(
+              onMapCreated: mapCreated,
+              mapType: MapType.normal,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(10.3157, 123.8854),
+                zoom: 11,
+              ),
+              markers: Set.from(allMarkers),
             ),
-            markers: Set.from(allMarkers),
-          ),
-          Positioned(
-            top: 30.0,
-            right: 15.0,
-            left: 15.0,
-            child: Container(
-              child: TextField(
-                onTap: () async{
-                    p = await PlacesAutocomplete.show(
-                    context: context, 
-                    apiKey: kGoogleApiKey_places,
-                    mode: Mode.overlay,
-                    language: "en",
-                    components: [Component(Component.country, "ph")],
-                    radius: 100000000
-                  );
-                  displayPrediction(p);
-                },
-                decoration: InputDecoration(
-                  hintText: searchAddr,
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
-                  suffixIcon: Icon(Icons.search)
+            Positioned(
+              top: 30.0,
+              right: 15.0,
+              left: 15.0,
+              child: Container(
+                child: TextField(
+                  onTap: () async{
+                      p = await PlacesAutocomplete.show(
+                      context: context, 
+                      apiKey: kGoogleApiKey_places,
+                      mode: Mode.overlay,
+                      language: "en",
+                      components: [Component(Component.country, "ph")],
+                      radius: 100000000
+                    );
+                    displayPrediction(p);
+                  },
+                  decoration: InputDecoration(
+                    hintText: searchAddr,
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
+                    suffixIcon: Icon(Icons.search)
+                  ),
+                  onChanged: (val){
+                    setState(() {
+                      searchAddr = val;
+                    });
+                  },
                 ),
-                onChanged: (val){
-                  setState(() {
-                    searchAddr = val;
-                  });
-                },
+                height: 50.0,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.white
+                ),
+                
               ),
-              height: 50.0,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10.0),
-                color: Colors.white
-              ),
-              
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
