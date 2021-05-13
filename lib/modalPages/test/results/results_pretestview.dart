@@ -66,11 +66,7 @@ class _ResultsPageState extends State<ResultsPage> {
       onWillPop: () async => false,
       child: Scaffold(
           appBar: AppBar(
-            // leading: IconButton(
-            //     icon: Icon(Icons.arrow_back_ios),
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //     }),
+            automaticallyImplyLeading: false,
             title: Text('Results Page - $testFlag'),
           ),
           floatingActionButton: FloatingActionButton(
@@ -87,6 +83,10 @@ class _ResultsPageState extends State<ResultsPage> {
                 if(widget.stackFlag == 1 || widget.stackFlag == 2){
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
                   DashboardPage()), (Route<dynamic> route) => false);
+                }
+                if(widget.stackFlag == 3){
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                  Bookings()), (Route<dynamic> route) => false);
                 }
                 
                 

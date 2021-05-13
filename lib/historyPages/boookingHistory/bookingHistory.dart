@@ -161,13 +161,14 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
                           'Finished') {
                         color = Colors.greenAccent;
                       } else if (snapshot.data['docData'][index]['status'] ==
-                          'Declined') {
+                          'Declined' || snapshot.data['docData'][index]['status'] == 'Cancelled') {
                         color = Colors.red;
                       }
                       if (snapshot.data['docData'][index]['status'] ==
                               'Finished' ||
                           snapshot.data['docData'][index]['status'] ==
-                              'Declined') {
+                              'Declined' ||
+                          snapshot.data['docData'][index]['status'] == 'Cancelled') {
                         card = Card(
                           child: ListView(
                             shrinkWrap: true,

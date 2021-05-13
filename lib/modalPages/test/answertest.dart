@@ -12,7 +12,8 @@ int _total, _correct, _incorrect_, _notAtttempted;
 class AnswerPretestPage extends StatefulWidget {
   final testData;
   final flag;
-  AnswerPretestPage({this.testData, this.flag});
+  final stackFlag;
+  AnswerPretestPage({this.testData, this.flag, this.stackFlag});
   @override
   _AnswerPretestState createState() => _AnswerPretestState();
 }
@@ -97,7 +98,7 @@ class _AnswerPretestState extends State<AnswerPretestPage> {
             print(widget.testData);
             _model.updatePretestStatus(widget.testData['testData']['test_id'], widget.flag).then((value){
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              ResultsPage(testData: widget.testData, flag: widget.flag, stackFlag: 2)), (Route<dynamic> route) => false);
+              ResultsPage(testData: widget.testData, flag: widget.flag, stackFlag: widget.stackFlag)), (Route<dynamic> route) => false);
 
               // Navigator.push(
               //     context,

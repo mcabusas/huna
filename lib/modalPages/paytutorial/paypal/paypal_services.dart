@@ -25,6 +25,7 @@ class PaypalServices {
       }
       return null;
     } catch (e) {
+      print('error3');
       rethrow;
     }
   }
@@ -41,6 +42,8 @@ class PaypalServices {
           });
 
       final body = convert.jsonDecode(response.body);
+      print(body.toString());
+      print(response.statusCode);
       if (response.statusCode == 201) {
         if (body["links"] != null && body["links"].length > 0) {
           List links = body["links"];
@@ -61,12 +64,12 @@ class PaypalServices {
         }
         return null;
       } else {
+        print('error1.1');
         throw Exception(body["message"]);
-        
       }
     } catch (e) {
+      print('error1');
       rethrow;
-      print('error here in createpayment');
     }
   }
 
@@ -89,6 +92,7 @@ class PaypalServices {
       }
       return null;
     } catch (e) {
+      print('error2');
       rethrow;
     }
   }

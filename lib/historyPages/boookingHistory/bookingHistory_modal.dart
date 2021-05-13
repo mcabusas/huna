@@ -92,11 +92,9 @@ class HistoryModal extends MyProfileModel {
           'status': value.data()['bookingData']['booking_status']
 
         });
-        if(value.data()['bookingData']['booking_status'] == 'Declined' || value.data()['bookingData']['booking_status'] == 'Cancelled') {
-          rate = 0;
-        } else{
+        
           rate = double.parse(value.data()['bookingData']['rate']);
-        }
+        
 
         totalIncome += rate;
 

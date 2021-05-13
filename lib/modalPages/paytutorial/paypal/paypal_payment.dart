@@ -94,19 +94,22 @@ class PaypalPaymentState extends State<PaypalPayment> {
   }
 
   Map<String, dynamic> getOrderParams() {
+    
+
+
     // checkout invoice details
     String totalAmount = (double.parse(widget.data['bookingData']['rate']) * double.parse(widget.data['bookingData']['numberOfStudents'])).toString();
-    String subTotalAmount = widget.data['bookingData']['rate'];
+    String subTotalAmount = (double.parse(widget.data['bookingData']['rate']) * double.parse(widget.data['bookingData']['numberOfStudents'])).toString();
     String shippingCost = '0';
     int shippingDiscountCost = 0;
-    String userFirstName = firstName;
-    String userLastName = lastName;
-    String addressCity = 'Cebu City';
-    String addressStreet = widget.data['bookingData']['location'];
-    String addressZipCode = '6000';
-    String addressCountry = 'Philippines';
-    String addressState = 'Cebu';
-    String addressPhoneNumber = '+639999999999';
+    String userFirstName = 'Gulshan';
+    String userLastName = 'Yadav';
+    String addressCity = 'Delhi';
+    String addressStreet = 'Mathura Road';
+    String addressZipCode = '110014';
+    String addressCountry = 'India';
+    String addressState = 'Delhi';
+    String addressPhoneNumber = '+919990119091';
 
     Map<String, dynamic> temp = {
       "intent": "sale",
@@ -128,9 +131,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
             "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
           },
           "item_list": {
-            "items": [
-              
-            ],
+            "items": [],
             if (isEnableShipping &&
                 isEnableAddress)
               "shipping_address": {
@@ -156,6 +157,70 @@ class PaypalPaymentState extends State<PaypalPayment> {
     };
     return temp;
   }
+
+  // Map<String, dynamic> getOrderParams() {
+  //   // checkout invoice details
+  //   String totalAmount = (double.parse(widget.data['bookingData']['rate']) * double.parse(widget.data['bookingData']['numberOfStudents'])).toString();
+  //   String subTotalAmount = widget.data['bookingData']['rate'];
+  //   String shippingCost = '0';
+  //   int shippingDiscountCost = 0;
+  //   String userFirstName = firstName;
+  //   String userLastName = lastName;
+  //   String addressCity = 'Cebu City';
+  //   String addressStreet = widget.data['bookingData']['location'];
+  //   String addressZipCode = '6000';
+  //   String addressCountry = 'Philippines';
+  //   String addressState = 'Cebu';
+  //   String addressPhoneNumber = '+639999999999';
+
+  //   Map<String, dynamic> temp = {
+  //     "intent": "sale",
+  //     "payer": {"payment_method": "paypal"},
+  //     "transactions": [
+  //       {
+  //         "amount": {
+  //           "total": totalAmount,
+  //           "currency": defaultCurrency["currency"],
+  //           "details": {
+  //             "subtotal": subTotalAmount,
+  //             "shipping": shippingCost,
+  //             "shipping_discount":
+  //                 ((-1.0) * shippingDiscountCost).toString()
+  //           }
+  //         },
+  //         "description": "The payment transaction description.",
+  //         "payment_options": {
+  //           "allowed_payment_method": "INSTANT_FUNDING_SOURCE"
+  //         },
+  //         "item_list": {
+  //           "items": [
+              
+  //           ],
+  //           if (isEnableShipping &&
+  //               isEnableAddress)
+  //             "shipping_address": {
+  //               "recipient_name": userFirstName +
+  //                   " " +
+  //                   userLastName,
+  //               "line1": addressStreet,
+  //               "line2": "",
+  //               "city": addressCity,
+  //               "country_code": addressCountry,
+  //               "postal_code": addressZipCode,
+  //               "phone": addressPhoneNumber,
+  //               "state": addressState
+  //             },
+  //         }
+  //       }
+  //     ],
+  //     "note_to_payer": "Contact us for any questions on your order.",
+  //     "redirect_urls": {
+  //       "return_url": returnURL,
+  //       "cancel_url": cancelURL
+  //     }
+  //   };
+  //   return temp;
+  // }
 
   @override
   Widget build(BuildContext context) {

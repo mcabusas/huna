@@ -40,14 +40,7 @@ class _TutorialCompleteState extends State<TutorialComplete> {
       onWillPop: () async => false,
       child: Scaffold(
           appBar: AppBar(
-            leading: IconButton(
-                icon: Icon(Icons.arrow_back_ios),
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => Bookings()),
-                  // );
-                }),
+            automaticallyImplyLeading: false,
             title: Text('Tutorial Complete'),
           ),
           body: SingleChildScrollView(
@@ -273,7 +266,7 @@ class _StudentState extends State<Student> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => AnswerPretestPage(
-                                        testData: widget.studentData, flag: 1)),
+                                        testData: widget.studentData, flag: 1, stackFlag: 2)),
                               );
                             },
                             icon: Icon(Icons.assignment),
