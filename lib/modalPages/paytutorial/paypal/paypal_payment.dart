@@ -93,6 +93,8 @@ class PaypalPaymentState extends State<PaypalPayment> {
     });
   }
 
+  
+
   Map<String, dynamic> getOrderParams() {
     
 
@@ -224,6 +226,11 @@ class PaypalPaymentState extends State<PaypalPayment> {
 
   @override
   Widget build(BuildContext context) {
+    var order = {
+      'subtotal': double.parse(widget.data['bookingData']['rate']),
+      'total': double.parse(widget.data['bookingData']['total']),
+    };
+    
     //print(checkoutUrl);
     if (checkoutUrl != null) {
       return Scaffold(
@@ -254,7 +261,7 @@ class PaypalPaymentState extends State<PaypalPayment> {
               }
               // Navigator.of(context).pop();
               print('twOOOO');
-             bool catcher = await _model.payment(widget.data, Map<String, dynamic>.from(getOrderParams()), 'paypal');
+             bool catcher = await _model.payment(widget.data, order, 'paypal');
              print('this is catcher: ' + catcher.toString());
               if(catcher == true){
                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>

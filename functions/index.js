@@ -3,33 +3,6 @@ const admin = require('firebase-admin');
 
 admin.initializeApp(functions.config().functions);
 
-exports.newBookings = functions.firestore.document('bookings/{bookingId}').onCreate(async (snapshot, context) => {
-    if(snapshot.empty){
-        console.log('no device');
-    }
-    const newData = snapshot.data();
-
-
-
-    var payload = {
-        notification: {title: 'Booking Request Received', body: newData.bookingData['student_firstName'] + " " + newData.bookingData['student_lastName'] + " has sent you a booking request.", sound: 'default'}, 
-        data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
-    };
-    
-
-    const deviceTokens = await admin.firestore().collection('tokens').doc(newData.bookingData['tutor_uid']).get();
-
-    try{
-        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
-        console.log(payload);
-        console.log('sent notification');
-    } catch (err) {
-        console.log('error sending notification');
-        console.log(err)
-    }
-});
-
-
 exports.newMessages = functions.firestore.document('chatrooms/{chatroomid}/messages/{messageid}').onCreate(async (create, context) => {
     const newData = create.data();
     console.log(newData['sentBy'])
@@ -58,13 +31,14 @@ exports.newMessages = functions.firestore.document('chatrooms/{chatroomid}/messa
     }
 });
 
+
 exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
 
     const after = update.after.data();
     //aly
     
 
-    const deviceTokens = await admin.firestore().collection('tokens').doc(newData.bookingData['tutor_uid']).get();
+    const deviceTokens = await admin.firestore().collection('tokens').doc(after.bookingData['tutor_userid']).get();
 
     var payload = {
         notification: {title: 'Booking Cancelled', body: "Your booking for " + after.bookingData['date'] + " has been cancelled.", sound: 'default'}, 
@@ -82,6 +56,32 @@ exports.bookingStatusForTutors = functions.firestore.document('bookings/{id}').o
 
 
 
+});
+
+exports.newBookings = functions.firestore.document('bookings/{bookingId}').onCreate(async (snapshot, context) => {
+    if(snapshot.empty){
+        console.log('no device');
+    }
+    const newData = snapshot.data();
+
+
+
+    var payload = {
+        notification: {title: 'Booking Request Received', body: newData.bookingData['student_firstName'] + " " + newData.bookingData['student_lastName'] + " has sent you a booking request.", sound: 'default'}, 
+        data: {click_action: 'FLUTTER_NOTIFICATION_CLICK', message: 'Sample Message'}
+    };
+    
+
+    const deviceTokens = await admin.firestore().collection('tokens').doc(newData.bookingData['tutor_userid']).get();
+
+    try{
+        const response = await admin.messaging().sendToDevice(deviceTokens.data()['tokens'], payload);
+        console.log(payload);
+        console.log('sent notification');
+    } catch (err) {
+        console.log('error sending notification');
+        console.log(err)
+    }
 });
 
 exports.bookingStatusForStudents = functions.firestore.document('bookings/{id}').onUpdate(async (update, context) => {
@@ -111,10 +111,7 @@ exports.bookingStatusForStudents = functions.firestore.document('bookings/{id}')
     } else if(after.bookingData['booking_status'] == "Ongoing") {
         titleMessage = "Tutorial Session has started."
         payloadMessage = "Your " + "tutorial " +  "session " +  "with " +  after.bookingData['tutor_firstName'] + " " +  after.bookingData['tutor_lastName']  + " has" + "started!"
-    } else if(after.testData['test_sentStatus'] == "1") {
-        payloadMessage = after.bookingData['tutor_firstName'] + " " + after.bookingData['tutor_lastName']  + " has sent your a pre-test."
-        titleMessage = "Pre-test Received!";
-    }
+    } 
     
   
     payload = {

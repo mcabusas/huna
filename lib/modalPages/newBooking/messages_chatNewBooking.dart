@@ -27,12 +27,15 @@ class _NewBookingState extends State<NewBooking> {
   DateTime _dateTime;
   TimeOfDay _timeStart;
   TimeOfDay _timeEnd;
+  double start = 1.0;
+  double end = 2.0;
   String location = '';
   String formattedTimeOfStart;
   String formattedTimeOfEnd;
   Map retVal;
   bool showSpinner = false;
   bool returnValue;
+  double total = 0;
   final _key = new GlobalKey<FormState>();
 
   Map<String, dynamic> bookingData = {
@@ -48,12 +51,16 @@ class _NewBookingState extends State<NewBooking> {
     'timeEnd': '', //formattedTimeOfEnd,
     'topic': '',
     'location': '',
-    'numberOfStudents': '',
+    'numberOfStudents': '1.0',
     'locationId': '',
     'booking_status': 'Pending',
     'rate': '',
     'total': ''
   };
+
+  double calculateTotal(double end, double start, double subtotal, double numberOfStudents){
+    return (subtotal * numberOfStudents * (end - start));
+  }
 
   Map<String, dynamic> testData = {
     'test_id': '',
@@ -95,6 +102,7 @@ class _NewBookingState extends State<NewBooking> {
       bookingData['tutor_lastName'] = widget.tutorInfo['lastName'];
       bookingData['tutor_firstName'] = widget.tutorInfo['firstName'];
       bookingData['rate'] = widget.tutorInfo['rate'];
+      total = double.parse(bookingData['rate']);
     });
   }
 
@@ -242,24 +250,56 @@ class _NewBookingState extends State<NewBooking> {
                     )
                   ),
 
-                  TextFormField(
-                    validator: (val) {
-                      if (val.isEmpty) {
-                        return "Please enter the number of students";
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        bookingData['numberOfStudents'] = value;
-                      });
-                    },
-                    decoration: InputDecoration(
-                      suffixIcon: Icon(Icons.people),
-                      labelText: 'Number of Students',
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12.0),
+                          child: Text(
+                            'Number of Students: ',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        ),
+                        
+
+                        DropdownButton<String>(
+                          items: <String>['1', '2', '3', '4', '5'].map((String value) {
+                            return new DropdownMenuItem<String>(
+                              value: value,
+                              child: new Text(value),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              bookingData['numberOfStudents'] = value;
+                              total *= double.parse(bookingData['numberOfStudents']);
+                            });
+                          },
+                        ),
+                      ],
                     ),
-                    keyboardType: TextInputType.numberWithOptions(),
                   ),
+
+                  // TextFormField(
+                  //   validator: (val) {
+                  //     if (val.isEmpty) {
+                  //       return "Please enter the number of students";
+                  //     }
+                  //     return null;
+                  //   },
+                  //   onChanged: (value) {
+                  //     setState(() {
+                  //       bookingData['numberOfStudents'] = value;
+                  //       total *= double.parse(bookingData['numberOfStudents']);
+                  //     });
+                  //   },
+                  //   decoration: InputDecoration(
+                  //     suffixIcon: Icon(Icons.people),
+                  //     labelText: 'Number of Students',
+                  //   ),
+                  //   keyboardType: TextInputType.numberWithOptions(),
+                  // ),
 
                   // DATE PICKER
                   Container(
@@ -323,9 +363,11 @@ class _NewBookingState extends State<NewBooking> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 12.0),
-                          child: Text(_timeStart == null
+                          child: Text(
+                            _timeStart == null
                               ? ''
-                              : _timeStart.format(context)),
+                              : _timeStart.format(context)
+                          ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 12.0),
@@ -343,6 +385,7 @@ class _NewBookingState extends State<NewBooking> {
                                       localizations.formatTimeOfDay(_timeStart);
                                   bookingData['timeStart'] =
                                       formattedTimeOfStart;
+                                  start = _timeStart.hour.toDouble() + (_timeStart.minute.toDouble() / 60);
                                 });
                               });
                             },
@@ -388,6 +431,8 @@ class _NewBookingState extends State<NewBooking> {
                                   formattedTimeOfEnd =
                                       localizations.formatTimeOfDay(_timeEnd);
                                   bookingData['timeEnd'] = formattedTimeOfEnd;
+                                  end = _timeEnd.hour.toDouble() + (_timeEnd.minute.toDouble() / 60);
+                                  total *=(end-start);
                                 });
                               });
                             },
@@ -408,10 +453,27 @@ class _NewBookingState extends State<NewBooking> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(
+                          "Sub-Total: ",
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        Text((bookingData['rate'] + '.00').toString(),
+                            style: TextStyle(fontSize: 30)),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                   Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
                           "Total: ",
                           style: TextStyle(fontSize: 15),
                         ),
-                        Text("P ${widget.tutorInfo['rate']}.00",
+                        Text((calculateTotal(end, start, double.parse(bookingData['rate']), double.parse(bookingData['numberOfStudents'])).toStringAsFixed(2)),
                             style: TextStyle(fontSize: 30)),
                       ],
                     ),
@@ -424,6 +486,7 @@ class _NewBookingState extends State<NewBooking> {
                     width: MediaQuery.of(context).size.width,
                     child: RaisedButton.icon(
                       onPressed: () async {
+                        print(calculateTotal(end, start, double.parse(bookingData['rate']), double.parse(bookingData['numberOfStudents'])).toStringAsFixed(2));
                         if (_key.currentState.validate()) {
                           if(bookingData['timeStart'] == '' || bookingData['timeEnd'] == '' || bookingData['date'] == ''){
                             Fluttertoast.showToast(
@@ -438,7 +501,7 @@ class _NewBookingState extends State<NewBooking> {
                           }else {
                             setState(() {
                               showSpinner = true;
-                              bookingData['total'] = (double.parse(bookingData['rate']) * double.parse(bookingData['numberOfStudents'])).toString();
+                              bookingData['total'] = calculateTotal(end, start, double.parse(bookingData['rate']), double.parse(bookingData['numberOfStudents'])).toStringAsFixed(2);
                             });
 
                             try {

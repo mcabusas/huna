@@ -211,13 +211,13 @@ class AuthServices extends MyProfileModel with ChangeNotifier {
     return retVal;
   }
 
-  Future<void> signOut() async {
+  Future<void> signOut(String id) async {
     sp = await SharedPreferences.getInstance();
     await sp.clear().catchError((e) => {print(e.toString())});
     _firebaseMessaging.getToken().then((token) async => {
         await FirebaseFirestore.instance
           .collection('tokens')
-          .doc(_auth.currentUser.uid)
+          .doc(id)
           .get()
           .then((doc) async => {
             if(doc.exists) {

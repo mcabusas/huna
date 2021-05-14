@@ -234,13 +234,18 @@ class _StudentHistoryModeState extends State<StudentHistoryMode> {
                                     ListTile(
                                       leading: Icon(Icons.access_time),
                                       title: Text(
-                                          '${snapshot.data['docData'][index]['timeStart']} ${snapshot.data['docData'][index]['timeEnd']}'),
+                                          '${snapshot.data['docData'][index]['timeStart']} - ${snapshot.data['docData'][index]['timeEnd']}'),
                                       dense: true,
                                     ),
                                     ListTile(
+                                      leading: Icon(Icons.account_circle),
+                                      title: Text(
+                                          '${snapshot.data['docData'][index]['numberOfStudents']}'),
+                                      dense: true),
+                                    ListTile(
                                       leading: Icon(HunaIcons.peso),
                                       title: Text(
-                                          '${snapshot.data['docData'][index]['rate']}.00'),
+                                          '${snapshot.data['docData'][index]['rate']}'),
                                       dense: true,
                                     ),
                                     ListTile(
@@ -403,9 +408,9 @@ class _TutorHistoryModeState extends State<TutorHistoryMode> {
                                         dense: true,
                                       ),
                                       ListTile(
-                                        leading: Icon(Icons.attach_money),
+                                        leading: Icon(HunaIcons.peso),
                                         title: Text(
-                                            '${snapshot.data['docData'][index]['rate']}.00'),
+                                            '${snapshot.data['docData'][index]['rate']}'),
                                         dense: true,
                                       ),
                                       ListTile(

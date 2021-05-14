@@ -361,7 +361,7 @@ class _TutorProfileWidgetState extends State<TutorProfileWidget> {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    'Average Rating: ${snapshot.data}',
+                                    'Average Rating: ${snapshot.data.toStringAsFixed(1)}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                     ),

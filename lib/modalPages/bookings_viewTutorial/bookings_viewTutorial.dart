@@ -398,8 +398,11 @@ class _TutorState extends State<Tutor> {
                           child: RaisedButton.icon(
                             onPressed: () async {
                               // Alert Dialog: Create Pretest
-
-                              createPretest();
+                              if(createBtn != Colors.grey){
+                                createPretest();
+                              }else{
+                                return;
+                              }
                             },
                             icon: Icon(Icons.add),
                             label: Text('Create Pretest Questions'),

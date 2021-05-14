@@ -25,6 +25,7 @@ class _SideDrawerState extends State<SideDrawer> {
   DrawerModel drawerModel = new DrawerModel();
   SharedPreferences sp;
   AuthServices _authServices = new AuthServices();
+  String uid;
   
 
   Future<void> initAwait() async {
@@ -120,7 +121,7 @@ class _SideDrawerState extends State<SideDrawer> {
                     leading: Icon(Icons.exit_to_app),
                     title: Text('Logout'),
                     onTap: () {
-                      _authServices.signOut().then((value) => {
+                      _authServices.signOut(sp.getString('uid')).then((value) => {
 
                         Navigator.pushAndRemoveUntil(
                           context,

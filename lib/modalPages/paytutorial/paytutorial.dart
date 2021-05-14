@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:huna/modalPages/paytutorial/paypal/paypal_payment.dart';
+import 'package:huna/modalPages/paytutorial/receipt/receipt.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'paytutorial_model.dart';
+import '../../hunaIcons.dart';
 
 
 
@@ -16,7 +19,7 @@ class PayTutorial extends StatefulWidget {
 class _PayTutorialState extends State<PayTutorial> {
 
   String uid;
-
+  PaymentTutorial _model = new PaymentTutorial();
   initAwait() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
@@ -84,44 +87,6 @@ class _PayTutorialState extends State<PayTutorial> {
                             ),
                           ),
                         );
-
-                      // var request =  BraintreeDropInRequest(
-                      //   tokenizationKey: 'sandbox_6m9w58hh_w5n3q86xk87fw8cc',
-                      //   collectDeviceData: true,
-                      //   paypalRequest: BraintreePayPalRequest(
-                      //     amount: amount.toString(),
-                      //     displayName: uid.toString()
-                      //   ),
-                      //   cardEnabled: true
-                      // );
-                      
-                      // BraintreeDropInResult result = await BraintreeDropIn.start(request).catchError((e) => print(e.toString()));
-                      // if(result != null) {
-                      //   print(result.paymentMethodNonce.description);
-                      //   print(result.paymentMethodNonce.nonce);
-
-                      //   //final http.Response response = await http.post(Uri.tryParse('https://us-central1-upheld-pursuit-274606.cloudfunctions.net/paypalPayment?payment_method_nonce=${result.paymentMethodNonce.nonce}&device_data=${result.deviceData}&amount=$amount'));
-                        
-                      //   //final payResult = jsonDecode(response.body);
-                      //   // if(payResult['result'] == 'success') {print('done');} else(print('ERROR ON THE PAYPAL PAGE, MAYBE THE CLOUD FUNCTIONS?'));
-                      //     Navigator.pushReplacement(
-                      //                 context, MaterialPageRoute(builder: (BuildContext context) => DashboardPage()));
-                      //     Fluttertoast.showToast(
-                      //               msg: "Payment complete!",
-                      //               toastLength: Toast.LENGTH_SHORT,
-                      //               gravity: ToastGravity.BOTTOM,
-                      //               timeInSecForIos: 1,
-                      //               backgroundColor: Colors.blue,
-                      //               textColor: Colors.white,
-                      //               fontSize: 16.0
-                      //           );
-
-                          
-                           
-                      // }else {
-                      //   print(result);
-                      //   print('in else'); 
-                      // }
                     },
                     child: Card(
                       child: ListTile(
@@ -135,10 +100,24 @@ class _PayTutorialState extends State<PayTutorial> {
                       ),
                     ),
                   ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.attach_money),
-                      title: Text('Cash'),
+                  GestureDetector(
+                    onTap: () async {
+                      var order = {
+                        'subtotal': double.parse(widget.data['bookingData']['rate']),
+                        'total': double.parse(widget.data['bookingData']['total']),
+                      };
+                      bool catcher = await _model.payment(widget.data, order, 'cash');
+                      print('this is catcher: ' + catcher.toString());
+                        if(catcher == true){
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                                          Receipt(data: widget.data)), (Route<dynamic> route) => false);
+                        }
+                    },
+                    child: Card(
+                      child: ListTile(
+                        leading: Icon(HunaIcons.peso),
+                        title: Text('Cash'),
+                      ),
                     ),
                   ),
                 ],

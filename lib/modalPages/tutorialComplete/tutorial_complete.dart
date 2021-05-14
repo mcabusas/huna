@@ -289,7 +289,7 @@ class _StudentState extends State<Student> {
                                     MaterialPageRoute(
                                         builder: (context) => ResultsPage(
                                             testData: widget.studentData,
-                                            flag: widget.flag,
+                                            flag: 0,
                                             stackFlag: 0)),
                                   );
                                 },
@@ -311,7 +311,7 @@ class _StudentState extends State<Student> {
                                     MaterialPageRoute(
                                         builder: (context) => ResultsPage(
                                             testData: widget.studentData,
-                                            flag: widget.flag,
+                                            flag: 1,
                                             stackFlag: 0)),
                                   );
                                 },

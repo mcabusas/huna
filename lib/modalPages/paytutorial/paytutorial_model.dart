@@ -7,19 +7,19 @@ class PaymentTutorial {
   Future<bool> payment(var data, var orderDetails, String type) async {
 
     bool retVal = false;
-    print(orderDetails['transactions'][0]['amount']['details']['subtotal']);
+    //print(orderDetails['transactions'][0]['amount']['details']['subtotal']);
 
-    var order = {
-      'subtotal': orderDetails['transactions'][0]['amount']['details']['subtotal'],
-      'total': orderDetails['transactions'][0]['amount']['total']
-    };
+    // var order = {
+    //   'subtotal': orderDetails['transactions'][0]['amount']['details']['subtotal'],
+    //   'total': orderDetails['transactions'][0]['amount']['total']
+    // };
 
     await FirebaseFirestore.instance
     .collection('transactions')
     .doc(data['bookingId'])
     .set({
       'bookingId': data['bookingId'],
-      'order_details': order,
+      'order_details': orderDetails,
       'student_id': data['bookingData']['student_id'],
       'tutor_uid': data['bookingData']['tutor_userid'],
       'payment_type': type

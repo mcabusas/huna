@@ -38,8 +38,8 @@ class MyProfileModel {
       .child(uid+'.jpg');
 
       firebase_storage.UploadTask uploadTask = ref.putFile(file);
-      var url = (await uploadTask.then((value) => {
-        value.ref.getDownloadURL().then((value) async => {
+      var url = (await uploadTask.then((value) async => {
+       await value.ref.getDownloadURL().then((value) async => {
           await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)

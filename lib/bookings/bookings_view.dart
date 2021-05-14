@@ -225,35 +225,7 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                             ),
                             title: Text(
                                 '${snapshot.data.docs[index]['bookingData']['tutor_firstName']} ${snapshot.data.docs[index]['bookingData']['tutor_lastName']}'),
-                            //subtitle: Text('${jsonData[index]['username']}', overflow: TextOverflow.ellipsis),
-                            // trailing: snapshot.data.docs[index]['testData']
-                            //             ['test_id'] ==
-                            //         ''
-                            //     ? Container(height: 0, width: 0)
-                            //     : snapshot.data.docs[index]['testData']
-                            //                     ['test_sentStatus'] ==
-                            //                 '1' &&
-                            //             snapshot.data.docs[index]['testData']
-                            //                     ['pretest_answeredStatus'] ==
-                            //                 '0'
-                            //         ? RaisedButton.icon(
-                            //             onPressed: () {
-                            //               Navigator.push(
-                            //                 context,
-                            //                 MaterialPageRoute(
-                            //                     builder: (context) =>
-                            //                         AnswerPretestPage(
-                            //                             testData: snapshot
-                            //                                 .data.docs[index],
-                            //                             flag: 0)),
-                            //               );
-                            //             },
-                            //             icon: Icon(Icons.assignment_late),
-                            //             label: Text('Pretest'),
-                            //             color: Colors.purple,
-                            //             textColor: Colors.white,
-                            //           )
-                            //         : Container(height: 0, width: 0),
+                            
                             children: <Widget>[
                               // Expanded Contents
                               ListTile(
@@ -280,6 +252,11 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                     '${snapshot.data.docs[index]['bookingData']['timeStart']} - ${snapshot.data.docs[index]['bookingData']['timeEnd']}'),
                                 dense: true,
                               ),
+                              ListTile(
+                                leading: Icon(Icons.account_circle),
+                                title: Text(
+                                    '${snapshot.data.docs[index]['bookingData']['numberOfStudents']}'),
+                                dense: true),
                               // ListTile(
                               //   leading: Icon(Icons.attach_money),
                               //   title: Text(
@@ -304,133 +281,6 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                         fontWeight: FontWeight.w700)),
                                 dense: true,
                               ),
-
-                              //   Column(
-                              //     crossAxisAlignment: CrossAxisAlignment.stretch,
-                              //     children: [
-                              //       snapshot.data.docs[index]['testData']
-                              //                       ['pretest_answeredStatus'] ==
-                              //                   '1' &&
-                              //               (snapshot.data.docs[index]['bookingData']
-                              //                           ['booking_status'] ==
-                              //                       'Accepted' ||
-                              //                   snapshot.data.docs[index]['bookingData']
-                              //                           ['booking_status'] ==
-                              //                       'Ongoing' ||
-                              //                   (snapshot.data.docs[index]['bookingData']
-                              //                               ['booking_status'] ==
-                              //                           'Finished' &&
-                              //                       snapshot.data.docs[index]
-                              //                                   ['testData']
-                              //                               ['posttest_answeredStatus'] ==
-                              //                           '0'))
-                              //           ? Column(
-                              //               crossAxisAlignment:
-                              //                   CrossAxisAlignment.stretch,
-                              //               children: [
-                              //                 Padding(
-                              //                   padding:
-                              //                       const EdgeInsets.fromLTRB(
-                              //                           0, 0, 0, 0),
-                              //                   child: RaisedButton.icon(
-                              //                     onPressed: () {
-                              //                       if (snapshot.data
-                              //                                       .docs[index]
-                              //                                   ['bookingData'][
-                              //                               'booking_status'] ==
-                              //                           'Accepted') {
-                              //                         Navigator.push(
-                              //                           context,
-                              //                           MaterialPageRoute(
-                              //                               builder: (context) =>
-                              //                                   ViewTutorialPage(
-                              //                                       data: snapshot
-                              //                                               .data
-                              //                                               .docs[
-                              //                                           index],
-                              //                                       flag: 0)),
-                              //                         );
-                              //                       } else if (snapshot.data
-                              //                                       .docs[index]
-                              //                                   ['bookingData'][
-                              //                               'booking_status'] ==
-                              //                           'Ongoing') {
-                              //                         Navigator.push(
-                              //                           context,
-                              //                           MaterialPageRoute(
-                              //                               builder: (context) =>
-                              //                                   TutorialInSession(
-                              //                                       data: snapshot
-                              //                                               .data
-                              //                                               .docs[
-                              //                                           index],
-                              //                                       flag: 0)),
-                              //                         );
-                              //                       } else if (snapshot.data.docs[
-                              //                                           index][
-                              //                                       'bookingData']
-                              //                                   [
-                              //                                   'booking_status'] ==
-                              //                               'Finished' &&
-                              //                           snapshot.data.docs[
-                              //                                           index]
-                              //                                       ['testData']
-                              //                                   [
-                              //                                   'posttest_answeredStatus'] ==
-                              //                               '0') {
-                              //                         Navigator.push(
-                              //                           context,
-                              //                           MaterialPageRoute(
-                              //                             builder: (context) =>
-                              //                                 TutorialComplete(
-                              //                                     data: snapshot
-                              //                                             .data
-                              //                                             .docs[
-                              //                                         index],
-                              //                                     flag: 0),
-                              //                           ),
-                              //                         );
-                              //                       }
-
-                              //                       //setStatusBooking(jsonData[index]['booking_id'], 0);
-                              //                     },
-                              //                     icon: Icon(Icons.assignment),
-                              //                     label: Text('Tutorial'),
-                              //                     color: Colors.green.shade800,
-                              //                     textColor: Colors.white,
-                              //                   ),
-                              //                 ),
-                              //               ],
-                              //             )
-                              //           : Container(height: 0, width: 0),
-                              //       // SizedBox(width: 20),
-                              //       // Column(
-                              //       //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                              //       //   children: [
-                              //       //     Align(
-                              //       //       alignment: Alignment.center,
-                              //       //       child: Padding(
-                              //       //         padding:
-                              //       //             const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                              //       //         child: RaisedButton.icon(
-                              //       //           onPressed: () {
-                              //       //             _model.updateBookingStatus(
-                              //       //                 snapshot.data.docs[index]
-                              //       //                     ['bookingId'],
-                              //       //                 0);
-                              //       //             //setStatusBooking(jsonData[index]['booking_id'], 0);
-                              //       //           },
-                              //       //           icon: Icon(Icons.cancel),
-                              //       //           label: Text('Cancel Booking'),
-                              //       //           color: Colors.red.shade800,
-                              //       //           textColor: Colors.white,
-                              //       //         ),
-                              //       //       ),
-                              //       //     ),
-                              //       //   ],
-                              //       // ),
-                              //     ],
-                              //   ),
                             ],
                           ),
                         ),
@@ -549,32 +399,6 @@ class _StudentModeWidgetState extends State<StudentModeWidget> {
                                     ],
                                   )
                                 : Container(height: 0, width: 0),
-                            // SizedBox(width: 20),
-                            // Column(
-                            //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                            //   children: [
-                            //     Align(
-                            //       alignment: Alignment.center,
-                            //       child: Padding(
-                            //         padding:
-                            //             const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            //         child: RaisedButton.icon(
-                            //           onPressed: () {
-                            //             _model.updateBookingStatus(
-                            //                 snapshot.data.docs[index]
-                            //                     ['bookingId'],
-                            //                 0);
-                            //             //setStatusBooking(jsonData[index]['booking_id'], 0);
-                            //           },
-                            //           icon: Icon(Icons.cancel),
-                            //           label: Text('Cancel Booking'),
-                            //           color: Colors.red.shade800,
-                            //           textColor: Colors.white,
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ],
-                            // ),
                           ],
                         ),
 
@@ -656,7 +480,7 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                         'Finished' ||
                     snapshot.data.docs[index]['bookingData']
                             ['booking_status'] ==
-                        'Declined') {
+                        'Declined' || snapshot.data.docs[index]['bookingData']['booking_status'] == 'Cancelled') {
                   return Container(
                     height: 0,
                     width: 0,
@@ -755,6 +579,11 @@ class _TutorModeWidgetState extends State<TutorModeWidget> {
                                 leading: Icon(Icons.access_time),
                                 title: Text(
                                     '${snapshot.data.docs[index]['bookingData']['timeStart']} - ${snapshot.data.docs[index]['bookingData']['timeEnd']}'),
+                                dense: true),
+                            ListTile(
+                                leading: Icon(Icons.account_circle),
+                                title: Text(
+                                    '${snapshot.data.docs[index]['bookingData']['numberOfStudents']}'),
                                 dense: true),
                             ListTile(
                                 // leading: Icon(Icons.attach_money),

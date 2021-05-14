@@ -31,15 +31,16 @@ class HistoryModal extends MyProfileModel {
           'timeEnd': value.data()['bookingData']['timeEnd'],
           'location': value.data()['bookingData']['location'],
           'date': value.data()['bookingData']['date'],
-          'rate': value.data()['bookingData']['rate'],
-          'status': value.data()['bookingData']['booking_status']
+          'rate': value.data()['bookingData']['total'],
+          'status': value.data()['bookingData']['booking_status'],
+          'numberOfStudents': value.data()['bookingData']['numberOfStudents']
 
         });
 
         if(value.data()['bookingData']['booking_status'] == 'Declined' || value.data()['bookingData']['booking_status'] == 'Cancelled') {
           rate = 0;
         } else{
-          rate = double.parse(value.data()['bookingData']['rate']);
+          rate = double.parse(value.data()['bookingData']['total']);
         }
 
         totalIncome += rate;
@@ -88,12 +89,13 @@ class HistoryModal extends MyProfileModel {
           'timeEnd': value.data()['bookingData']['timeEnd'],
           'location': value.data()['bookingData']['location'],
           'date': value.data()['bookingData']['date'],
-          'rate': value.data()['bookingData']['rate'],
-          'status': value.data()['bookingData']['booking_status']
+          'rate': value.data()['bookingData']['total'],
+          'status': value.data()['bookingData']['booking_status'],
+          'numberOfStudents': value.data()['bookingData']['numberOfStudents'],
 
         });
         
-          rate = double.parse(value.data()['bookingData']['rate']);
+          rate = double.parse(value.data()['bookingData']['total']);
         
 
         totalIncome += rate;
