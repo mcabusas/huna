@@ -30,6 +30,20 @@ class DrawerModel extends MyProfileModel {
 
   }
 
+  Future<bool> getStatus() async {
+    User user = await _services.getCurrentUser();
+    bool retVal = false;
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).get().then((value) => {
+     if(value.data()['account_type'] == 'Active') {
+       retVal = true
+     }
+   });
+   print(retVal.toString());
+   return retVal;
+
+  }
+  
+
   Future<Map<String,dynamic>> userProfile() async{
     User user = await _services.getCurrentUser();
 
