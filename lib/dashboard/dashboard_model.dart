@@ -3,6 +3,18 @@ import '../profile/myProfile_model.dart';
 
 class DashboardModel extends MyProfileModel{
 
+
+  Future<bool> getStatus(String uid) async {
+    bool retVal = false;
+    await FirebaseFirestore.instance.collection('users').doc(uid).get().then((value) => {
+     if(value.data()['account_type'] == 'Active') {
+       retVal = true
+     }
+   });
+
+   return retVal;
+  }
+
   Future<List<Map<String, dynamic>>> getTutors() async {
     List<Map<String, dynamic>> tutors = [];
 

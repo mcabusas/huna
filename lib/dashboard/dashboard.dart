@@ -26,6 +26,7 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
   AuthServices _s = new AuthServices();
   List<Map<String, dynamic>> retVal;
   SharedPreferences sp;
+  String uid;
 
  Future<List<Map<String, dynamic>>> initAwait() async {
    SharedPreferences sp = await SharedPreferences.getInstance();
@@ -103,28 +104,6 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                       ),
                     ),
                   ),
-                  // Row(
-                  //   children: <Widget>[
-                  //     Expanded(
-                  //       child: Padding(
-                  //         padding: EdgeInsets.fromLTRB(20, 20, 20, 0),
-                  //         child: TextField(
-                  //           decoration: InputDecoration(
-                  //             prefixIcon: Icon(Icons.search),
-                  //             hintText: 'Search for Tutors',
-                  //           ),
-                  //          onSubmitted: (value) {
-                  //             Navigator.push(
-                  //               cont0xt,                  //               MaterialPageRoute(
-                  //                   builder: (context) => SearchPage(searchValue: value)),
-                  //             );
-                  //           },
-                  //           textInputAction: TextInputAction.go,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
                   // Featured Tutors Label
                   Row(
                     children: <Widget>[
@@ -149,58 +128,58 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
                       if(snapshot.hasData){
                         
                         if (snapshot.connectionState == ConnectionState.done) {
+
                           retVal = Container(
-                          height: 225,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.all(15),
-                            itemCount: snapshot == null ? 0 : snapshot.data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return GestureDetector(
-                                onTap: (){
-                                   print(snapshot.data[index]['majors']);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data[index])),
-                                  );
-                                },
-                                  child: Container(
-                                  width: 130,
-                                  child: Card(
-                                    // color: Colors.black,
-                                    child: Wrap(
-                                      children: <Widget>[
-                                        FutureBuilder(
-                                          future: dashboardModel.getPicture(snapshot.data[index]['uid']),
-                                          builder: (BuildContext context, AsyncSnapshot snap) {
-                                            Widget picture;
-                                            if (snap.connectionState == ConnectionState.waiting) {
-                                              picture = Container(child: CircularProgressIndicator());
+                            height: 225,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              shrinkWrap: true,
+                              padding: EdgeInsets.all(15),
+                              itemCount: snapshot == null ? 0 : snapshot.data.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return GestureDetector(
+                                  onTap: (){
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => TutorProfilePage(tutorData: snapshot.data[index])),
+                                    );
+                                  },
+                                    child: Container(
+                                    width: 130,
+                                    child: Card(
+                                      // color: Colors.black,
+                                      child: Wrap(
+                                        children: <Widget>[
+                                          FutureBuilder(
+                                            future: dashboardModel.getPicture(snapshot.data[index]['uid']),
+                                            builder: (BuildContext context, AsyncSnapshot snap) {
+                                              Widget picture;
+                                              if (snap.connectionState == ConnectionState.waiting) {
+                                                picture = Container(child: CircularProgressIndicator());
+                                              }
+                                              if(snap.connectionState == ConnectionState.done) {
+                                                picture = ProfilePicture(url: snap.data, width: 200, height: 100);
+                                              }
+                                              
+                                              return picture;
                                             }
-                                            if(snap.connectionState == ConnectionState.done) {
-                                              picture = ProfilePicture(url: snap.data, width: 200, height: 100);
-                                            }
-                                            
-                                            return picture;
-                                          }
-                                        ),
-                                        ListTile(
-                                          title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
-                                          //subtitle: Text(snapshot.data[index]['username']),
-                                        ),
-                                        // Visibility(
-                                        //   child: Text(data[index]['tutor_id']),
-                                        //   visible: false, 
-                                        // ),
-                                      ],
+                                          ),
+                                          ListTile(
+                                            title: Text('${snapshot.data[index]['firstName']} ${snapshot.data[index]['lastName']}'),
+                                            //subtitle: Text(snapshot.data[index]['username']),
+                                          ),
+                                          // Visibility(
+                                          //   child: Text(data[index]['tutor_id']),
+                                          //   visible: false, 
+                                          // ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
-                          )
-                        );
+                                );
+                              },
+                            )
+                          );
 
                         } 
 

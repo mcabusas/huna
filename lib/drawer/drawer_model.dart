@@ -54,6 +54,7 @@ class DrawerModel extends MyProfileModel {
         'firstName': snapshot.data()['firstName'],
         'lastName': snapshot.data()['lastName'],
         'uid': user.uid,
+        'account_type': snapshot.data()['account_type'],
         'tid': tutorData['tid'],
         'tutor_rate': tutorData['rate'],
         'tutor_majors': tutorData['majors'],
